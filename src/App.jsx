@@ -1,9 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Landing from "@/components/layout/Landing";
 import SignInForm from "@/components/pages/SignInForm";
-import PersonalLoanPage from "./components/pages/PersonalLoanPage";
-import CreditCardsPage from "./components/pages/CreaditCardsPage";
+import PersonalLoanPage from "@/components/pages/PersonalLoanPage";
+import CreditCardsPage from "@/components/pages/CreaditCardsPage";
 import { useEffect } from "react";
+import CreditCardsReportApply from "@/components/pages/CreditCardsReportApply";
 
 export default function App() {
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function App() {
       <Route path='/sign-in' element={<SignInForm />} />
       <Route path='/personal-loan' element={<PersonalLoanPage />} />
       <Route path='/credit-cards' element={<CreditCardsPage />} />
+      <Route path='/credit-report/apply' element={<CreditCardsReportApply />} />
     </Routes>
   )
 }

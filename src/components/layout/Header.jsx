@@ -93,7 +93,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src='/logo.png' alt='logo-photo' className='w-[140px] h-[200px]' />
+            <img src='/logo.png' alt='logo-photo' className='w-[140px] h-[120px]' />
           </Link>
 
           {/* Desktop Navigation */}
@@ -179,9 +179,7 @@ export default function Header() {
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-6">
-                    <div className="h-7 w-28 bg-black/80 flex items-center justify-center text-white font-bold rounded text-sm">
-                      financesbazar
-                    </div>
+                    <img src="/assets/logo-2.png" alt="logo" className='w-48' />
                   </div>
 
                   <div className="flex flex-col space-y-4">

@@ -10,7 +10,7 @@ export function TypographyH1({ children, className }) {
 
 export function TypographyH2({ children, className }) {
     return (
-        <h2 className={cn("scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0", className)}>
+        <h2 className={cn("scroll-m-20 text-3xl font-semibold tracking-tight", className)}>
             {children}
         </h2>
     )
@@ -34,7 +34,7 @@ export function TypographyH4({ children, className }) {
 
 export function TypographyP({ children, className }) {
     return (
-        <p className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}>
+        <p className={cn("leading-7", className)}>
             {children}
         </p>
     )
@@ -48,14 +48,19 @@ export function TypographyBlockquote({ children, className }) {
     )
 }
 
-export function TypographyList({ className }) {
+export function TypographyList({ items, className }) {
     return (
-        <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2", className)}>
-            <li>1st level of puns: 5 gold coins</li>
-            <li>2nd level of jokes: 10 gold coins</li>
-            <li>3rd level of one-liners : 20 gold coins</li>
+        <ul className={cn("list-none grid gap-2", className)}>
+            {items.map((item, groupIndex) =>
+                item.features.map((feature, featureIndex) => (
+                    <li key={`${groupIndex}-${featureIndex}`} className="flex items-start gap-2 text-xs">
+                        {item.icon}
+                        <span>{feature}</span>
+                    </li>
+                ))
+            )}
         </ul>
-    )
+    );
 }
 
 export function TypographyLead({ children, className }) {
@@ -68,7 +73,7 @@ export function TypographyLead({ children, className }) {
 
 export function TypographyLarge({ children, className }) {
     return (
-        <div className={cn("text-lg font-semibold", className)}>
+        <div className={cn("text-md font-semibold", className)}>
             {children}
         </div>
     )

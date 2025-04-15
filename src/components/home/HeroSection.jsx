@@ -1,17 +1,9 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { FiArrowRight } from 'react-icons/fi';
 import { TypographyMuted } from '@/custom/Typography';
+import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
-  const [mobileNumber, setMobileNumber] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Mobile number submitted:', mobileNumber);
-  };
 
   return (
     <section className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-16">
@@ -31,28 +23,14 @@ export default function HeroSection() {
               </TypographyMuted>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-              <div className="space-y-2">
-                <Input
-                  type="tel"
-                  placeholder="Enter your mobile number"
-                  value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
-                  className="h-12"
-                  maxLength={10}
-                  required
-                />
-                <TypographyMuted className="text-xs">
-                  Don't worry, this will not affect your credit score.
-                </TypographyMuted>
-              </div>
+            <Link to='/credit-report/apply'>
               <Button
                 type="submit"
-                className="w-full md:w-auto text-white"
+                className="w-full md:w-auto cursor-pointer"
               >
                 Get Free Credit Report <FiArrowRight className="ml-2" />
               </Button>
-            </form>
+            </Link>
 
             <div className="flex items-center space-x-4 pt-4">
               <div className="flex flex-col items-center">
