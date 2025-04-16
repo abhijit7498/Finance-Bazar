@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FiArrowRight, FiCheck, FiStar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { TypographyMuted } from '../../custom/Typography';
+import { TypographyMuted } from '../../../custom/Typography';
 
 export const metadata = {
     title: 'Credit Cards - Compare & Apply Online | financesbazar Clone',

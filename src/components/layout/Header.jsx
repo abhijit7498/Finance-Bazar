@@ -1,16 +1,18 @@
-'use client';
-
 import { useState } from 'react';
 import { FiMenu, FiChevronDown, FiUser } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuGroup,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -93,7 +95,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <img src='/logo.png' alt='logo-photo' className='w-[140px] h-[120px]' />
+            <img src='/logo.png' alt='logo-photo' className='w-[160px] h-[150px] sm:w-[200px] sm:h-[180px] sm:relative sm:-top-1 absolute -left-3 -top-10' />
           </Link>
 
           {/* Desktop Navigation */}
@@ -118,7 +120,7 @@ export default function Header() {
                       <FiChevronDown className="ml-1 h-4 w-4" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-fit p-8">
+                  <DropdownMenuContent className="p-8 w-full">
                     <div className="grid grid-cols-3 gap-4">
                       {item.items?.map((section) => (
                         <div key={section.title}>
@@ -177,6 +179,11 @@ export default function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+                <SheetHeader>
+                  <SheetTitle></SheetTitle>
+                  <SheetDescription>
+                  </SheetDescription>
+                </SheetHeader>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-6">
                     <img src="/assets/logo-2.png" alt="logo" className='w-48' />

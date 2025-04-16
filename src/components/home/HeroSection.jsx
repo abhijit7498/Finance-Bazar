@@ -58,13 +58,33 @@ export default function HeroSection() {
               <div className="aspect-square relative">
                 {/* People looking at charts image */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-muted rounded-full p-8 shadow-lg w-64 h-64 flex items-center justify-center">
-                    <div className="text-center grid gap-3">
-                      <div className=" font-bold text-xl text-primary">Credit Report</div>
-                      <div className="font-semibold text-accent">
-                        100% Free
-                      </div>
-                    </div>
+                  <div className="relative bg-muted rounded-full w-72 sm:w-80 md:w-96 aspect-square shadow-lg flex items-center justify-center overflow-hidden">
+
+                    {/* SVG Curved Text */}
+                    <svg
+                      viewBox="0 0 300 300"
+                      className="absolute w-full h-full"
+                    >
+                      <defs>
+                        <path
+                          id="curve"
+                          d="M 50,150 A 100,100 0 0,1 250,150"
+                          fill="none"
+                        />
+                      </defs>
+                      <text fill="#c74558" fontSize="16" fontWeight="bold">
+                        <textPath href="#curve" startOffset="50%" textAnchor="middle">
+                          Credit Report - 100% Free
+                        </textPath>
+                      </text>
+                    </svg>
+
+                    {/* Image */}
+                    <img
+                      src="/assets/credit-score-hero.svg"
+                      alt="Credit Score Hero"
+                      className="w-[100%] h-[100%]"
+                    />
                   </div>
                 </div>
                 <div className="absolute bottom-0 sm:left-0 left-10 transform -translate-x-1/4">

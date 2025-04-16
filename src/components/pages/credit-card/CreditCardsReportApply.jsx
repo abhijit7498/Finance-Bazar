@@ -33,24 +33,35 @@ import {
 import { Link } from 'react-router-dom'
 import { FiUser } from 'react-icons/fi'
 import { FaWhatsapp } from "react-icons/fa"
+import { MdSecurity } from "react-icons/md";
 import { IoCheckmark } from "react-icons/io5";
 import { motion } from 'framer-motion'
 
-const MobileHeader = () => {
+const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
         <div className='sm:hidden flex flex-col w-full'>
             <div className='h-14 px-6 bg-white flex justify-between items-center w-full border-b shadow'>
                 <img src="/assets/logo-2.png" alt="" className='w-48' />
-                <Link to='/sign-in'>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-primary text-primary hover:bg-primary hover:text-white"
-                    >
-                        <FiUser className="mr-2 h-4 w-4" />
-                        Sign In
-                    </Button>
-                </Link>
+                {
+                    !showRightPanel2 ? <Link to='/sign-in'>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-primary text-primary hover:bg-primary hover:text-white"
+                        >
+                            <FiUser className="mr-2 h-4 w-4" />
+                            Sign In
+                        </Button>
+                    </Link> :
+                        <Button
+                            onClick={onLogout}
+                            variant="outline"
+                            size="sm"
+                            className="border-primary text-primary hover:bg-primary hover:text-white"
+                        >
+                            Logout
+                        </Button>
+                }
             </div>
             <div className='bg-primary/10 p-2 w-full flex justify-between py-8'>
                 <div className='pl-4'>
@@ -124,11 +135,15 @@ const LeftGradiantPannel = () => {
     )
 }
 
-const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
+const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess }) => {
+
     const [errors, setErrors] = useState({});
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleChange = (field, value) => {
+        if (field === 'phone') {
+            value = value.replace(/\D/g, '');
+        }
         setFormData((prev) => ({ ...prev, [field]: value }));
         setErrors((prev) => ({ ...prev, [field]: '' }));
     };
@@ -137,8 +152,16 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
         const newErrors = {};
         if (!formData.gender) newErrors.gender = 'Gender is required';
         if (!formData.name) newErrors.name = 'Full name is required';
-        if (!formData.email) newErrors.email = 'Email is required';
-        if (!formData.phone) newErrors.phone = 'Phone is required';
+        if (!formData.email) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Invalid email format';
+        }
+        if (!formData.phone) {
+            newErrors.phone = 'Phone is required';
+        } else if (!/^\d{10}$/.test(formData.phone)) {
+            newErrors.phone = 'Enter a valid 10-digit number';
+        }
         if (!formData.checked) newErrors.checked = 'You must accept the terms';
 
         setErrors(newErrors);
@@ -147,7 +170,6 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (validateForm()) {
             console.log('Form Data:', formData);
             setOpenDialog(true);
@@ -157,8 +179,11 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
     };
 
     const handleOTPSubmit = () => {
-
-    }
+        if (onOtpSuccess) {
+            onOtpSuccess(formData.phone);
+            setOpenDialog(false);
+        }
+    };
 
     return (
         <div className='max-w-md mx-auto flex sm:justify-center gap-3 flex-col px-4 sm:py-8'>
@@ -174,14 +199,18 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                     </Button>
                 </Link>
             </div>
+
             <Card className="shadow-none border-none">
                 <CardHeader>
-                    <CardTitle className='text-3xl text-blue-800'>Lifetime Free Credit Score</CardTitle>
+                    <CardTitle className='text-xl text-blue-800'>Lifetime Free Credit Score</CardTitle>
                     <CardDescription>Get your credit report for free, with monthly updates</CardDescription>
                 </CardHeader>
+
                 <CardContent>
                     <form onSubmit={handleSubmit}>
                         <div className="grid w-full items-center gap-4">
+
+                            {/* Gender */}
                             <div className="flex flex-col space-y-3 mb-4">
                                 <Label htmlFor="gender">Gender</Label>
                                 <RadioGroup
@@ -201,9 +230,11 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                 {errors.gender && <span className="text-red-500 text-xs">{errors.gender}</span>}
                             </div>
 
+                            {/* Full Name */}
                             <div className="flex flex-col space-y-2">
                                 <Label htmlFor="name">Full Name</Label>
                                 <input
+                                    type='text'
                                     value={formData.name}
                                     onChange={(e) => handleChange('name', e.target.value)}
                                     className='outline-none focus:border-primary border-b-2 p-2 text-sm'
@@ -212,9 +243,11 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                 {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
                             </div>
 
+                            {/* Email */}
                             <div className="flex flex-col space-y-2">
                                 <Label htmlFor="email">Email Address</Label>
                                 <input
+                                    type='email'
                                     value={formData.email}
                                     onChange={(e) => handleChange('email', e.target.value)}
                                     className='outline-none focus:border-primary border-b-2 p-2 text-sm'
@@ -223,9 +256,12 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                 {errors.email && <span className="text-red-500 text-xs">{errors.email}</span>}
                             </div>
 
+                            {/* Mobile Number */}
                             <div className="flex flex-col space-y-2">
                                 <Label htmlFor="mobile">Mobile Number</Label>
                                 <input
+                                    type='text'
+                                    maxLength={10}
                                     value={formData.phone}
                                     onChange={(e) => handleChange('phone', e.target.value)}
                                     className='outline-none focus:border-primary border-b-2 p-2 text-sm'
@@ -233,10 +269,11 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                 />
                                 {errors.phone && <span className="text-red-500 text-xs">{errors.phone}</span>}
                                 <span className='text-[10px] text-muted-foreground'>
-                                    Note: Please Use the Mobile Number Registered with your Credit Card/Loan account
+                                    Note: Please use the mobile number registered with your Credit Card/Loan account.
                                 </span>
                             </div>
 
+                            {/* Checkbox */}
                             <div className="items-top flex space-x-2 mt-3">
                                 <Checkbox
                                     id="terms1"
@@ -256,6 +293,7 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                         </div>
 
                         <CardFooter className="flex flex-col gap-2 mt-6 px-0">
+                            {/* OTP Dialog */}
                             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                                 <DialogTrigger asChild>
                                     <Button type='submit' className="w-full cursor-pointer">
@@ -266,13 +304,13 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                     <DialogHeader>
                                         <DialogTitle className="text-center">Verify Mobile Number</DialogTitle>
                                         <DialogDescription className="bg-gray-200 rounded-md py-2 mt-2 text-center">
-                                            OTP sent on Mobile Number +91-xxx0701
+                                            OTP sent on Mobile Number +91-{formData.phone?.slice(-4)}
                                         </DialogDescription>
                                     </DialogHeader>
                                     <div className="grid gap-4 mt-6">
                                         <input
                                             id="otp"
-                                            placeholder='Put Your otp received in your phone'
+                                            placeholder='Enter OTP received on your phone'
                                             className="border-b pb-3 border-primary focus:outline-none"
                                             maxLength={4}
                                             value={otpCode}
@@ -281,15 +319,23 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                                         <p className='text-red-800 text-xs text-center'>Invalid OTP</p>
                                     </div>
                                     <DialogFooter>
-                                        <Button disabled={otpCode.length < 4} type="button" className="w-full">Verify & Login</Button>
+                                        <Button
+                                            disabled={otpCode.length < 4}
+                                            onClick={handleOTPSubmit}
+                                            type="button"
+                                            className="w-full cursor-pointer"
+                                        >
+                                            Verify & Login
+                                        </Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
 
+                            {/* WhatsApp toggle */}
                             <div className='flex items-center gap-2 mt-2'>
                                 <FaWhatsapp className='text-green-600' />
                                 <TypographyMuted className="text-xs">
-                                    Get updates on Whatsapp
+                                    Get updates on WhatsApp
                                 </TypographyMuted>
                                 <Switch
                                     id="whatsapp-mode"
@@ -300,8 +346,180 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode }) => {
                         </CardFooter>
                     </form>
                 </CardContent>
-            </Card >
-        </div >
+            </Card>
+        </div>
+    );
+};
+
+const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === "dob") {
+            let cleaned = value.replace(/\D/g, '');
+            if (cleaned.length > 8) cleaned = cleaned.slice(0, 8);
+
+            let formatted = cleaned;
+            if (cleaned.length > 4) {
+                formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2, 4)}-${cleaned.slice(4)}`;
+            } else if (cleaned.length > 2) {
+                formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2)}`;
+            }
+
+            setProccedDetails((prev) => ({
+                ...prev,
+                dob: formatted,
+            }));
+        } else if (name === "pinCode") {
+            const numericPin = value.replace(/\D/g, '').slice(0, 6);
+            setProccedDetails((prev) => ({
+                ...prev,
+                pinCode: numericPin,
+            }));
+        } else if (name === "pan") {
+            const pan = value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+            setProccedDetails((prev) => ({
+                ...prev,
+                pan,
+            }));
+        } else {
+            setProccedDetails((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+    };
+
+    const validate = () => {
+        let tempErrors = {};
+
+        if (!proccedDetails.dob.trim()) {
+            tempErrors.dob = "Date of Birth is required";
+        } else if (!/^\d{2}-\d{2}-\d{4}$/.test(proccedDetails.dob)) {
+            tempErrors.dob = "DOB must be in DD-MM-YYYY format";
+        }
+
+        if (!proccedDetails.pinCode.trim()) {
+            tempErrors.pinCode = "Pin Code is required";
+        } else if (!/^\d{6}$/.test(proccedDetails.pinCode)) {
+            tempErrors.pinCode = "Pin Code must be 6 digits";
+        }
+
+        if (!proccedDetails.pan.trim()) {
+            tempErrors.pan = "PAN is required";
+        } else if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(proccedDetails.pan)) {
+            tempErrors.pan = "PAN must be like ABCDE1234F";
+        }
+
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validate()) {
+            console.log("Submitted Data:", proccedDetails);
+        }
+    };
+
+    return (
+        <div className='max-w-md mx-auto flex sm:justify-center gap-3 flex-col px-4'>
+            <div className='sm:flex hidden justify-end'>
+                <Button
+                    onClick={onLogout}
+                    variant="outline"
+                    size="sm"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                >
+                    Logout
+                </Button>
+            </div>
+            <Card className="shadow-none border-none">
+                <CardHeader className="flex items-center gap-4">
+                    <CardTitle className='text-xl text-blue-800'>
+                        We need a few more details to access your Credit Report
+                    </CardTitle>
+                    <CardDescription>
+                        <img src="/assets/score.svg" alt="score" className='w-24' />
+                    </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                    <form onSubmit={handleSubmit}>
+                        <div className="grid w-full items-center gap-4">
+
+                            {/* Date of Birth */}
+                            <div className="flex flex-col space-y-2">
+                                <Label htmlFor="dob">Date of Birth</Label>
+                                <input
+                                    name="dob"
+                                    type="text"
+                                    maxLength={10}
+                                    className="outline-none focus:border-primary border-b-2 p-2 text-sm"
+                                    placeholder="DD-MM-YYYY"
+                                    value={proccedDetails.dob}
+                                    onChange={handleChange}
+                                    onBlur={() => {
+                                        const cleaned = proccedDetails.dob.replace(/\D/g, '');
+                                        if (cleaned.length === 8) {
+                                            const formatted = `${cleaned.slice(0, 2)}-${cleaned.slice(2, 4)}-${cleaned.slice(4)}`;
+                                            setProccedDetails((prev) => ({ ...prev, dob: formatted }));
+                                        }
+                                    }}
+                                />
+                                {errors.dob && <span className="text-red-600 text-xs">{errors.dob}</span>}
+                            </div>
+
+                            {/* Pin Code */}
+                            <div className="flex flex-col space-y-2">
+                                <Label htmlFor="pinCode">Pin Code</Label>
+                                <input
+                                    name="pinCode"
+                                    type='text'
+                                    inputMode="numeric"
+                                    maxLength={6}
+                                    className='outline-none focus:border-primary border-b-2 p-2 text-sm'
+                                    placeholder="Your current residence area code"
+                                    value={proccedDetails.pinCode}
+                                    onChange={handleChange}
+                                />
+                                {errors.pinCode && <span className="text-red-600 text-xs">{errors.pinCode}</span>}
+                            </div>
+
+                            {/* PAN */}
+                            <div className="flex flex-col space-y-2">
+                                <Label htmlFor="pan">PAN</Label>
+                                <input
+                                    name="pan"
+                                    type='text'
+                                    maxLength={10}
+                                    className='outline-none focus:border-primary border-b-2 p-2 text-sm uppercase'
+                                    placeholder="Permanent Account Number"
+                                    value={proccedDetails.pan}
+                                    onChange={handleChange}
+                                />
+                                {errors.pan && <span className="text-red-600 text-xs">{errors.pan}</span>}
+                            </div>
+
+                        </div>
+
+                        <CardFooter className="flex flex-col gap-4 mt-6">
+                            <Button type='submit' className="w-full cursor-pointer">
+                                Proceed
+                            </Button>
+                            <div className='flex items-center gap-2 mt-2'>
+                                <MdSecurity className='text-green-600' />
+                                <TypographySmall className="text-xs">
+                                    Your data is 100% secure with us
+                                </TypographySmall>
+                            </div>
+                        </CardFooter>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
     );
 };
 
@@ -336,33 +554,68 @@ const creditScoreFeatures = [
 
 export default function CreditCardsReportApply() {
 
+    const [showRightPanel2, setShowRightPanel2] = useState(false);
     const [otpCode, setOtpCode] = useState("");
-    const [formData, setFormData] = useState(
-        {
-            name: "",
-            gender: "",
-            email: "",
-            phone: "",
-            checked: "",
-            whatAppNotification: false,
+    const [formData, setFormData] = useState({
+        name: "",
+        gender: "",
+        email: "",
+        phone: "",
+        checked: "",
+        whatAppNotification: false,
+    });
+
+    const [proccedDetails, setProccedDetails] = useState({
+        dob: '',
+        pinCode: '',
+        pan: ''
+    })
+
+    // Handle OTP success from child component
+    const handleOtpSuccess = (phone) => {
+        sessionStorage.setItem("OTP_SUCCESSFULL", phone);
+        setShowRightPanel2(true);
+    };
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("OTP_SUCCESSFULL");
+        setShowRightPanel2(false);
+    };
+
+    // Initialize from localStorage on first load only
+    useEffect(() => {
+        const savedPhone = sessionStorage.getItem("OTP_SUCCESSFULL");
+        if (savedPhone) {
+            setShowRightPanel2(true);
         }
-    )
+    }, []);
 
     return (
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full h-screen'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full h-screen sm:overflow-y-hidden'>
             {/* Mobile Header */}
-            <MobileHeader />
+            <MobileHeader showRightPanel2={showRightPanel2} onLogout={handleLogout} />
 
             {/* Left Gradient Panel */}
             <LeftGradiantPannel />
 
-            {/* Right Form Panel */}
-            <RightPannel1 formData={formData} setFormData={setFormData} setOtpCode={setOtpCode} otpCode={otpCode} />
+            {/* Right Panel - switch between Form and Result */}
+            {showRightPanel2 ? (
+                <RightPannel2
+                    phone={sessionStorage.getItem("OTP_SUCCESSFULL")}
+                    proccedDetails={proccedDetails}
+                    setProccedDetails={setProccedDetails}
+                    onLogout={handleLogout} // <-- pass it here
+                />
+            ) : (
+                <RightPannel1
+                    formData={formData}
+                    setFormData={setFormData}
+                    otpCode={otpCode}
+                    setOtpCode={setOtpCode}
+                    onOtpSuccess={handleOtpSuccess}
+                />
+            )}
 
-            {/* Right Form Panel-2 */}
-            <div className='max-w-md mx-auto flex sm:justify-center gap-3 flex-col px-4 sm:py-8'>
-
-            </div>
         </div>
     )
 }
