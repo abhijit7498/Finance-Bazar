@@ -94,12 +94,12 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
+          <Link to="/#home" className="flex-shrink-0">
             <img src='/logo.png' alt='logo-photo' className='w-[160px] h-[150px] sm:w-[200px] sm:h-[180px] sm:relative sm:-top-1 absolute -left-3 -top-10' />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8" id='home'>
             {mainNavItems.map((item) => (
               item.isSingle ? (
                 <Link

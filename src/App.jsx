@@ -7,6 +7,8 @@ import CreditCardsPage from "@/components/pages/credit-card/CreaditCardsPage";
 import CreditCardsReportApply from "@/components/pages/credit-card/CreditCardsReportApply";
 import PersonalLoanApply from "@/components/pages/personal-loan/PersonalLoanApply";
 import BussinessLoanApply from "@/components/pages/bussiness-loan/BussinessLoanApply";
+import ContactUs from "@/components/pages/contact-us/ContactUs";
+import AboutUs from "@/components/pages/AboutUs";
 
 export default function App() {
   useEffect(() => {
@@ -18,6 +20,8 @@ export default function App() {
     <Routes>
       <Route path='/' element={<Landing />} />
       <Route path='/sign-in' element={<SignInForm />} />
+      <Route path='/about-us' element={<AboutUs />} />
+      <Route path='/contact-us' element={<ContactUs />} />
       <Route path='/personal-loan' element={<PersonalLoanPage />} />
       <Route path='/personal-loan/apply' element={<PersonalLoanApply />} />
       <Route path='/business-loan' element={<BussinessLoanApply />} />

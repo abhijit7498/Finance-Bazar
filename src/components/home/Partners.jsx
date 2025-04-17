@@ -1,71 +1,133 @@
 'use client';
 
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TypographyH3 } from '@/custom/Typography';
+import { Button } from '@/components/ui/button';
 
-// Define partner categories for tabs
+// Partner categories
 const partnerCategories = [
-  { id: 'all', label: 'All Unsecured Loans' },
-  { id: 'credit-card', label: 'Credit Card' },
-  { id: 'home-loan', label: 'Home Loan' },
-  { id: 'credit-bureau', label: 'Credit Bureau' },
-  { id: 'credit-improvement', label: 'Credit Improvement' },
+  { id: 'all', name: 'All Unsecured Loans' },
+  { id: 'credit-card', name: 'Credit Card' },
+  { id: 'home-loan', name: 'Home Loan' },
+  { id: 'credit-bureau', name: 'Credit Bureau' },
+  { id: 'credit-improvement', name: 'Credit Improvement' },
 ];
+
+const categoryData = {
+  all: [
+    'HDFC Bank',
+    'ICICI Bank',
+    'Axis Bank',
+    'SBI',
+    'Kotak Mahindra Bank',
+    'IDFC First Bank',
+    'Yes Bank',
+    'IndusInd Bank',
+    'Standard Chartered',
+    'Bank of Baroda',
+    'Canara Bank',
+    'Punjab National Bank',
+    'Union Bank of India',
+    'Federal Bank',
+    'AU Small Finance Bank',
+    'RBL Bank',
+    'Tata Capital',
+    'Bajaj Finserv',
+    'Aditya Birla Finance',
+    'Fullerton India',
+    'Clix Capital',
+    'L&T Finance',
+    'HDB Financial Services',
+    'Mahindra Finance'
+  ],
+
+  'credit-card': [
+    'HDFC Credit',
+    'ICICI Credit',
+    'SBI Card',
+    'Axis Credit',
+    'Kotak Credit',
+    'RBL Credit',
+    'IndusInd Credit',
+    'Standard Chartered Card',
+    'HSBC Credit',
+    'Yes Bank Card',
+    'AU Bank Card',
+  ],
+
+  'home-loan': [
+    'LIC Housing Finance',
+    'HDFC Home Loans',
+    'ICICI Home Loans',
+    'Axis Home Loans',
+    'PNB Housing',
+    'Canara Home Loan',
+    'Bank of Baroda Home Loan',
+    'Tata Capital Home Loan',
+    'Aditya Birla Home Finance',
+    'IndiaBulls Home Loans',
+    'Sundaram Home Finance',
+    'Union Bank Home Loan',
+  ],
+
+  'credit-bureau': [
+    'CIBIL (TransUnion)',
+    'Experian',
+    'Equifax',
+    'CRIF High Mark'
+  ],
+
+  'credit-improvement': [
+    'CreditMantri',
+    'CreditFix',
+    'GrowCredit',
+    'OneScore',
+    'MyScoreBoost',
+    'ClearScore',
+    'Wishfin Credit Help',
+    'CreditVidya',
+  ]
+};
 
 export default function Partners() {
   const [activeTab, setActiveTab] = useState('all');
 
-  // Function to generate partner logos
-  const renderPartnerLogos = (count) => {
-    return Array.from({ length: count }).map((_, index) => {
-      // Create a more stable key using a combination of category and a consistent ID
-      const stableId = `partner-${activeTab}-${index}-${Date.now()}`;
-
-      return (
-        <div
-          key={stableId}
-          className="h-12 w-24 bg-white border border-gray-200 rounded-md flex items-center justify-center"
-        >
-          <div className="h-6 w-10 bg-gray-200 rounded" />
-        </div>
-      );
-    });
-  };
-
   return (
-    <section className="py-12">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-8">
-          <h2 className="text-xl md:text-2xl font-bold">
-            Our partners from<br />
-            across the industry
-          </h2>
+    <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden py-12">
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Heading */}
+        <div className="max-w-sm grid gap-4">
+          <div className="w-14 h-0.5 bg-accent"></div>
+          <TypographyH3 className="text-blue-950 font-bold tracking-normal">
+            Our partners from<br />across the industry
+          </TypographyH3>
         </div>
 
-        <Tabs defaultValue="all" className="w-full" onValueChange={setActiveTab}>
-          <div className="mb-8 overflow-x-auto">
-            <TabsList className="inline-flex h-auto p-1 gap-2">
-              {partnerCategories.map((category) => (
-                <TabsTrigger
-                  key={category.id}
-                  value={category.id}
-                  className="px-4 py-2 text-sm rounded-full data-[state=active]:bg-primary data-[state=active]:text-white"
-                >
-                  {category.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-
-          {partnerCategories.map((category) => (
-            <TabsContent key={category.id} value={category.id} className="mt-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
-                {renderPartnerLogos(category.id === 'all' ? 24 : 18)}
-              </div>
-            </TabsContent>
+        {/* Button Tabs */}
+        <div className="flex items-center gap-4 mt-8 sm:mt-12 overflow-x-auto pb-2">
+          {partnerCategories.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setActiveTab(option.id)}
+              className={`whitespace-nowrap ${activeTab === option?.id ? "bg-blue-800 text-white border-none" : "text-blue-800"} text-sm font-semibold border border-blue-800 cursor-pointer px-4 py-1 rounded-sm`}
+            >
+              {option.name}
+            </button>
           ))}
-        </Tabs>
+        </div>
+
+        {/* Tab Content */}
+        <div className="mt-10 flex gap-4 flex-wrap items-center">
+          {categoryData[activeTab]?.map((partner, index) => (
+            <div
+              key={index}
+              className="text-sm font-semibold opacity-85 hover:scale-105 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center px-8 py-5"
+            >
+              {partner}
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

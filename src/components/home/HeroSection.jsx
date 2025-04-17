@@ -1,112 +1,116 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { FiArrowRight } from 'react-icons/fi';
-import { TypographyMuted } from '@/custom/Typography';
+import { TypographyMuted, TypographyH4 } from '@/custom/Typography';
 import { Link } from 'react-router-dom';
 
+const slides = [
+  {
+    id: 1,
+    content: (
+      <div className="grid grid-cols-1 md:grid-cols-2 sm:gap-8 gap-2 items-center w-full">
+        {/* First Slide Content */}
+        <div className="sm:space-y-6 space-y-1 sm:order-1 order-2 sm:hidden grid">
+          <h1 className="text-md md:text-3xl lg:text-4xl font-bold sm:ml-0 sm:w-full w-sm sm:px-0 px-4">
+            Get <span className="text-accent">Lifetime Free</span> Credit Card Score & Report
+          </h1>
+          <TypographyH4 className="sm:text-md text-sm mt-6 opacity-65 flex items-center gap-2">
+            <div className="wm:w-8 w-6 h-px bg-accent"></div> Track Credit Score, Free Forever
+          </TypographyH4>
+          <TypographyH4 className="sm:text-md text-sm mt-6 opacity-65 flex items-center gap-2">
+            <div className="sm:w-8 w-6 h-px bg-accent"></div> No Impact on Credit Score
+          </TypographyH4>
+          <Button className="cursor-pointer sm:p-6 mt-3 w-fit">
+            Search Credit Card <FiArrowRight />
+          </Button>
+        </div>
+        <div className="sm:space-y-6 sm:order-1 order-2 sm:block hidden">
+          <div className="sm:space-y-3 space-y-2">
+            <h1 className="text-md md:text-3xl lg:text-4xl font-bold">Your Credit Score & Report</h1>
+            <h2 className="text-md text-accent md:text-2xl lg:text-3xl font-bold">worth ₹1,200 Absolutely FREE</h2>
+            <TypographyH4 className="sm:text-md text-sm sm:mt-6 opacity-65 leading-7">
+              Check your score to monitor your credit health. It will help to keep your score healthy as well as help in faster loan approvals.
+            </TypographyH4>
+          </div>
+          <Link to="/credit-report/apply">
+            <Button className="cursor-pointer sm:p-6 mt-3">
+              Get Free Credit Report <FiArrowRight className="ml-2" />
+            </Button>
+          </Link>
+        </div>
+        <div className="flex relative -top-6 justify-center order-1 sm:order-2">
+          <img src="/assets/credit-score-hero.svg" alt="Credit Score" className="w-64 sm:w-[600px]" />
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: 2,
+    content: (
+      <div className="grid grid-cols-1 md:grid-cols-2 sm:mt-12 gap-8 items-center w-full">
+        {/* Second Slide Content */}
+        <div className='flex justify-center'>
+          <img src="/assets/credit-card-2.svg" alt="Credit Card" className="sm:w-96 w-64" />
+        </div>
+        <div className="sm:space-y-6 space-y-1">
+          <h1 className="text-md md:text-3xl lg:text-4xl font-bold">
+            Looking For The <span className="text-accent">Best Credit Cards?</span>
+          </h1>
+          <TypographyH4 className="sm:text-md text-sm mt-6 opacity-65 flex items-center gap-2">
+            <div className="wm:w-8 w-6 h-px bg-accent"></div> Search Card by Card Name/Categories
+          </TypographyH4>
+          <TypographyH4 className="sm:text-md text-sm mt-6 opacity-65 flex items-center gap-2">
+            <div className="sm:w-8 w-6 h-px bg-accent"></div> Choose from 400+ Credit Cards
+          </TypographyH4>
+          <Button className="cursor-pointer sm:p-6 mt-3">
+            Search Credit Card <FiArrowRight />
+          </Button>
+        </div>
+      </div>
+    ),
+  },
+];
+
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000); // 6 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-16">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Left side - Text and Form */}
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ">
-                Your Credit Score & Report
-              </h1>
-              <h2 className="text-xl text-accent md:text-2xl lg:text-3xl font-bold">
-                worth ₹1,200 Absolutely FREE
-              </h2>
-              <TypographyMuted>
-                Check your score to monitor your credit health. It will help to keep your score healthy as well as help in faster loan approvals.
-              </TypographyMuted>
-            </div>
+    <section className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden">
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Slide Container */}
+        <div className="relative min-h-[400px] sm:min-h-[380px] flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slides[currentSlide].id}
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="absolute inset-0 w-full"
+            >
+              {slides[currentSlide].content}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            <Link to='/credit-report/apply'>
-              <Button
-                type="submit"
-                className="w-full md:w-auto cursor-pointer"
-              >
-                Get Free Credit Report <FiArrowRight className="ml-2" />
-              </Button>
-            </Link>
-
-            <div className="flex items-center space-x-4 pt-4">
-              <div className="flex flex-col items-center">
-                <div className="text-lg font-bold">4.2/5</div>
-                <div className="flex text-yellow-400 text-sm">★★★★☆</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-lg font-bold">45M+</div>
-                <div className="text-xs text-muted-foreground">Satisfied Customers</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-lg font-bold">30+</div>
-                <div className="text-xs text-muted-foreground">Lending Partners</div>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="text-lg font-bold">800+</div>
-                <div className="text-xs text-muted-foreground">Cities across India</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right side - Image */}
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-md">
-              <div className="aspect-square relative">
-                {/* People looking at charts image */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative bg-muted rounded-full w-72 sm:w-80 md:w-96 aspect-square shadow-lg flex items-center justify-center overflow-hidden">
-
-                    {/* SVG Curved Text */}
-                    <svg
-                      viewBox="0 0 300 300"
-                      className="absolute w-full h-full"
-                    >
-                      <defs>
-                        <path
-                          id="curve"
-                          d="M 50,150 A 100,100 0 0,1 250,150"
-                          fill="none"
-                        />
-                      </defs>
-                      <text fill="#c74558" fontSize="16" fontWeight="bold">
-                        <textPath href="#curve" startOffset="50%" textAnchor="middle">
-                          Credit Report - 100% Free
-                        </textPath>
-                      </text>
-                    </svg>
-
-                    {/* Image */}
-                    <img
-                      src="/assets/credit-score-hero.svg"
-                      alt="Credit Score Hero"
-                      className="w-[100%] h-[100%]"
-                    />
-                  </div>
-                </div>
-                <div className="absolute bottom-0 sm:left-0 left-10 transform -translate-x-1/4">
-                  <div className="p-4 rounded-lg shadow-md bg-muted flex items-center space-x-2">
-                    <div className="text-white bg-primary rounded-full p-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </div>
-                    <div className="text-xs font-medium">Instant Approval</div>
-                  </div>
-                </div>
-                <div className="absolute top-4 sm:right-0 right-6 transform translate-x-1/4">
-                  <div className="p-3 rounded-lg shadow-md">
-                    <div className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-                      Free Credit Score
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Dots (Indicators) */}
+        <div className="flex justify-center mt-6 space-x-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${index === currentSlide ? 'bg-primary scale-110' : 'bg-gray-300'
+                }`}
+            />
+          ))}
         </div>
       </div>
     </section>

@@ -1,96 +1,76 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { FiChevronRight } from 'react-icons/fi';
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { TypographyH3, TypographyH4, TypographyMuted } from '@/custom/Typography';
+
+const creditCards1 = [
+  "3% Cashback on Online Spends",
+  "1.5% Cashback on all Other Spends",
+  "First Year Free"
+];
+
+const creditCards2 = [
+  "1% cash back on all spends*",
+  "Credit Card + Cash**",
+  "100% Digital Process",
+]
 
 export default function FeaturedProducts() {
   return (
-    <section className="py-16 bg-[#161b34] to-financesbazar-dark/90 ">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl text-primary-foreground md:text-3xl font-bold mb-2">
-            Tailor Made Products Exclusively<br />
-            for financesbazar Customers
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CreditCard
-            title="Yes Bank Financesbazar PaisaSave Credit Card"
-            imageSrc="https://ext.same-assets.com/2247534503/1885187505.png"
-            features={[
-              '3% Cashback on Online Spends',
-              '1.5% Cashback on all Other Spends',
-              'First Year Free',
-            ]}
-            linkHref="https://www.Financesbazar.com/cards/marketing/openmarket?partnerProductId=318"
-          />
-
-          <CreditCard
-            title="RBL Bank Financesbazar DUET Credit Card"
-            imageSrc="https://ext.same-assets.com/2247534503/3086505924.svg"
-            features={[
-              '1% cash back on all spends*',
-              'Credit Card + Cash**',
-              '100% Digital Process',
-            ]}
-            subtitle="**Cash is an XpressCash program by RBL Bank"
-            linkHref="https://www.financesbazar.com/digital-lending/?bank_type=66"
-          />
-        </div>
+    <div className='max-w-6xl mx-auto px-6 mt-12'>
+      <div className='max-w-sm mx-auto flex flex-col gap-4 items-center'>
+        <TypographyH3 className="text-center text-blue-900 font-bold tracking-normal">
+          Tailor Made Products Exclusively
+          for Financesbazar Customers
+        </TypographyH3>
+        <div className="w-22 h-0.5 bg-accent"></div>
       </div>
-    </section>
-  );
-}
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12'>
+        <div>
 
-function CreditCard({ title, imageSrc, features, subtitle, linkHref }) {
-  return (
-    <Card className="bg-gradient-to-r from-gray-900 to-gray-800  border-none shadow-xl overflow-hidden">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/3 p-6 flex items-center justify-center bg-gradient-to-br from-gray-800 to-black">
-          <div className="relative h-40 w-full max-w-[180px]">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${imageSrc})`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}
-            />
+        </div>
+        <div className='grid gap-4'>
+          <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
+            Yes Bank Financesbazar PaisaSave Credit Card
+          </TypographyH3>
+          <div className='grid gap-4'>
+            {
+              creditCards1?.map((option) => (
+                <TypographyH4 className='opacity-85 flex items-center gap-3'>
+                  <IoCheckmarkCircleOutline size={32} className='text-accent' />{option}
+                </TypographyH4>
+              ))
+            }
           </div>
-        </div>
-        <div className="md:w-2/3 p-6">
-          <CardHeader className="p-0 pb-4">
-            <CardTitle className="text-xl text-primary-foreground">{title}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0 space-y-4">
-            <ul className="space-y-2">
-              {features.map((feature) => (
-                <li key={feature} className="flex items-start">
-                  <span className="inline-flex items-center justify-center h-5 w-5 rounded-full text-white bg-primary mr-2 text-xs">
-                    ✓
-                  </span>
-                  <span className="text-gray-200">{feature}</span>
-                </li>
-              ))}
-            </ul>
-            {subtitle && (
-              <p className="text-xs text-gray-400">{subtitle}</p>
-            )}
-          </CardContent>
-          <CardFooter className="p-0 pt-4">
-            <Link to={linkHref} className="w-full">
-              <Button
-                className="cursor-pointer w-full"
-              >
-                Know More
-                <FiChevronRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-          </CardFooter>
+          <Link to="" className='text-blue-800 font-semibold ml-3'>
+            Know More
+          </Link>
         </div>
       </div>
-    </Card>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-22'>
+        <div className='grid gap-4'>
+          <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
+            RBL Bank Financesbazar DUET Credit Card
+          </TypographyH3>
+          <div className='grid gap-4'>
+            {
+              creditCards2?.map((option) => (
+                <TypographyH4 className='opacity-85 flex items-center gap-3'>
+                  <IoCheckmarkCircleOutline size={32} className='text-accent' />{option}
+                </TypographyH4>
+              ))
+            }
+          </div>
+          <TypographyMuted className="font-semibold text-xs">
+            **Cash is an XpressCash program by RBL Bank
+          </TypographyMuted>
+          <Link to="" className='text-blue-800 font-semibold ml-3'>
+            Know More
+          </Link>
+        </div>
+        <div>
+        </div>
+      </div>
+    </div>
   );
 }

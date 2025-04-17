@@ -1,5 +1,6 @@
 import { FiTwitter, FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { TypographySmall } from '../../custom/Typography';
 
 // Footer data structure
 const footerLinks = [
@@ -78,15 +79,15 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {footerLinks.map((section) => (
-            <div key={section.title} className="space-y-4">
-              <h3 className="font-semibold text-sm uppercase tracking-wider">
-                {section.title}
+            <div key={section?.title} className="space-y-4">
+              <h3 className="font-semibold uppercase tracking-wider">
+                {section?.title}
               </h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
+              <ul className="sm:space-y-3 space-y-2">
+                {section?.links.map((link) => (
                   <li key={link.label}>
-                    <Link to={link.href} className="text-xs hover:text-primary text-gray-300">
-                      {link.label}
+                    <Link to={link.href} className="text-xs font-medium hover:text-primary text-gray-300">
+                      {link?.label}
                     </Link>
                   </li>
                 ))}
