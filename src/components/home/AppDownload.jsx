@@ -17,8 +17,8 @@ export default function AppDownload() {
         </TypographyH3>
         <div className='grid gap-3'>
           {
-            appCards?.map((option) => (
-              <TypographyMuted className='font-semibold flex items-center gap-2'>
+            appCards?.map((option, index) => (
+              <TypographyMuted key={index} className='font-semibold flex items-center gap-2'>
                 <IoCheckmarkCircleOutline size={22} className='text-accent' />{option}
               </TypographyMuted>
             ))
@@ -29,19 +29,14 @@ export default function AppDownload() {
             Scan or click to Download App on your mobile
           </TypographyH4>
           <div className='flex items-center gap-6'>
-            <div className='border w-[120px] h-[120px]'>
-
+            <div className='w-[120px] cursor-pointer'>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR code" />
             </div>
             <TypographyMuted className="font-semibold text-xs">
               OR
             </TypographyMuted>
-            <div className='grid gap-4'>
-              <div className='border p-6 w-[150px]'>
-
-              </div>
-              <div className='border p-6 w-[150px]'>
-
-              </div>
+            <div className='w-[170px] cursor-pointer'>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzw7azF-c90zMgulLF9i0dWzuTHh_9Ru_XIw&s" alt="play-tore" />
             </div>
           </div>
         </div>
@@ -55,6 +50,3 @@ export default function AppDownload() {
     </div>
   )
 }
-
-
-//   {renderPartnerLogos(category.id === 'all' ? 24 : 18)}

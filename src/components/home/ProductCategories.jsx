@@ -140,7 +140,7 @@ export default function ProductCategories() {
         <HeadSkipper className='w-fit'>
           Insurance & Investment
         </HeadSkipper>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-8 mt-8">
           {insuranceProducts?.map((product) => (
             <ProductCardInsurance key={product.id} {...product} />
           ))}
@@ -151,8 +151,8 @@ export default function ProductCategories() {
           Keeping you financially healthy and safe, always
         </HeadSkipper>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
-          {financialProducts?.map((product) => (
-            <ProductCardFinancial key={product.id} {...product} />
+          {financialProducts?.map((product, index) => (
+            <ProductCardFinancial key={index} {...product} />
           ))}
         </div>
       </div>

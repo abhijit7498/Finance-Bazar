@@ -12,34 +12,38 @@ const creditCards2 = [
   "1% cash back on all spends*",
   "Credit Card + Cash**",
   "100% Digital Process",
-]
+];
 
 export default function FeaturedProducts() {
   return (
-    <div className='max-w-6xl mx-auto px-6 mt-12'>
+    <div className='max-w-6xl mx-auto px-6 sm:mt-12 overflow-hidden'>
       <div className='max-w-sm mx-auto flex flex-col gap-4 items-center'>
         <TypographyH3 className="text-center text-blue-900 font-bold tracking-normal">
-          Tailor Made Products Exclusively
+          Tailor Made Products Exclusively<br />
           for Financesbazar Customers
         </TypographyH3>
         <div className="w-22 h-0.5 bg-accent"></div>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12'>
-        <div>
 
+      {/* First Card Section */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 sm:mt-20 min-w-0'>
+        <div className="flex justify-center items-center">
+          <img
+            src="/assets/paisa-save.png"
+            alt="paisa-save"
+            className="sm:-rotate-[15deg] h-[300px] sm:h-[500px] object-contain"
+          />
         </div>
-        <div className='grid gap-4'>
+        <div className='flex flex-col gap-4 sm:gap-6'>
           <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
             Yes Bank Financesbazar PaisaSave Credit Card
           </TypographyH3>
-          <div className='grid gap-4'>
-            {
-              creditCards1?.map((option) => (
-                <TypographyH4 className='opacity-85 flex items-center gap-3'>
-                  <IoCheckmarkCircleOutline size={32} className='text-accent' />{option}
-                </TypographyH4>
-              ))
-            }
+          <div className='grid gap-4 sm:gap-6'>
+            {creditCards1.map((option, index) => (
+              <TypographyH4 key={index} className='opacity-85 flex items-center gap-3'>
+                <IoCheckmarkCircleOutline size={32} className='text-accent' /> {option}
+              </TypographyH4>
+            ))}
           </div>
           <Link to="" className='text-blue-800 font-semibold ml-3'>
             Know More
@@ -47,19 +51,18 @@ export default function FeaturedProducts() {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-22'>
-        <div className='grid gap-4'>
+      {/* Second Card Section */}
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 sm:mt-20 min-w-0'>
+        <div className='flex flex-col gap-4 sm:gap-6 sm:order-1 order-2'>
           <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
             RBL Bank Financesbazar DUET Credit Card
           </TypographyH3>
-          <div className='grid gap-4'>
-            {
-              creditCards2?.map((option) => (
-                <TypographyH4 className='opacity-85 flex items-center gap-3'>
-                  <IoCheckmarkCircleOutline size={32} className='text-accent' />{option}
-                </TypographyH4>
-              ))
-            }
+          <div className='flex flex-col gap-4 sm:gap-6'>
+            {creditCards2.map((option, index) => (
+              <TypographyH4 key={index} className='opacity-85 flex items-center gap-3'>
+                <IoCheckmarkCircleOutline size={32} className='text-accent' /> {option}
+              </TypographyH4>
+            ))}
           </div>
           <TypographyMuted className="font-semibold text-xs">
             **Cash is an XpressCash program by RBL Bank
@@ -68,7 +71,12 @@ export default function FeaturedProducts() {
             Know More
           </Link>
         </div>
-        <div>
+        <div className="flex justify-center items-center sm:order-2 order-1">
+          <img
+            src="/assets/duet.png"
+            alt="duet"
+            className="sm:rotate-[20deg] h-[300px] sm:h-[500px] object-contain"
+          />
         </div>
       </div>
     </div>

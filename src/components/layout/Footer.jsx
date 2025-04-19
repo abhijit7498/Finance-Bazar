@@ -77,7 +77,7 @@ export default function Footer() {
     <footer className="bg-black text-white">
       {/* Main Footer */}
       <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {footerLinks.map((section) => (
             <div key={section?.title} className="space-y-4">
               <h3 className="font-semibold uppercase tracking-wider">

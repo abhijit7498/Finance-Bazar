@@ -13,15 +13,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
     TypographyH2,
     TypographyLarge,
     TypographyMuted,
@@ -36,6 +27,9 @@ import { FaWhatsapp } from "react-icons/fa"
 import { MdSecurity } from "react-icons/md";
 import { IoCheckmark } from "react-icons/io5";
 import { motion } from 'framer-motion'
+import OtpCollection from '@/custom/OtpCollection'
+import { AddSessionStorage, generateOTP } from '@/lib/utils'
+import OtpDialog from '@/custom/OtpDialog'
 
 const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
@@ -71,7 +65,7 @@ const MobileHeader = ({ showRightPanel2, onLogout }) => {
                     <TypographyList items={creditScoreFeatures} className="text-muted-foreground mt-2" />
                 </div>
                 <div className='flex justify-end items-end'>
-                    <img src="/assets/credit-score.png" alt="credit-score" className='w-56' />
+                    <img src="/assets/credit-score-hero.svg" alt="credit-score" className='w-56' />
                 </div>
             </div>
         </div>
@@ -89,9 +83,14 @@ const LeftGradiantPannel = () => {
     }, [])
 
     return (
-        <div className="bg-gradient-to-br from-[#4D22E0] to-[#356EF5] text-white w-full h-screen sm:flex flex-col hidden overflow-hidden">
+        <div className="bg-gradient-to-br from-[#95ace0d9] to-[#260a81] text-white w-full h-screen sm:flex justify-center flex-col hidden overflow-hidden">
             <div className='max-w-md ml-20'>
-                <img src="/logo.png" alt="logo" className='w-56 h-fit' />
+                <Link
+                    to="/"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                    <img src="/logo.png" alt="logo" className='w-56 h-fit' />
+                </Link>
                 <TypographyH2 className="font-base text-white mt-2">
                     Your credit health matters…
                 </TypographyH2>
@@ -135,15 +134,29 @@ const LeftGradiantPannel = () => {
     )
 }
 
-const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess }) => {
-
+const RightPannel1 = ({ formData, setFormData }) => {
     const [errors, setErrors] = useState({});
     const [openDialog, setOpenDialog] = useState(false);
+    const [isPhoneDisabled, setIsPhoneDisabled] = useState(false);
+
+    // Load OTP verification state from sessionStorage on mount
+    useEffect(() => {
+        const storedData = sessionStorage.getItem("OTP_Verify");
+        if (storedData) {
+            try {
+                const parsed = JSON.parse(storedData);
+                if (parsed.OTP_Verify && parsed.phoneNumber) {
+                    setFormData((prev) => ({ ...prev, phone: parsed.phoneNumber }));
+                    setIsPhoneDisabled(true);
+                }
+            } catch (e) {
+                console.error("Failed to parse OTP sessionStorage:", e);
+            }
+        }
+    }, [setFormData]);
 
     const handleChange = (field, value) => {
-        if (field === 'phone') {
-            value = value.replace(/\D/g, '');
-        }
+        if (field === 'phone') value = value.replace(/\D/g, '');
         setFormData((prev) => ({ ...prev, [field]: value }));
         setErrors((prev) => ({ ...prev, [field]: '' }));
     };
@@ -163,7 +176,6 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
             newErrors.phone = 'Enter a valid 10-digit number';
         }
         if (!formData.checked) newErrors.checked = 'You must accept the terms';
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -171,35 +183,24 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('Form Data:', formData);
             setOpenDialog(true);
-        } else {
-            setOpenDialog(false);
-        }
-    };
-
-    const handleOTPSubmit = () => {
-        if (onOtpSuccess) {
-            onOtpSuccess(formData.phone);
-            setOpenDialog(false);
+            generateOTP();
         }
     };
 
     return (
         <div className='max-w-md mx-auto flex sm:justify-center gap-3 flex-col px-4 sm:py-8'>
+            {/* Top Sign In Button */}
             <div className='sm:flex hidden justify-end'>
                 <Link to='/sign-in'>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-primary text-primary hover:bg-primary hover:text-white"
-                    >
+                    <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
                         <FiUser className="mr-2 h-4 w-4" />
                         Sign In
                     </Button>
                 </Link>
             </div>
 
+            {/* Form Card */}
             <Card className="shadow-none border-none">
                 <CardHeader>
                     <CardTitle className='text-xl text-blue-800'>Lifetime Free Credit Score</CardTitle>
@@ -209,7 +210,6 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
                 <CardContent>
                     <form onSubmit={handleSubmit}>
                         <div className="grid w-full items-center gap-4">
-
                             {/* Gender */}
                             <div className="flex flex-col space-y-3 mb-4">
                                 <Label htmlFor="gender">Gender</Label>
@@ -256,7 +256,7 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
                                 {errors.email && <span className="text-red-500 text-xs">{errors.email}</span>}
                             </div>
 
-                            {/* Mobile Number */}
+                            {/* Phone Number */}
                             <div className="flex flex-col space-y-2">
                                 <Label htmlFor="mobile">Mobile Number</Label>
                                 <input
@@ -264,16 +264,17 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
                                     maxLength={10}
                                     value={formData.phone}
                                     onChange={(e) => handleChange('phone', e.target.value)}
-                                    className='outline-none focus:border-primary border-b-2 p-2 text-sm'
+                                    className='outline-none focus:border-primary border-b-2 p-2 text-sm opacity-65 font-semibold'
                                     placeholder="10-digit mobile number"
+                                    disabled={isPhoneDisabled}
                                 />
                                 {errors.phone && <span className="text-red-500 text-xs">{errors.phone}</span>}
                                 <span className='text-[10px] text-muted-foreground'>
-                                    Note: Please use the mobile number registered with your Credit Card/Loan account.
+                                    Note: Use mobile number linked with your Credit Card/Loan account.
                                 </span>
                             </div>
 
-                            {/* Checkbox */}
+                            {/* Terms Checkbox */}
                             <div className="items-top flex space-x-2 mt-3">
                                 <Checkbox
                                     id="terms1"
@@ -293,50 +294,14 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
                         </div>
 
                         <CardFooter className="flex flex-col gap-2 mt-6 px-0">
-                            {/* OTP Dialog */}
-                            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                                <DialogTrigger asChild>
-                                    <Button type='submit' className="w-full cursor-pointer">
-                                        Get Free Credit Report
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[425px]">
-                                    <DialogHeader>
-                                        <DialogTitle className="text-center">Verify Mobile Number</DialogTitle>
-                                        <DialogDescription className="bg-gray-200 rounded-md py-2 mt-2 text-center">
-                                            OTP sent on Mobile Number +91-{formData.phone?.slice(-4)}
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="grid gap-4 mt-6">
-                                        <input
-                                            id="otp"
-                                            placeholder='Enter OTP received on your phone'
-                                            className="border-b pb-3 border-primary focus:outline-none"
-                                            maxLength={4}
-                                            value={otpCode}
-                                            onChange={(e) => setOtpCode(e.target.value)}
-                                        />
-                                        <p className='text-red-800 text-xs text-center'>Invalid OTP</p>
-                                    </div>
-                                    <DialogFooter>
-                                        <Button
-                                            disabled={otpCode.length < 4}
-                                            onClick={handleOTPSubmit}
-                                            type="button"
-                                            className="w-full cursor-pointer"
-                                        >
-                                            Verify & Login
-                                        </Button>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
+                            <Button type='submit' className="w-full cursor-pointer">
+                                Get Free Credit Report
+                            </Button>
 
                             {/* WhatsApp toggle */}
                             <div className='flex items-center gap-2 mt-2'>
                                 <FaWhatsapp className='text-green-600' />
-                                <TypographyMuted className="text-xs">
-                                    Get updates on WhatsApp
-                                </TypographyMuted>
+                                <TypographyMuted className="text-xs">Get updates on WhatsApp</TypographyMuted>
                                 <Switch
                                     id="whatsapp-mode"
                                     checked={formData.whatAppNotification}
@@ -347,6 +312,20 @@ const RightPannel1 = ({ formData, setFormData, otpCode, setOtpCode, onOtpSuccess
                     </form>
                 </CardContent>
             </Card>
+
+            {/* OTP Dialog */}
+            <OtpDialog
+                open={openDialog}
+                setOpen={setOpenDialog}
+                mobile={formData.phone}
+                sessionStorage={{
+                    key: "pannel1",
+                    value: {
+                        pannel1: true,
+                        formData: formData,
+                    },
+                }}
+            />
         </div>
     );
 };
@@ -421,6 +400,10 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
         e.preventDefault();
         if (validate()) {
             console.log("Submitted Data:", proccedDetails);
+            AddSessionStorage("pannel2", {
+                pannel2: true,
+                proccedDetails: { proccedDetails }
+            });
         }
     };
 
@@ -523,6 +506,14 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
     );
 };
 
+const Dashboard = () => {
+    return (
+        <h3 className='text-green-800 text-center font-semibold'>
+            Your cibil score
+        </h3>
+    )
+}
+
 const data = [
     {
         id: 1,
@@ -552,10 +543,19 @@ const creditScoreFeatures = [
     }
 ];
 
-export default function CreditCardsReportApply() {
+const featureList = [
+    "Hand-picked offers from 30+ lenders",
+    "Money in mins via Pre-Approved loans",
+    "Instant sanction and disbursal",
+    "Contact-less processes"
+];
 
+export default function CreditScoreShow() {
+    const [veryfiedOTP, setVeryfiedOTP] = useState(true);
+    const [showRightPanel1, setShowRightPanel1] = useState(false);
     const [showRightPanel2, setShowRightPanel2] = useState(false);
-    const [otpCode, setOtpCode] = useState("");
+    const [dashboard, setDashboard] = useState(false);
+
     const [formData, setFormData] = useState({
         name: "",
         gender: "",
@@ -569,26 +569,50 @@ export default function CreditCardsReportApply() {
         dob: '',
         pinCode: '',
         pan: ''
-    })
+    });
 
-    // Handle OTP success from child component
-    const handleOtpSuccess = (phone) => {
-        sessionStorage.setItem("OTP_SUCCESSFULL", phone);
-        setShowRightPanel2(true);
-    };
-
+    // Logout handler
     const handleLogout = () => {
-        sessionStorage.removeItem("OTP_SUCCESSFULL");
+        sessionStorage.removeItem("OTP_Verify");
+        sessionStorage.removeItem("pannel1");
+        sessionStorage.removeItem("pannel2");
+        setVeryfiedOTP(true);
+        setShowRightPanel1(false);
         setShowRightPanel2(false);
+        setDashboard(false);
     };
 
-    // Initialize from localStorage on first load only
+    // Sync from sessionStorage on load
     useEffect(() => {
-        const savedPhone = sessionStorage.getItem("OTP_SUCCESSFULL");
-        if (savedPhone) {
-            setShowRightPanel2(true);
-        }
+        const verifiedOTP = sessionStorage.getItem("OTP_Verify");
+        const panel1 = sessionStorage.getItem("pannel1");
+        const panel2 = sessionStorage.getItem("pannel2");
+
+        setVeryfiedOTP(!verifiedOTP);
+        setShowRightPanel1(!!verifiedOTP);
+        setShowRightPanel2(!!panel1);
+        setDashboard(!!panel2);
     }, []);
+
+    // Manual polling for changes in sessionStorage
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const verifiedOTP = sessionStorage.getItem("OTP_Verify");
+            const panel1 = sessionStorage.getItem("pannel1");
+            const panel2 = sessionStorage.getItem("pannel2");
+
+            setVeryfiedOTP(!verifiedOTP);
+            setShowRightPanel1(!!verifiedOTP);
+            setShowRightPanel2(!!panel1);
+            setDashboard(!!panel2);
+        }, 300);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleOtpSubmit = (data) => {
+        console.log("User submitted:", data);
+    };
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full h-screen sm:overflow-y-hidden'>
@@ -598,24 +622,36 @@ export default function CreditCardsReportApply() {
             {/* Left Gradient Panel */}
             <LeftGradiantPannel />
 
-            {/* Right Panel - switch between Form and Result */}
-            {showRightPanel2 ? (
-                <RightPannel2
-                    phone={sessionStorage.getItem("OTP_SUCCESSFULL")}
-                    proccedDetails={proccedDetails}
-                    setProccedDetails={setProccedDetails}
-                    onLogout={handleLogout} // <-- pass it here
-                />
-            ) : (
-                <RightPannel1
-                    formData={formData}
-                    setFormData={setFormData}
-                    otpCode={otpCode}
-                    setOtpCode={setOtpCode}
-                    onOtpSuccess={handleOtpSuccess}
+            {/* OTP Collection Panel */}
+            {veryfiedOTP && !showRightPanel1 && (
+                <OtpCollection
+                    heading="Unlock Best Personal Loan Offers suitable"
+                    lendersHighlight="for your needs from 30+ Lenders"
+                    features={featureList}
+                    onSubmit={handleOtpSubmit}
+                    termsUrl="/terms"
                 />
             )}
 
+            {/* Right Panel 1 */}
+            {showRightPanel1 && !showRightPanel2 && !dashboard && (
+                <RightPannel1
+                    formData={formData}
+                    setFormData={setFormData}
+                />
+            )}
+
+            {/* Right Panel 2 */}
+            {showRightPanel2 && !dashboard && (
+                <RightPannel2
+                    proccedDetails={proccedDetails}
+                    setProccedDetails={setProccedDetails}
+                    onLogout={handleLogout}
+                />
+            )}
+
+            {/* Dashboard Panel */}
+            {dashboard && <Dashboard />}
         </div>
-    )
+    );
 }

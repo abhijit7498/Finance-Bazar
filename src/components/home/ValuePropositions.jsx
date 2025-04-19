@@ -30,71 +30,69 @@ const valueProps = [
 
 export default function ValuePropositions() {
   return (
-    <section className="sm:py-16 py-6">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
-          <div className='flex flex-col gap-4'>
-            <div className="w-22 h-0.5 bg-accent"></div>
-            <TypographyH3 className='text-blue-900 font-bold leading-10'>
-              Compare, Choose and Apply for personal credit products on Financebazaar
-            </TypographyH3>
-            <Link to='/about-us'>
-              <Button className="w-fit border bg-[#e1e9e9] shadow-none rounded-sm uppercase font-semibold hover:bg-blue-800 hover:text-white cursor-pointer text-xs text-secondary-foreground">
-                Read More
-              </Button>
-            </Link>
+    <div className="max-w-6xl mx-auto px-6 mt-12">
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
+        <div className='flex flex-col gap-4'>
+          <div className="w-22 h-0.5 bg-accent"></div>
+          <TypographyH3 className='text-blue-900 font-bold leading-10'>
+            Compare, Choose and Apply for personal credit products on Financebazaar
+          </TypographyH3>
+          <Link to='/about-us' className='w-fit'>
+            <Button className="border bg-[#e1e9e9] shadow-none rounded-sm uppercase font-semibold hover:bg-blue-800 hover:text-white cursor-pointer text-xs text-secondary-foreground">
+              Read More
+            </Button>
+          </Link>
+        </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 p-4'>
+          {
+            valueProps?.map((value, index) => (
+              <div key={index} className='grid gap-4'>
+                <span className='text-accent'>{value?.icon}</span>
+                <TypographyH4 className='text-blue-900 font-bold'>
+                  {value?.title}
+                </TypographyH4>
+                <TypographyMuted className='leading-6.5'>
+                  {value?.description}
+                </TypographyMuted>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 mt-12 max-w-4xl mx-auto'>
+        <div className="bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-6 sm:p-12 rounded-md relative">
+          <div className='flex justify-center'>
+            <img src="/assets/about-us.svg" alt="about-us" className='sm:w-96 w-56' />
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 p-4'>
-            {
-              valueProps?.map((value) => (
-                <div className='grid gap-4'>
-                  <span className='text-accent'>{value?.icon}</span>
-                  <TypographyH4 className='text-blue-900 font-bold'>
-                    {value?.title}
-                  </TypographyH4>
-                  <TypographyMuted className='leading-6.5'>
-                    {value?.description}
-                  </TypographyMuted>
-                </div>
-              ))
-            }
+          <div className='grid gap-3 sm:mt-6'>
+            <TypographyH2 className="font-semibold tracking-wide">
+              About Us
+            </TypographyH2>
+            <TypographySmall>
+              How we are building a strong Paisabazaar Brand
+            </TypographySmall>
+            <Button className="absolute -bottom-3 sm:right-12 right-2 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
+              KNOW MORE <MdNavigateNext />
+            </Button>
           </div>
         </div>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 mt-12 max-w-4xl mx-auto'>
-          <div className="bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-6 sm:p-12 rounded-md relative">
-            <div className='flex justify-center'>
-              <img src="/assets/about-us.svg" alt="about-us" className='sm:w-96 w-56' />
-            </div>
-            <div className='grid gap-3 sm:mt-6'>
-              <TypographyH2 className="font-semibold tracking-wide">
-                About Us
-              </TypographyH2>
-              <TypographySmall>
-                How we are building a strong Paisabazaar Brand
-              </TypographySmall>
-              <Button className="absolute -bottom-3 sm:right-12 right-2 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
-                KNOW MORE <MdNavigateNext />
-              </Button>
-            </div>
+        <div className='bg-gradient-to-br from-[#9effdc] to-[#00ef87] p-6 sm:p-12 rounded-md relative'>
+          <div className='flex justify-center'>
+            <img src="/assets/work-us.svg" alt="about-us" className='sm:w-96 w-56' />
           </div>
-          <div className='bg-gradient-to-br from-[#9effdc] to-[#00ef87] p-6 sm:p-12 rounded-md relative'>
-            <div className='flex justify-center'>
-              <img src="/assets/work-us.svg" alt="about-us" className='sm:w-96 w-56' />
-            </div>
-            <div className='grid gap-3 sm:mt-6'>
-              <TypographyH2 className="font-semibold tracking-wide">
-                Work With Us
-              </TypographyH2>
-              <TypographySmall>
-                Want to Join Team Paisabazaar?
-              </TypographySmall>
-              <Button className="absolute -bottom-3 sm:right-12 right-2 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
-                JOIN US<MdNavigateNext />
-              </Button>
-            </div>
+          <div className='grid gap-3 sm:mt-6'>
+            <TypographyH2 className="font-semibold tracking-wide">
+              Work With Us
+            </TypographyH2>
+            <TypographySmall>
+              Want to Join Team Paisabazaar?
+            </TypographySmall>
+            <Button className="absolute -bottom-3 sm:right-12 right-2 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
+              JOIN US<MdNavigateNext />
+            </Button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

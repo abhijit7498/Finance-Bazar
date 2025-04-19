@@ -65,7 +65,7 @@ const cities = [
     { label: "Ahmedabad", value: "ahmedabad" },
 ];
 
-const experienceRanges = [
+export const experienceRanges = [
     { label: "Under 1 year", value: "under_1" },
     { label: "1 - 2 years", value: "1_2" },
     { label: "2 - 3 years", value: "2_3" },
@@ -73,7 +73,7 @@ const experienceRanges = [
     { label: "Over 5 years", value: "over_5" },
 ];
 
-const professionOptions = [
+export const professionOptions = [
     { label: "Doctor", value: "doctor" },
     { label: "Chartered Accountant", value: "chartered_accountant" },
     { label: "Others", value: "others" }
@@ -147,7 +147,7 @@ export default function BussinessLoanApply() {
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full sm:h-screen sm:overflow-y-hidden'>
             <div className="bg-[#CAD7FE] sm:p-8 p-6 relative">
-                <img src="/assets/logo-2.png" alt="logo" className="sm:w-64 w-56" />
+                <img src="/logo.png" alt="logo" className="sm:w-64 w-56" />
                 <div className="max-w-lg mx-auto sm:mt-10 mt-4 relative">
                     <TypographyH3 className="text-[#090a62]">
                         Bussiness Loan

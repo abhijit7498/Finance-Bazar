@@ -48,7 +48,7 @@ const bestCreditCards = [
     },
 ];
 
-export default function CreditCardsPage() {
+export default function CreaditCardPage() {
     return (
         <PageLayout>
             <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-14">

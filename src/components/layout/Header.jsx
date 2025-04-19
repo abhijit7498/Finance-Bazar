@@ -90,12 +90,16 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b border-gray-200 bg-white sticky top-0 z-50">
+    <header className="border-b border-gray-200 shadow-xl w-full bg-white sticky top-0 z-50" id="home">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/#home" className="flex-shrink-0">
-            <img src='/logo.png' alt='logo-photo' className='w-[160px] h-[150px] sm:w-[200px] sm:h-[180px] sm:relative sm:-top-1 absolute -left-3 -top-10' />
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex-shrink-0"
+          >
+            <img src='/logo.png' alt='logo-photo' className='sm:w-48 w-42' />
           </Link>
 
           {/* Desktop Navigation */}
@@ -186,7 +190,7 @@ export default function Header() {
                 </SheetHeader>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-6">
-                    <img src="/assets/logo-2.png" alt="logo" className='w-48' />
+                    <img src="/logo.png" alt="logo" className='w-38' />
                   </div>
 
                   <div className="flex flex-col space-y-4">

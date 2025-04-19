@@ -179,6 +179,10 @@ export default function AboutUs() {
                     </div>
                 </div>
             </div>
+
+            <div className="bg-primary/85">
+
+            </div>
         </PageLayout>
     );
 }

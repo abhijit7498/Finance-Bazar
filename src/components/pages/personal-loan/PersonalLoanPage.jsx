@@ -6,12 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { FiArrowRight, FiStar } from 'react-icons/fi';
 import { TypographyMuted, TypographySmall } from '@/custom/Typography';
-import { Link } from 'react-router-dom';
-
-export const metadata = {
-    title: 'Personal Loan - Apply Online up to Rs. 40 Lakh | Financesbazar',
-    description: 'Apply for personal loan online at Financesbazar. Get an instant loan of up to ₹40 lakh without collateral at low interest rates & flexible tenures.',
-};
+import { generateOTP } from '@/lib/utils'
+import { useNavigate } from 'react-router-dom';
+import OtpDialog from '@/custom/OtpDialog'
 
 const loanOffers = [
     {
@@ -43,10 +40,54 @@ const loanOffers = [
     },
 ];
 
+const loanFeatures = [
+    {
+        title: "Best Loan Deals",
+        description: "Hand picked offers from 30+ lenders",
+    },
+    {
+        title: "Instant Loan",
+        description: "Money in Mins via Pre-Approved Loans",
+    },
+    {
+        title: "Digital Process",
+        description: "Hassle free Contact-less processes",
+    },
+    {
+        title: "Quick Approval",
+        description: "Fast approval for your loan application",
+    },
+];
+
 export default function PersonalLoanPage() {
     const [loanAmount, setLoanAmount] = useState(500000);
     const [tenure, setTenure] = useState(3);
     const [interestRate, setInterestRate] = useState(12);
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [mobileNumber, setMobileNumber] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const validateMobileNumber = (number) => {
+        const indianPhoneRegex = /^[6-9]\d{9}$/;
+        return indianPhoneRegex.test(number);
+    };
+
+    const handleCheckOffers = () => {
+        if (!validateMobileNumber(mobileNumber)) {
+            setError('Please enter a valid 10-digit Indian mobile number.');
+            return;
+        } else {
+            setOpenDialog(true);
+            generateOTP();
+        }
+    };
+
+    const handleOtpVerified = () => {
+        setOpenDialog(false);
+        navigate('/personal-loan/apply');
+    };
 
     const calculateEMI = () => {
         const principal = loanAmount;
@@ -65,38 +106,76 @@ export default function PersonalLoanPage() {
         <PageLayout>
             <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-14">
                 <div className="max-w-6xl mx-auto px-6">
-                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12'>
-                        <div>
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-12">
+                        <div className="sm:col-span-7">
                             <h1 className="text-3xl md:text-4xl font-bold mb-4">Personal Loan</h1>
                             <TypographyMuted className="sm:mb-8 mb-4">
                                 Get a personal loan of up to Rs 40 lakh with interest rates starting at 10.5% p.a. Explore pre-approved offers from our partner lenders, featuring end-to-end digital processing and instant disbursals.
                             </TypographyMuted>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
-                                {["Best Loan Deals", "Instant Loan", "Digital Process"].map((item, i) => (
-                                    <div key={i} className="bg-transparent border cursor-pointer hover:translate-y-1/6 transition-all border-primary rounded-md p-4 flex flex-col gap-2">
-                                        <TypographySmall className="font-semibold mr-2 text-xs">{item}</TypographySmall>
-                                        <TypographyMuted className="text-xs">{item === "Best Loan Deals" ? "Hand picked offers from 30+ lenders" : item === "Instant Loan" ? "Money in Mins via Pre-Approved Loans" : "Hassle free Contact-less processes"}</TypographyMuted>
+                            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-3">
+                                {loanFeatures.map((feature, i) => (
+                                    <div
+                                        key={i}
+                                        className="bg-transparent border cursor-pointer shadow shadow-primary hover:translate-y-1/6 transition-all border-primary rounded-md p-4 flex flex-col gap-2"
+                                    >
+                                        <TypographySmall className="font-semibold mr-2 text-xs">
+                                            {feature.title}
+                                        </TypographySmall>
+                                        <TypographyMuted className="text-xs line-clamp-2">
+                                            {feature.description}
+                                        </TypographyMuted>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <div className="bg-white sm:col-span-5 p-6 rounded-lg shadow-sm">
                             <h3 className="text-lg font-bold mb-4">Check Personal Loan Offers Online</h3>
                             <div className="space-y-4">
-                                <Input type="tel" placeholder="Mobile Number" className="h-12 text-sm" />
-                                <TypographyMuted className="text-xs">Don't worry, this will not affect your credit score.</TypographyMuted>
-                                <Link to='apply'>
-                                    <Button className="w-full cursor-pointer">
-                                        Check Offers <FiArrowRight className="ml-2" />
-                                    </Button>
-                                </Link>
+                                <div className="flex items-center gap-2 border-2 border-gray-300 focus-within:border-blue-500 p-3 rounded-md">
+                                    <TypographySmall className="font-semibold text-sm">+91</TypographySmall>
+                                    <input
+                                        type="tel"
+                                        placeholder="Mobile Number"
+                                        className="text-sm focus:outline-none font-semibold w-full"
+                                        value={mobileNumber}
+                                        maxLength={10}
+                                        onChange={(e) => {
+                                            setMobileNumber(e.target.value.replace(/\D/g, ''));
+                                            setError('');
+                                        }}
+                                        onKeyPress={(e) => {
+                                            if (!/[0-9]/.test(e.key)) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                {error && <div className="text-red-500 text-xs">{error}</div>}
+                                <TypographyMuted className="text-xs">
+                                    Don't worry, this will not affect your credit score.
+                                </TypographyMuted>
+                                <Button type="submit" className="w-full cursor-pointer" onClick={handleCheckOffers}>
+                                    Check Offers <FiArrowRight className="ml-2" />
+                                </Button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* OTP Dialog */}
+            <OtpDialog
+                open={openDialog}
+                setOpen={setOpenDialog}
+                mobile={mobileNumber}
+                sessionStorage={{
+                    key: "OTP_Verify",
+                    value: { OTP_Verify: true, phoneNumber: mobileNumber },
+                }}
+                onVerified={handleOtpVerified}
+            />
 
             <div className="py-6 border-b border-gray-200">
                 <div className="max-w-6xl mx-auto px-6">
