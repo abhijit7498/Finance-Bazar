@@ -5,7 +5,8 @@ import Landing from "@/components/layout/Landing";
 import SignInForm from "@/components/pages/SignInForm";
 import PersonalLoanPage from "@/components/pages/personal-loan/PersonalLoanPage";
 import PersonalLoanApply from "@/components/pages/personal-loan/PersonalLoanApply";
-import BussinessLoanApply from "@/components/pages/bussiness-loan/BussinessLoanApply";
+import BusinessLoanApply from "@/components/pages/bussiness-loan/BusinessLoanApply";
+import BusinessLoanPage from "@/components/pages/bussiness-loan/BusinessLoanPage";
 import ContactUs from "@/components/pages/contact-us/ContactUs";
 import AboutUs from "@/components/pages/AboutUs";
 import ScrollToTop from "@/custom/ScrollToTop";
@@ -14,7 +15,7 @@ import CheckProceed from "@/components/pages/credit-score/CheckProceed";
 
 import Dashboard from "@/components/dashboard/Dashboard";
 import Profile from "@/components/dashboard/Profile";
-import CreditScore from "./components/dashboard/CreditScore";
+import CreditScore from "@/components/dashboard/CreditScore";
 
 import { useContextFile } from "@/context/contextFile";
 
@@ -67,7 +68,8 @@ export default function App() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/personal-loan" element={<PersonalLoanPage />} />
             <Route path="/personal-loan/apply" element={<PersonalLoanApply />} />
-            <Route path="/business-loan" element={<BussinessLoanApply />} />
+            <Route path="/business-loan" element={<BusinessLoanPage />} />
+            <Route path="/business-loan/apply" element={<BusinessLoanApply />} />
             <Route path="/credit-cards" element={<CreaditCardPage />} />
             <Route path="/cibil-credit-report" element={<CheckProceed />} />
             <Route path="*" element={<Navigate to="/sign-in" />} />
