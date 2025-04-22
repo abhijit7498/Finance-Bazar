@@ -14,7 +14,7 @@ const featureList = [
     "Contact-less processes",
 ];
 
-const employmentOptions = [
+export const employmentOptions = [
     { label: "Salaried", description: "Received Fixed Amount of the income every month", value: "salaried" },
     { label: "Self-Employed Business", description: "Run a business", value: "business" },
     { label: "Self-Employed Professional", description: "Engage in a profession Eg. Doctor, CA, Lawyer, etc", value: "professional" },

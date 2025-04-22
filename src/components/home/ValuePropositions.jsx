@@ -46,7 +46,7 @@ export default function ValuePropositions() {
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 p-4'>
           {
             valueProps?.map((value, index) => (
-              <div key={index} className='grid gap-4'>
+              <div key={index} className='grid gap-2 sm:gap-4'>
                 <span className='text-accent'>{value?.icon}</span>
                 <TypographyH4 className='text-blue-900 font-bold'>
                   {value?.title}
@@ -60,9 +60,9 @@ export default function ValuePropositions() {
         </div>
       </div>
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 mt-12 max-w-4xl mx-auto'>
-        <div className="bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-6 sm:p-12 rounded-md relative">
+        <div className="bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-12 rounded-md relative">
           <div className='flex justify-center'>
-            <img src="/assets/about-us.svg" alt="about-us" className='sm:w-96 w-56' />
+            <img src="/assets/about-us.svg" alt="about-us" className='w-96' />
           </div>
           <div className='grid gap-3 sm:mt-6'>
             <TypographyH2 className="font-semibold tracking-wide">
@@ -71,12 +71,12 @@ export default function ValuePropositions() {
             <TypographySmall>
               How we are building a strong Paisabazaar Brand
             </TypographySmall>
-            <Button className="absolute -bottom-3 sm:right-12 right-2 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
+            <Button className="absolute -bottom-3 right-16 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
               KNOW MORE <MdNavigateNext />
             </Button>
           </div>
         </div>
-        <div className='bg-gradient-to-br from-[#9effdc] to-[#00ef87] p-6 sm:p-12 rounded-md relative'>
+        <div className='bg-gradient-to-br from-[#9effdc] to-[#00ef87] p-12 rounded-md relative'>
           <div className='flex justify-center'>
             <img src="/assets/work-us.svg" alt="about-us" className='sm:w-96 w-56' />
           </div>
@@ -87,7 +87,7 @@ export default function ValuePropositions() {
             <TypographySmall>
               Want to Join Team Paisabazaar?
             </TypographySmall>
-            <Button className="absolute -bottom-3 sm:right-12 right-2 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
+            <Button className="absolute -bottom-3 right-16 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
               JOIN US<MdNavigateNext />
             </Button>
           </div>

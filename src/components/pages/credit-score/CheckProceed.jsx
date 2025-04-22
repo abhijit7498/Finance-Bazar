@@ -35,7 +35,7 @@ const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
         <div className='sm:hidden flex flex-col w-full'>
             <div className='h-14 px-6 bg-white flex justify-between items-center w-full border-b shadow'>
-                <img src="/assets/logo-2.png" alt="" className='w-48' />
+                <img src="/logo.png" alt="" className='w-32' />
                 {
                     !showRightPanel2 ? <Link to='/sign-in'>
                         <Button
@@ -83,8 +83,8 @@ const LeftGradiantPannel = () => {
     }, [])
 
     return (
-        <div className="bg-gradient-to-br from-[#95ace0d9] to-[#260a81] text-white w-full h-screen sm:flex justify-center flex-col hidden overflow-hidden">
-            <div className='max-w-md ml-20'>
+        <div className="bg-gradient-to-br from-[#95ace0d9] to-[#260a81] text-white w-full h-screen sm:flex flex-col hidden overflow-hidden">
+            <div className='max-w-md mt-26 ml-20'>
                 <Link
                     to="/"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -550,7 +550,7 @@ const featureList = [
     "Contact-less processes"
 ];
 
-export default function CreditScoreShow() {
+export default function CheckProceed() {
     const [veryfiedOTP, setVeryfiedOTP] = useState(true);
     const [showRightPanel1, setShowRightPanel1] = useState(false);
     const [showRightPanel2, setShowRightPanel2] = useState(false);

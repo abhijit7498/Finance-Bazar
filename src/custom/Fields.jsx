@@ -1,29 +1,57 @@
-import { TypographySmall } from "@/custom/Typography";
 import { IoIosArrowBack } from "react-icons/io";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { TypographyMuted } from "./Typography";
 
-export const InputField = ({ label, placeholder, value, onChange, error }) => {
+export const InputField = ({
+    label,
+    name,
+    value,
+    onChange,
+    placeholder,
+    type = 'text',
+    error = '',
+    iconLeft: IconLeft,
+    iconRight: IconRight,
+    options = []
+}) => {
+    const isSelect = type === 'select';
+
     return (
-        <div className="flex flex-col">
-            <Label>{label}</Label>
-            <input
-                type="text"
-                className={`outline-none focus:border-primary border-b-2 p-2 text-sm ${error ? "border-red-500" : ""}`}
-                placeholder={placeholder}
-                value={value || ""}
-                onChange={onChange}
-            />
-            {error && <TypographySmall className="text-xs text-red-500">{error}</TypographySmall>}
+        <div className="w-full grid gap-3">
+            <label className="block text-xs font-medium text-blue-950 opacity-80">{label}</label>
+            <div className="flex items-center gap-2 border-b pb-2">
+                {IconLeft && <IconLeft size={16} className="text-muted-foreground" />}
+
+                {isSelect ? (
+                    <select
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        className="flex-1 outline-none bg-transparent text-sm text-blue-950 font-semibold cursor-pointer"
+                    >
+                        <option value="" disabled>
+                            {label}
+                        </option>
+                        {options?.map((option, index) => (
+                            <option key={index} value={option?.value}>
+                                {option?.label}
+                            </option>
+                        ))}
+                    </select>
+                ) : (
+                    <input
+                        className="flex-1 outline-none bg-transparent placeholder:text-xs text-sm text-blue-950 font-semibold"
+                        type={type}
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        placeholder={placeholder}
+                    />
+                )}
+
+                {IconRight && <IconRight size={16} className="ml-2 text-gray-500" />}
+            </div>
+            {error && <TypographyMuted className="text-red-500 text-xs mt-1">{error}</TypographyMuted>}
         </div>
     );
 };
@@ -49,7 +77,7 @@ export const SelectDropDownMenu = ({ items, value, onChange, placeholder }) => {
     return (
         <select
             value={value}
-            onChange={onChange  }
+            onChange={onChange}
             className="w-full border-b-2 p-2 text-sm focus:outline-none focus:border-primary cursor-pointer"
         >
             <option disabled value="">

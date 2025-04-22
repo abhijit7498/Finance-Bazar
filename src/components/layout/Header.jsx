@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { FiMenu, FiChevronDown, FiUser } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { FiChevronDown, FiUser } from 'react-icons/fi';
+import { RiMenu3Line } from "react-icons/ri";
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -8,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -83,33 +84,54 @@ const mainNavItems = [
 
 export default function Header() {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
+  // Handle scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const toggleDropdown = (title) => {
-    setOpenDropdown(prev => (prev === title ? null : title));
+    setOpenDropdown((prev) => (prev === title ? null : title));
   };
 
   return (
-    <header className="border-b border-gray-200 shadow-xl w-full bg-white sticky top-0 z-50" id="home">
+    <header
+      className={`w-full sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white border-b border-gray-200 shadow' : 'bg-transparent'
+        }`}
+      id="home"
+    >
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex-shrink-0"
           >
-            <img src='/logo.png' alt='logo-photo' className='sm:w-48 w-42' />
+            <img src="/logo.png" alt="logo-photo" className="sm:w-48 w-34" />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8" id='home'>
-            {mainNavItems.map((item) => (
+          <nav className="hidden md:flex space-x-8" id="home">
+            {mainNavItems.map((item) =>
               item.isSingle ? (
                 <Link
                   key={item.title}
                   to={item.href || '#'}
-                  className="nav-link text-sm text-muted-foreground flex items-center h-16 cursor-pointer"
+                  className="nav-link text-sm text-blue-950 font-semibold tracking-normal flex items-center h-16 cursor-pointer"
                 >
                   {item.title}
                 </Link>
@@ -117,7 +139,7 @@ export default function Header() {
                 <DropdownMenu key={item.title}>
                   <DropdownMenuTrigger asChild>
                     <button
-                      className="nav-link flex items-center h-16 text-muted-foreground text-sm cursor-pointer"
+                      className="nav-link flex items-center h-16 text-blue-950 font-semibold tracking-normal text-sm cursor-pointer"
                       onClick={() => toggleDropdown(item.title)}
                     >
                       <span>{item.title}</span>
@@ -128,7 +150,7 @@ export default function Header() {
                     <div className="grid grid-cols-3 gap-4">
                       {item.items?.map((section) => (
                         <div key={section.title}>
-                          <h3 className="font-semibold text-sm text-financesbazar-dark mb-2">
+                          <h3 className="font-semibold text-medium text-blue-950 mb-2">
                             {section.title}
                           </h3>
                           <ul className="space-y-3">
@@ -136,7 +158,7 @@ export default function Header() {
                               <li key={link.label}>
                                 <Link
                                   to={link.href}
-                                  className="text-xs hover:text-primary flex items-center"
+                                  className="text-xs font-medium tracking-normal hover:text-primary flex items-center"
                                 >
                                   {link.label}
                                   {link.badge && (
@@ -154,14 +176,13 @@ export default function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               )
-            ))}
+            )}
           </nav>
 
           {/* Sign In Button & Mobile Menu Trigger */}
           <div className="flex items-center">
             {/* Sign In Button */}
-            {
-              location?.pathname !== '/sign-in' &&
+            {location?.pathname !== '/sign-in' && (
               <Link to="/sign-in">
                 <Button
                   variant="outline"
@@ -172,29 +193,28 @@ export default function Header() {
                   Sign In
                 </Button>
               </Link>
-            }
+            )}
 
             {/* Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <FiMenu className="h-5 w-5" />
+                <Button variant="ghost" className="md:hidden">
+                  <RiMenu3Line size={32} className='text-5xl' />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                 <SheetHeader>
                   <SheetTitle></SheetTitle>
-                  <SheetDescription>
-                  </SheetDescription>
+                  <SheetDescription></SheetDescription>
                 </SheetHeader>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-6">
-                    <img src="/logo.png" alt="logo" className='w-38' />
+                    <img src="/logo.png" alt="logo" className="w-38" />
                   </div>
 
                   <div className="flex flex-col space-y-4">
-                    {mainNavItems.map((item) => (
+                    {mainNavItems.map((item) =>
                       item.isSingle ? (
                         <Link
                           key={item.title}
@@ -210,7 +230,10 @@ export default function Header() {
                             onClick={() => toggleDropdown(item.title)}
                           >
                             <span>{item.title}</span>
-                            <FiChevronDown className={`h-5 w-5 transition-transform ${openDropdown === item.title ? 'rotate-180' : ''}`} />
+                            <FiChevronDown
+                              className={`h-5 w-5 transition-transform ${openDropdown === item.title ? 'rotate-180' : ''
+                                }`}
+                            />
                           </button>
                           {openDropdown === item.title && (
                             <div className="ml-4 space-y-4">
@@ -242,22 +265,19 @@ export default function Header() {
                           )}
                         </div>
                       )
-                    ))}
+                    )}
                   </div>
 
-                  {
-                    location?.pathname !== '/sign-in' &&
+                  {location?.pathname !== '/sign-in' && (
                     <div className="mt-auto">
                       <Link to="/sign-in">
-                        <Button
-                          className="w-full bg-primary text-white hover:bg-opacity-90"
-                        >
+                        <Button className="w-full bg-primary text-white hover:bg-opacity-90">
                           <FiUser className="mr-2 h-4 w-4" />
                           Sign In
                         </Button>
                       </Link>
                     </div>
-                  }
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

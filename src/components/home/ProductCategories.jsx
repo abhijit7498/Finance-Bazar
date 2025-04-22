@@ -96,6 +96,34 @@ const insuranceProducts = [
   },
 ];
 
+const insuranceProductsSmall = [
+  {
+    id: 'term-insurance',
+    title: 'Term Life Insurance',
+    link: 'https://termlife.policybazaar.com',
+    badge: 'Up to 15% Off',
+    Img: '/product/termInsurance.png'
+  },
+  {
+    id: 'investment-plan',
+    title: 'Investment Plan',
+    link: 'https://investmentlife.policybazaar.com/prequote-newulipform',
+    badge: 'Tax Free Returns',
+  },
+  {
+    id: 'health-insurance',
+    title: 'Health Insurance',
+    link: 'https://health.policybazaar.com',
+    badge: 'FREE Home Visit',
+  },
+  {
+    id: 'car-insurance',
+    title: 'car Insurance',
+    link: 'https://health.policybazaar.com',
+    badge: 'New',
+  },
+];
+
 const financialProducts = [
   {
     id: 'car-insurance',
@@ -130,9 +158,14 @@ export default function ProductCategories() {
         <HeadSkipper className='w-fit'>
           Credit Products
         </HeadSkipper>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
+        <div className="sm:grid hidden grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
           {creditProducts?.map((product) => (
             <ProductCardCredit key={product.id} {...product} />
+          ))}
+        </div>
+        <div className="grid grid-cols-4 text-center sm:hidden items-center gap-3">
+          {creditProducts?.map((product) => (
+            <ProductCardCreditSmallDevice key={product.id} {...product} />
           ))}
         </div>
       </div>
@@ -140,9 +173,14 @@ export default function ProductCategories() {
         <HeadSkipper className='w-fit'>
           Insurance & Investment
         </HeadSkipper>
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-8 mt-8">
+        <div className="sm:grid hidden grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-8 mt-8">
           {insuranceProducts?.map((product) => (
             <ProductCardInsurance key={product.id} {...product} />
+          ))}
+        </div>
+        <div className="flex sm:hidden items-center justify-center gap-3">
+          {insuranceProducts?.map((product) => (
+            <ProductCardInsuranceSmallDevice key={product.id} {...product} />
           ))}
         </div>
       </div>
@@ -178,6 +216,14 @@ function ProductCardCredit({ title, description, icon, link, ctaText }) {
   );
 }
 
+function ProductCardCreditSmallDevice({ title, icon, link }) {
+  return (
+    <Link to={link} className='flex flex-col items-center gap-2'>
+      <span className='text-accent'>{icon}</span>
+      <TypographySmall className="text-blue-950 font-semibold text-xs capitalize">{title}</TypographySmall>
+    </Link>
+  );
+}
 
 function ProductCardInsurance({ title, description, icon, link, badge, subline }) {
   return (
@@ -194,6 +240,18 @@ function ProductCardInsurance({ title, description, icon, link, badge, subline }
         {subline} <LuMoveRight />
       </TypographySmall>
       <span className='absolute -top-3 text-white rounded font-semibold left-8 py-1 px-2 text-[10px] bg-green-600'>
+        {badge}
+      </span>
+    </Link>
+  );
+}
+
+function ProductCardInsuranceSmallDevice({ title, icon, link, badge }) {
+  return (
+    <Link to={link} className='flex flex-col gap-2 text-center items-center'>
+      <span className='text-accent'>{icon}</span>
+      <TypographySmall className="text-blue-950 font-semibold text-xs capitalize">{title}</TypographySmall>
+      <span className='text-white rounded-lg font-semibold px-2 py-1 text-[8px] bg-green-600'>
         {badge}
       </span>
     </Link>

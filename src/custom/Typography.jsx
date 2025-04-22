@@ -18,7 +18,7 @@ export function TypographyH2({ children, className }) {
 
 export function TypographyH3({ children, className }) {
     return (
-        <h3 className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", className)}>
+        <h3 className={cn("scroll-m-20 sm:text-2xl text-lg font-semibold tracking-tight", className)}>
             {children}
         </h3>
     )
@@ -26,7 +26,7 @@ export function TypographyH3({ children, className }) {
 
 export function TypographyH4({ children, className }) {
     return (
-        <h4 className={cn("scroll-m-20 text-md font-semibold tracking-tight", className)}>
+        <h4 className={cn("scroll-m-20 sm:text-md text-sm font-semibold tracking-tight", className)}>
             {children}
         </h4>
     )
@@ -97,11 +97,11 @@ export function TypographyMuted({ children, className }) {
 
 export function HeadSkipper({ children, className }) {
     return (
-        <div className="flex items-center gap-4 mb-6">
-            <h2 className={cn("text-blue-900 font-bold tracking-wide text-md uppercase", className)}>
+        <div className="flex items-center gap-2 sm:gap-4 mb-6">
+            <h2 className={cn("text-blue-700 font-bold sm:tracking-wide sm:text-md text-xs uppercase", className)}>
                 {children}
             </h2>
-            <div className="w-22 h-px bg-blue-700"></div>
+            <div className="sm:w-22 w-10 h-px bg-blue-700"></div>
         </div>
     )
 }

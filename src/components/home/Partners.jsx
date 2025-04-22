@@ -159,11 +159,11 @@ export default function Partners() {
         </div>
 
         {/* Tab Content */}
-        <div className="grid grid-cols-3 truncate text-center sm:grid-cols-7 gap-4 items-center">
+        <div className=" mt-8 grid grid-cols-3 text-center sm:grid-cols-7 gap-4 items-center">
           {categoryData[activeTab]?.map((partner, index) => (
             <div
               key={index}
-              className="text-xs font-semibold opacity-85 items-center h-20 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center"
+              className="text-xs font-semibold opacity-85 flex justify-center flex-wrap items-center h-20 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center px-2 py-2 whitespace-normal break-words"
             >
               {partner}
             </div>

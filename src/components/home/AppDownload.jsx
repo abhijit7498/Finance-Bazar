@@ -12,7 +12,7 @@ export default function AppDownload() {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-6xl mx-auto mt-12 px-6'>
       <div className='flex flex-col gap-6'>
-        <TypographyH3 className="text-blue-800 font-bold tracking-normal mb-2">
+        <TypographyH3 className="text-blue-800 font-bold sm:tracking-normal mb-2">
           Download the Financesbazar Mobile App
         </TypographyH3>
         <div className='grid gap-3'>
@@ -43,7 +43,7 @@ export default function AppDownload() {
       </div>
       <div className='flex flex-col justify-center items-center'>
         <img src="/assets/mobile.png" alt="mobile" className='h-96' />
-        <Button className="block sm:hidden w-full font-semibold">
+        <Button className="block sm:hidden w-full mb-4 font-semibold">
           Download the App now
         </Button>
       </div>

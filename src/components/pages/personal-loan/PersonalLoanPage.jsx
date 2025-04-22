@@ -2,10 +2,9 @@ import { useState } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { FiArrowRight, FiStar } from 'react-icons/fi';
-import { TypographyMuted, TypographySmall } from '@/custom/Typography';
+import { TypographyMuted, TypographySmall, TypographyH2, TypographyH3 } from '@/custom/Typography';
 import { generateOTP } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom';
 import OtpDialog from '@/custom/OtpDialog'
@@ -59,6 +58,25 @@ const loanFeatures = [
     },
 ];
 
+const whyChooseData = [
+    {
+        img: "/product/money-icon-2.svg",
+        text: <>Compare & Choose the <strong>Best Offer</strong></>,
+    },
+    {
+        img: "/product/pre-approved.svg",
+        text: <>Pre-approved Offers with <strong>Instant Disbursals</strong></>,
+    },
+    {
+        img: "/product/meter-icon.svg",
+        text: <>Know Your <strong>Chances of Approval</strong></>,
+    },
+    {
+        img: "/product/digital-process-icon.svg",
+        text: <>End-to-End <strong>Digital Process</strong></>,
+    },
+];
+
 export default function PersonalLoanPage() {
     const [loanAmount, setLoanAmount] = useState(500000);
     const [tenure, setTenure] = useState(3);
@@ -104,16 +122,22 @@ export default function PersonalLoanPage() {
 
     return (
         <PageLayout>
-            <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-14">
+            <div className="overflow-hidden py-12"
+                style={{
+                    background: "linear-gradient(to bottom, #ffffff, #f5f9ff, #f0fdfa)", // Top white, bottom gradient
+                }}>
                 <div className="max-w-6xl mx-auto px-6">
                     <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-12">
                         <div className="sm:col-span-7">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-4">Personal Loan</h1>
+                            <TypographyH2 className="text-blue-950">
+                                Personal Loan
+                            </TypographyH2>
+                            <h1 className="text-3xl md:text-4xl font-bold mb-4"></h1>
                             <TypographyMuted className="sm:mb-8 mb-4">
                                 Get a personal loan of up to Rs 40 lakh with interest rates starting at 10.5% p.a. Explore pre-approved offers from our partner lenders, featuring end-to-end digital processing and instant disbursals.
                             </TypographyMuted>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-3">
+                            <div className="lg:grid lg:grid-cols-4 lg:gap-3 pb-4 hidden">
                                 {loanFeatures.map((feature, i) => (
                                     <div
                                         key={i}
@@ -122,7 +146,23 @@ export default function PersonalLoanPage() {
                                         <TypographySmall className="font-semibold mr-2 text-xs">
                                             {feature.title}
                                         </TypographySmall>
-                                        <TypographyMuted className="text-xs line-clamp-2">
+                                        <TypographyMuted className="text-xs">
+                                            {feature.description}
+                                        </TypographyMuted>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex lg:hidden overflow-x-auto gap-3 pb-4">
+                                {loanFeatures.map((feature, i) => (
+                                    <div
+                                        key={i}
+                                        className="min-w-[200px] bg-transparent border cursor-pointer shadow shadow-primary hover:translate-y-1/6 transition-all border-primary rounded-md p-4 flex flex-col gap-2"
+                                    >
+                                        <TypographySmall className="font-semibold mr-2 text-xs">
+                                            {feature.title}
+                                        </TypographySmall>
+                                        <TypographyMuted className="text-xs">
                                             {feature.description}
                                         </TypographyMuted>
                                     </div>
@@ -131,7 +171,7 @@ export default function PersonalLoanPage() {
                         </div>
 
                         <div className="bg-white sm:col-span-5 p-6 rounded-lg shadow-sm">
-                            <h3 className="text-lg font-bold mb-4">Check Personal Loan Offers Online</h3>
+                            <h3 className="text-lg font-semibold tracking-normal mb-4">Check Personal Loan Offers Online</h3>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 border-2 border-gray-300 focus-within:border-blue-500 p-3 rounded-md">
                                     <TypographySmall className="font-semibold text-sm">+91</TypographySmall>
@@ -177,133 +217,181 @@ export default function PersonalLoanPage() {
                 onVerified={handleOtpVerified}
             />
 
-            <div className="py-6 border-b border-gray-200">
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="flex flex-wrap justify-center gap-8">
-                        <div className="flex items-center">
-                            <div className="text-lg font-bold">4.2/5</div>
+            <div className="py-6">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        <div className="grid gap-2 text-center">
+                            <TypographyH3 className="font-bold tracking-wider">
+                                4.2/5
+                            </TypographyH3>
                             <div className="ml-2 text-yellow-400">
                                 {[...Array(5)].map((_, i) => (
                                     <FiStar key={i} className={`inline-block h-4 w-4 ${i < 4 ? 'fill-current' : 'stroke-current'}`} />
                                 ))}
                             </div>
                         </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">45M+</div>
-                            <TypographyMuted>Satisfied Customers</TypographyMuted>
+                        <div className="grid gap-2 text-center">
+                            <TypographyH3 className="font-bold tracking-wider">
+                                45M+
+                            </TypographyH3>
+                            <TypographyMuted className="font-medium italic">
+                                Satisfied Customers
+                            </TypographyMuted>
                         </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">65+</div>
-                            <TypographyMuted>Lending Partners</TypographyMuted>
+                        <div className="grid gap-2 text-center">
+                            <TypographyH3 className="font-bold tracking-wider">
+                                65M+
+                            </TypographyH3>
+                            <TypographyMuted className="font-medium italic">
+                                Lending Partners
+                            </TypographyMuted>
                         </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">800+</div>
-                            <TypographyMuted>Cities across India</TypographyMuted>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto px-6">
-                    <h2 className="text-2xl font-bold mb-8 text-center">Personal Loan EMI Calculator</h2>
-                    <div className="max-w-5xl mx-auto bg-gray-50 p-6 rounded-lg">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div className="space-y-8">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Loan Amount (₹)</label>
-                                    <Slider defaultValue={[loanAmount]} max={5000000} step={10000} onValueChange={([val]) => setLoanAmount(val)} />
-                                    <Input type="number" value={loanAmount} onChange={(e) => setLoanAmount(+e.target.value)} className="mt-2" />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Rate of Interest (Per Annum)</label>
-                                    <Slider defaultValue={[interestRate]} max={30} step={0.5} onValueChange={([val]) => setInterestRate(val)} />
-                                    <Input type="number" value={interestRate} onChange={(e) => setInterestRate(+e.target.value)} className="mt-2" />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Tenure (Years)</label>
-                                    <Slider defaultValue={[tenure]} max={10} step={1} onValueChange={([val]) => setTenure(val)} />
-                                    <Input type="number" value={tenure} onChange={(e) => setTenure(+e.target.value)} className="mt-2" />
-                                </div>
-                            </div>
-
-                            <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm">
-                                <h3 className="text-lg font-semibold mb-4">Your Monthly EMI Payment</h3>
-                                <div className="text-3xl font-bold text-primary mb-6">₹{emiValue}</div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
-                                        <TypographyMuted>Principal Amount</TypographyMuted>
-                                        <div className="font-bold">₹{loanAmount.toLocaleString()}</div>
-                                    </div>
-                                    <div>
-                                        <TypographyMuted>Interest Amount</TypographyMuted>
-                                        <div className="font-bold">₹{(+interestAmount).toLocaleString()}</div>
-                                    </div>
-                                    <div>
-                                        <TypographyMuted>Total Amount</TypographyMuted>
-                                        <div className="font-bold">₹{(+totalAmount).toLocaleString()}</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="grid gap-2 text-center">
+                            <TypographyH3 className="font-bold tracking-wider">
+                                800M+
+                            </TypographyH3>
+                            <TypographyMuted className="font-medium italic">
+                                Cities across India
+                            </TypographyMuted>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="py-12 border-t border-gray-100">
-                <div className="max-w-6xl mx-auto px-6">
-                    <h2 className="text-2xl font-bold mb-8">Find Best Personal Loan Offers</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {loanOffers.map((offer) => (
-                            <Card key={offer.id} className="shadow-sm hover:shadow-md transition-shadow">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-lg">{offer.name}</CardTitle>
-                                    <div className="flex flex-wrap gap-2 mt-2">
-                                        {offer.highlights.map((highlight, index) => (
-                                            <span key={`${offer.id}-highlight-${index}`} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">
-                                                {highlight}
-                                            </span>
-                                        ))}
+            <div className="max-w-6xl mt-12 border border-primary p-4 sm:p-6 rounded-md mx-6 sm:mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div>
+                    <TypographyH3 className="font-semibold mb-4">Personal Loan EMI Calculator</TypographyH3>
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <div className='flex justify-between items-center'>
+                                <label className="text-xs font-medium text-muted-foreground">Loan Amount (₹)</label>
+                                <Input type="number" value={loanAmount} onChange={(e) => setLoanAmount(+e.target.value)} className="mt-2 w-[100px] border rounded-none shadow-none text-sm font-semibold opacity-90" />
+                            </div>
+                            <Slider defaultValue={[loanAmount]} max={5000000} step={10000} onValueChange={([val]) => setLoanAmount(val)} />
+                        </div>
+
+                        <div className='grid gap-4 sm:grid-cols-2 grid-cols-1'>
+                            <div className="space-y-2">
+                                <div className='flex justify-between items-center'>
+                                    <label className="text-xs font-medium text-muted-foreground">Rate of Interest (Per Annum)</label>
+                                    <Input type="number" value={interestRate} onChange={(e) => setInterestRate(+e.target.value)} className="mt-2 w-[100px] border rounded-none shadow-none text-sm font-semibold opacity-90" />
+                                </div>
+                                <Slider defaultValue={[interestRate]} max={30} step={0.5} onValueChange={([val]) => setInterestRate(val)} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <div className='flex justify-between items-center'>
+                                    <label className="text-xs font-medium text-muted-foreground">Tenure (Years)</label>
+                                    <Input type="number" value={tenure} onChange={(e) => setTenure(+e.target.value)} className="mt-2 w-[100px] border rounded-none shadow-none text-sm font-semibold opacity-90" />
+                                </div>
+                                <Slider defaultValue={[tenure]} max={10} step={1} onValueChange={([val]) => setTenure(val)} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div className="bg-primary/10 p-4 grid gap-2 rounded-lg text-center">
+                        <TypographyMuted className="text-md font-semibold">
+                            Your Monthly EMI Payment
+                        </TypographyMuted>
+                        <TypographyH2 className="text-green-600">
+                            ₹{emiValue}
+                        </TypographyH2>
+                    </div>
+                    <div className="grid gap-3 ml-3 mt-4">
+                        <div className='flex justify-between items-center'>
+                            <TypographyMuted className="font-semibold tracking-normal">Principal Amount</TypographyMuted>
+                            <TypographySmall className="font-semibold">₹{loanAmount.toLocaleString()}</TypographySmall>
+                        </div>
+                        <div className='flex justify-between items-center'>
+                            <TypographyMuted className="font-semibold tracking-normal">Interest Amount</TypographyMuted>
+                            <div className="font-bold"></div>
+                            <TypographySmall className="font-semibold">₹{(+interestAmount).toLocaleString()}</TypographySmall>
+                        </div>
+                        <div className='flex justify-between items-center border-t pt-3'>
+                            <TypographySmall className="font-semibold">Total Amount</TypographySmall>
+                            <TypographySmall className="font-semibold">₹{(+totalAmount).toLocaleString()}</TypographySmall>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="py-10">
+                <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-12 gap-6">
+                    <div className='lg:col-span-8'>
+                        <h2 className="sm:text-2xl text-lg font-bold text-blue-950 mb-3 px-3">Find Best Personal Loan Offers</h2>
+                        <div className="grid grid-cols-1 gap-6">
+                            {loanOffers.map((offer) => (
+                                <div key={offer.id} className="border p-6 rounded-md">
+                                    <div className='flex sm:flex-row flex-col justify-between sm:items-center mb-4'>
+                                        <h3 className="font-bold opacity-75 text-lg">{offer?.name}</h3>
+                                        <div className="flex flex-wrap gap-2 mt-2">
+                                            {offer.highlights.map((highlight, index) => (
+                                                <span key={`${offer.id}-highlight-${index}`} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">
+                                                    {highlight}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex gap-4 mt-4 items-center justify-between flex-wrap">
                                         <div>
                                             <div className="text-xs text-gray-500">Max. Loan Amt.</div>
-                                            <div className="font-bold text-sm">{offer.max_loan}</div>
+                                            <TypographySmall className="font-semibold">
+                                                {offer?.max_loan}
+                                            </TypographySmall>
                                         </div>
                                         <div>
                                             <div className="text-xs text-gray-500">Rate of Interest</div>
-                                            <div className="font-bold text-sm">{offer.interest_rate}</div>
+                                            <TypographySmall className="font-semibold">
+                                                {offer?.interest_rate}
+                                            </TypographySmall>
                                         </div>
                                         <div>
                                             <div className="text-xs text-gray-500">Tenure</div>
-                                            <div className="font-bold text-sm">{offer.tenure}</div>
+                                            <TypographySmall className="font-semibold">
+                                                {offer?.tenure}
+                                            </TypographySmall>
                                         </div>
                                         <div>
                                             <div className="text-xs text-gray-500">Processing Fee</div>
-                                            <div className="font-bold text-sm">{offer.processing_fee}</div>
+                                            <TypographySmall className="font-semibold">
+                                                {offer?.processing_fee}
+                                            </TypographySmall>
                                         </div>
+                                        <Button className="text-xs">
+                                            Apply Now
+                                        </Button>
                                     </div>
-                                </CardContent>
-                            </Card>
-                        ))}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className='lg:col-span-4 bg-primary/10 sm:p-10 p-6 rounded-md'>
+                        <h2 className="sm:text-xl text-sm font-bold mb-6 text-center">Why Choose Paisabazaar?</h2>
+                        <div className="flex items-center flex-wrap gap-4 sm:gap-8">
+                            {whyChooseData.map((item, index) => (
+                                <div key={index} className="flex gap-3 sm:gap-6 justify-between text-wrap">
+                                    <img src={item.img} alt="icon" className="w-10 h-10 mb-4" />
+                                    <TypographyMuted className="text-sm text-gray-700">{item.text}</TypographyMuted>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* What is a Personal Loan */}
-            <div className="py-12 bg-gray-50">
+            <div className="py-12 bg-primary/10">
                 <div className="max-w-6xl mx-auto px-6">
-                    <div className="max-w-3xl mx-auto">
-                        <h2 className="text-2xl font-bold  mb-6">What is a Personal Loan?</h2>
-                        <TypographyMuted className="mb-8">
-                            Personal loan is a short to medium term loan, which consumers can avail to meet both personal and business needs other than speculative purposes.
-                            They are usually unsecured in nature as consumers do not need to pledge any collateral or security to avail them.
-                        </TypographyMuted>
+                    <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
+                        <div>
+                            <TypographyH3 className="font-bold tracking-normal mb-4">What is a Personal Loan?</TypographyH3>
+                            <TypographyMuted className="leading-6 tracking-normal font-medium">
+                                Personal loan is a short to medium term loan, which consumers can avail to meet both personal and business needs other than speculative purposes.
+                                They are usually unsecured in nature as consumers do not need to pledge any collateral or security to avail them.
+                            </TypographyMuted>
+                        </div>
 
                         <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
                             <div className="flex items-center justify-between">
@@ -322,7 +410,7 @@ export default function PersonalLoanPage() {
                     </div>
                 </div>
             </div>
-        </PageLayout>
+        </PageLayout >
     );
 }
 

@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
+
 import Landing from "@/components/layout/Landing";
 import SignInForm from "@/components/pages/SignInForm";
 import PersonalLoanPage from "@/components/pages/personal-loan/PersonalLoanPage";
@@ -8,29 +9,71 @@ import BussinessLoanApply from "@/components/pages/bussiness-loan/BussinessLoanA
 import ContactUs from "@/components/pages/contact-us/ContactUs";
 import AboutUs from "@/components/pages/AboutUs";
 import ScrollToTop from "@/custom/ScrollToTop";
-import CreditScoreShow from "@/components/pages/credit/CreditScoreShow";
-import CreaditCardPage from "@/components/pages/credit/CreaditCardPage";
+import CreaditCardPage from "@/components/pages/credit-card/CreaditCardPage";
+import CheckProceed from "@/components/pages/credit-score/CheckProceed";
+
+import Dashboard from "@/components/dashboard/Dashboard";
+import Profile from "@/components/dashboard/Profile";
+import CreditScore from "./components/dashboard/CreditScore";
+
+import { useContextFile } from "@/context/contextFile";
 
 export default function App() {
+  const { loggedIn, setLoggedIn } = useContextFile();
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Set CSS vars
   useEffect(() => {
-    document.documentElement.style.setProperty('--primary', '#51d5b8');
-    document.documentElement.style.setProperty('--accent', '#c74558');
+    document.documentElement.style.setProperty("--primary", "#49AAFF");
+    document.documentElement.style.setProperty("--accent", "#c74558");
   }, []);
+
+  // Check token and set login status
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setLoggedIn(true);
+
+      // If already at root ("/") or "/sign-in", redirect to dashboard
+      if (location.pathname === "/" || location.pathname === "/sign-in") {
+        navigate("/myaccount/dashboard", { replace: true });
+      }
+    } else {
+      setLoggedIn(false);
+    }
+    setLoading(false);
+  }, [location.pathname, navigate, setLoggedIn]);
+
+  // Prevent flicker while checking login status
+  if (loading) return null;
 
   return (
     <>
       <ScrollToTop />
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/sign-in' element={<SignInForm />} />
-        <Route path='/about-us' element={<AboutUs />} />
-        <Route path='/contact-us' element={<ContactUs />} />
-        <Route path='/personal-loan' element={<PersonalLoanPage />} />
-        <Route path='/personal-loan/apply' element={<PersonalLoanApply />} />
-        <Route path='/business-loan' element={<BussinessLoanApply />} />
-        <Route path='/credit-cards' element={<CreaditCardPage />} />
-        <Route path='/cibil-credit-report' element={<CreditScoreShow />} />
+        {loggedIn ? (
+          <Route path="/myaccount" element={<Dashboard />}>
+            <Route path="dashboard" element={<CreditScore />} />
+            <Route path="profile" element={<Profile />} />
+            <Route index element={<Navigate to="/myaccount/dashboard" />} />
+          </Route>
+        ) : (
+          <>
+            <Route path="/" element={<Landing />} />
+            <Route path="/sign-in" element={<SignInForm />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/personal-loan" element={<PersonalLoanPage />} />
+            <Route path="/personal-loan/apply" element={<PersonalLoanApply />} />
+            <Route path="/business-loan" element={<BussinessLoanApply />} />
+            <Route path="/credit-cards" element={<CreaditCardPage />} />
+            <Route path="/cibil-credit-report" element={<CheckProceed />} />
+            <Route path="*" element={<Navigate to="/sign-in" />} />
+          </>
+        )}
       </Routes>
     </>
-  )
+  );
 }
