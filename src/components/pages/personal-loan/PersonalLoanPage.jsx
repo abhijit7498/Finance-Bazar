@@ -368,7 +368,7 @@ export default function PersonalLoanPage() {
                         </div>
                     </div>
                     <div className='lg:col-span-4 bg-primary/10 sm:p-10 p-6 rounded-md'>
-                        <h2 className="sm:text-xl text-sm font-bold mb-6 text-center">Why Choose Paisabazaar?</h2>
+                        <h2 className="sm:text-xl text-sm font-bold mb-6 text-center">Why Choose Financesbazar?</h2>
                         <div className="flex items-center flex-wrap gap-4 sm:gap-8">
                             {whyChooseData.map((item, index) => (
                                 <div key={index} className="flex gap-3 sm:gap-6 justify-between text-wrap">

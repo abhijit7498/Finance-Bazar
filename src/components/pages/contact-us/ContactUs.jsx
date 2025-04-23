@@ -83,7 +83,7 @@ const grievanceLevels = [
         designation: "Customer care team",
         address: "Plot No. 135P, Sector 44, Gurgaon-122001",
         phone: "1800-208-8877",
-        email: "care@paisabazaar.com",
+        email: "care@financesbazar.com",
     },
     {
         level: "Level 1",
@@ -92,7 +92,7 @@ const grievanceLevels = [
         designation: "Senior Manager",
         address: "Plot No. 135P, Sector 44, Gurgaon-122001",
         phone: "0124-3509999",
-        email: "escalationdesk@paisabazaar.com",
+        email: "escalationdesk@financesbazar.com",
     },
     {
         level: "Level 2",
@@ -101,7 +101,7 @@ const grievanceLevels = [
         designation: "Nodal Grievance Redressal Officer",
         address: "Plot No. 135P, Sector 44, Gurgaon-122001",
         phone: "0124-3509999",
-        email: "servicehead@paisabazaar.com",
+        email: "servicehead@financesbazar.com",
     }
 ];
 

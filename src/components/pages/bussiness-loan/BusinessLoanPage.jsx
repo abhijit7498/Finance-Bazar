@@ -8,11 +8,11 @@ import {
     TypographySmall,
     TypographyH2,
     HighLighter,
-    TypographyH3,
     TypographyH2BlueColor,
     TypographyPBlueColor,
     TypographyH4BlueColor,
-    TypographyList2
+    TypographyList2,
+    BoldList
 } from '@/custom/Typography';
 import {
     Table,
@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table"
 import OtpDialog from '@/custom/OtpDialog'
 import { generateOTP } from "@/lib/utils";
+import { EMICalculator } from "../../EMICalculator";
 
 const BusinessFeaturesBenefits = [
     "Most banks and NBFCs offer both secured and unsecured business loans.",
@@ -36,12 +37,30 @@ const BusinessFeaturesBenefits = [
 ]
 
 const loanEligibilityCriteria = [
-    "Age: 21 years at the time of loan application and 65 years at the time of loan maturity (may vary across lenders)",
-    "Minimum Business Vintage: 3 years (may be 5 years for some lenders)",
-    "Minimum Business Turnover: Rs 90,000 to more than Rs 250 crore",
-    "Credit Score: 700 or above (some lenders may offer business loans to applicants having lower credit scores)",
-    "Minimum Income: Rs 1 lakh p.a.",
-    "Eligible Entities: Sole Proprietorship, Partnerships, Limited Liability Partnerships, Private Limited Companies, Public Limited Companies, etc."
+    {
+        title: "Age",
+        value: "21 years at the time of loan application and 65 years at the time of loan maturity (may vary across lenders)"
+    },
+    {
+        title: "Minimum Business Vintage",
+        value: "3 years (may be 5 years for some lenders)"
+    },
+    {
+        title: "Minimum Business Turnover",
+        value: "Rs 90,000 to more than Rs 250 crore"
+    },
+    {
+        title: "Credit Score",
+        value: "700 or above (some lenders may offer business loans to applicants having lower credit scores)"
+    },
+    {
+        title: "Minimum Income",
+        value: "Rs 1 lakh p.a."
+    },
+    {
+        title: "Eligible Entities",
+        value: "Sole Proprietorship, Partnerships, Limited Liability Partnerships, Private Limited Companies, Public Limited Companies, etc."
+    }
 ];
 
 const requiredDocuments = [
@@ -86,138 +105,27 @@ const requiredDocuments = [
 ];
 
 const ThingsBusinessAbout = [
-    "Interest Rate: Business Loan interest rates vary across the lenders. Applicants should check the interest rates offered by various lenders and opt for the one offering lowest interest rates to incur lower interest cost.",
-    "Turnaround Time: Applicants should know the time taken by the bank or NBFC for the approval and disbursal of a business loan. Lenders disbursing the business loans in lesser time are usually preferred by the borrowers. The turnaround time would depend on the type of business loan scheme and the type of collateral pledged for.",
-    "Credit Score/Rating: Applicants having a credit score of 700 and above usually have higher chances of availing business loans. Some lenders also offer business loans at lower interest rates to those having high credit score/rating.",
-    "Processing Charges: Applicants should know the processing fees and other charges levied by the lender before applying for business loans.",
-    "Collateral: Lenders usually offer business loans against collateral/security, such as hypothecation of stocks, book debts, mutual funds, immovable property, liquid security, commercial or construction equipment."
-]
-
-const BusinessEMICalculator = () => {
-    const [amount, setAmount] = useState("");
-    const [interestRate, setInterestRate] = useState("");
-    const [tenure, setTenure] = useState("");
-    const [emiDetails, setEmiDetails] = useState(null);
-
-    const calculateEMI = () => {
-        const P = parseFloat(amount);
-        const R = parseFloat(interestRate) / 12 / 100;
-        const N = parseInt(tenure) * 12;
-
-        if (isNaN(P) || isNaN(R) || isNaN(N) || P <= 0 || R <= 0 || N <= 0) {
-            setEmiDetails(null);
-            return;
-        }
-
-        const EMI = (P * R * Math.pow(1 + R, N)) / (Math.pow(1 + R, N) - 1);
-        const totalAmount = EMI * N;
-        const totalInterest = totalAmount - P;
-
-        setEmiDetails({
-            emi: EMI.toFixed(2),
-            totalAmount: totalAmount.toFixed(2),
-            totalInterest: totalInterest.toFixed(2),
-            principal: P.toFixed(2),
-        });
-    };
-
-    return (
-        <>
-            <TypographyH2BlueColor>Business Loan EMI Calculator</TypographyH2BlueColor>
-            <TypographyPBlueColor>
-                Applicants can use the Business Loan EMI Calculator given below to calculate the EMIs and total interest cost payable throughout the loan tenure depending on the interest rate, loan amount, and loan tenure offered by the lender.
-            </TypographyPBlueColor>
-
-            <div className="border rounded-md grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                {/* Input Section */}
-                <div className="p-2 sm:p-4 w-full">
-                    <div className="flex flex-col gap-1 font-semibold text-blue-800">
-                        EMI Calculator
-                        <span className="w-10 h-px bg-accent" />
-                    </div>
-                    <div className="mt-6">
-                        <TypographyMuted className="text-xs mb-2 font-semibold">Amount</TypographyMuted>
-                        <div className="flex gap-2 border-b pb-2 w-full">
-                            <span className="text-muted-foreground border-r-2 pr-2">₹</span>
-                            <input
-                                type="text"
-                                placeholder="Enter amount"
-                                className="w-full focus:border-none focus:outline-none text-sm font-semibold text-blue-950"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))}
-                            />
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-3">
-                            <div className="w-full">
-                                <TypographyMuted className="text-xs mb-2 font-semibold">Interest Rate</TypographyMuted>
-                                <div className="flex gap-2 border-b pb-2 w-full">
-                                    <input
-                                        type="text"
-                                        placeholder="Enter rate"
-                                        className="w-full focus:border-none focus:outline-none text-sm font-semibold text-blue-950"
-                                        value={interestRate}
-                                        onChange={(e) => setInterestRate(e.target.value.replace(/[^\d.]/g, ""))}
-                                    />
-                                    <span className="text-muted-foreground text-sm border-l-2 pl-2">%</span>
-                                </div>
-                            </div>
-                            <div className="w-full">
-                                <TypographyMuted className="text-xs mb-2 font-semibold">Tenure</TypographyMuted>
-                                <div className="flex gap-2 border-b pb-2 w-full">
-                                    <input
-                                        type="text"
-                                        placeholder="Enter tenure"
-                                        className="w-full focus:border-none focus:outline-none text-sm font-semibold text-blue-950"
-                                        value={tenure}
-                                        onChange={(e) => setTenure(e.target.value.replace(/\D/g, ""))}
-                                    />
-                                    <span className="text-muted-foreground text-sm border-l-2 pl-2">Year(s)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <Button className="mt-4 w-full" onClick={calculateEMI}>Calculate</Button>
-                    </div>
-                </div>
-
-                {/* Output Section */}
-                <div className="bg-primary/10 p-4 w-full">
-                    <div className="flex flex-col gap-1 font-semibold text-blue-800">
-                        EMI Details
-                        <span className="w-10 h-px bg-accent" />
-                    </div>
-                    {
-                        <div className="grid grid-cols-2 gap-6 mt-4">
-                            <div className="grid gap-2">
-                                <TypographyMuted className="font-semibold tracking-normal">Monthly EMI</TypographyMuted>
-                                <TypographyH3 className="text-blue-800 font-bold break-words">₹ {emiDetails?.emi || 0}</TypographyH3>
-                            </div>
-                            <div className="grid gap-2">
-                                <TypographyMuted className="font-semibold tracking-normal">Total Amount Payable</TypographyMuted>
-                                <div>
-                                    <TypographyH3 className="text-blue-800 font-bold break-words">₹ {emiDetails?.totalAmount || 0}</TypographyH3>
-                                    <TypographyMuted className="font-semibold text-xs">(Principal + Interest)</TypographyMuted>
-                                </div>
-                            </div>
-                            <div className="grid gap-2">
-                                <TypographyMuted className="font-semibold tracking-normal">Principal Amount</TypographyMuted>
-                                <TypographyH3 className="text-blue-950 font-bold break-words">₹ {emiDetails?.principal || 0}</TypographyH3>
-                            </div>
-                            <div className="grid gap-2">
-                                <TypographyMuted className="font-semibold tracking-normal">Total Interest Payable</TypographyMuted>
-                                <TypographyH3 className="text-blue-950 font-bold break-words">₹ {emiDetails?.totalInterest || 0}</TypographyH3>
-                            </div>
-                        </div>
-
-                        // <TypographyMuted className="text-sm mt-4">Enter valid inputs to calculate EMI.</TypographyMuted>
-                    }
-                </div>
-            </div>
-
-        </>
-    );
-};
+    {
+        title: "Interest Rate",
+        value: "Business Loan interest rates vary across the lenders. Applicants should check the interest rates offered by various lenders and opt for the one offering lowest interest rates to incur lower interest cost."
+    },
+    {
+        title: "Turnaround Time",
+        value: "Applicants should know the time taken by the bank or NBFC for the approval and disbursal of a business loan. Lenders disbursing the business loans in lesser time are usually preferred by the borrowers. The turnaround time would depend on the type of business loan scheme and the type of collateral pledged for."
+    },
+    {
+        title: "Credit Score/Rating",
+        value: "Applicants having a credit score of 700 and above usually have higher chances of availing business loans. Some lenders also offer business loans at lower interest rates to those having high credit score/rating."
+    },
+    {
+        title: "Processing Charges",
+        value: "Applicants should know the processing fees and other charges levied by the lender before applying for business loans."
+    },
+    {
+        title: "Collateral",
+        value: "Lenders usually offer business loans against collateral/security, such as hypothecation of stocks, book debts, mutual funds, immovable property, liquid security, commercial or construction equipment."
+    }
+];
 
 const lenders = [
     { name: "HDFC Bank", interestRate: "10.75% – 22.50% p.a." },
@@ -246,7 +154,7 @@ export default function BusinessLoanPage() {
         return indianPhoneRegex.test(number);
     };
 
-    const handleCheckOffers = () => {
+    const handleApplied = () => {
         if (!validateMobileNumber(mobileNumber)) {
             setError('Please enter a valid 10-digit Indian mobile number.');
             return;
@@ -258,7 +166,7 @@ export default function BusinessLoanPage() {
 
     const handleOtpVerified = () => {
         setOpenDialog(false);
-        navigate('/personal-loan/apply');
+        navigate('/business-loan/apply');
     };
 
     return (
@@ -309,7 +217,7 @@ export default function BusinessLoanPage() {
                                 <TypographyMuted className="text-xs">
                                     By submitting this form, you have read and agree to the <Link to="" className="text-blue-700">Credit Report Terms of Use</Link>, <Link to="terms" className="text-blue-700">Terms of Use</Link>& <Link to="/privacy-policy" className="text-blue-700">Privacy Policy</Link>.
                                 </TypographyMuted>
-                                <Button type="submit" className="w-full cursor-pointer" onClick={handleCheckOffers}>
+                                <Button type="submit" className="w-full cursor-pointer" onClick={handleApplied}>
                                     Apply Now <FiArrowRight className="ml-2" />
                                 </Button>
                             </div>
@@ -475,7 +383,12 @@ export default function BusinessLoanPage() {
                         </Table>
                     </>
 
-                    <BusinessEMICalculator />
+                    <EMICalculator
+                        headline="Business Loan EMI Calculator"
+                        paragraph="Applicants can use the Business Loan EMI Calculator given below to calculate the EMIs and total interest cost payable throughout the loan tenure depending on the interest rate, loan amount, and loan tenure offered by the lender."
+                        inputHeading="Business EMI Calculator"
+                        outputHeading="Business EMI Details"
+                    />
 
                     <>
                         <TypographyH4BlueColor>
@@ -496,7 +409,7 @@ export default function BusinessLoanPage() {
 
                         <Table className="border border-black mt-6">
                             <TableHeader>
-                                <TableHead className="text-center text-blue-950 font-semibold">EMI Calculators</TableHead>
+                                <TableHead colSpan={2} className="text-center text-blue-950 font-semibold">EMI Calculators</TableHead>
                             </TableHeader>
                             <TableBody className="text-blue-800">
                                 <TableRow className="border border-black">
@@ -588,7 +501,7 @@ export default function BusinessLoanPage() {
                             Lenders usually set their business loan<span className="font-bold"> eligibility criteria based on the following factors:</span>
                         </TypographyPBlueColor>
 
-                        <TypographyList2
+                        <BoldList
                             className="text-sm opacity-95 grid gap-1"
                             items={loanEligibilityCriteria}
                         />
@@ -748,7 +661,7 @@ export default function BusinessLoanPage() {
                         <TypographyPBlueColor>
                             Applicants should know the following things before applying for a business loan:
                         </TypographyPBlueColor>
-                        <TypographyList2
+                        <BoldList
                             className="text-sm opacity-95 grid gap-1"
                             items={ThingsBusinessAbout}
                         />

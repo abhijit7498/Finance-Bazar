@@ -28,7 +28,7 @@ const incomeOptions = [
     { label: "₹10 Lacs +", value: "10_plus" },
 ];
 
-const bankOptions = [
+export const bankOptions = [
     { label: "State Bank of India", logo: "/assets/banks/sbi.png" },
     { label: "Punjab National Bank", logo: "/assets/banks/pnb.png" },
     { label: "Bank of Baroda", logo: "/assets/banks/bob.png" },
@@ -95,6 +95,7 @@ export default function PersonalLoanApply() {
         loanAmount: "",
         currentEMI: "",
     });
+
     const [step, setStep] = useState(1);
     const [errors, setErrors] = useState({});
 
@@ -143,7 +144,7 @@ export default function PersonalLoanApply() {
                     <div>
                         <TypographyH3 className="text-[#1b1dc7]">Personal Loan</TypographyH3>
                         <div className="grid sm:gap-6 gap-3 mt-8">
-                            {featureList.map((item, index) => (
+                            {featureList?.map((item, index) => (
                                 <div key={index} className="flex items-center gap-3">
                                     <div className="sm:w-6 sm:h-6 w-5 h-5 rounded-full shadow bg-secondary flex justify-center items-center">
                                         <IoCheckmark />
@@ -189,19 +190,19 @@ export default function PersonalLoanApply() {
                         >
                             <StepCard title="Employment Type">
                                 <div className="grid gap-4">
-                                    {employmentOptions.map((option, idx) => (
+                                    {employmentOptions?.map((option, idx) => (
                                         <div
                                             key={idx}
-                                            className={`border rounded-md p-3 flex items-center justify-between gap-8 hover:bg-muted cursor-pointer ${formData.employmentType === option.value ? "border-blue-700 bg-blue-50" : ""
+                                            className={`border rounded-md p-3 flex items-center justify-between gap-8 hover:bg-muted cursor-pointer ${formData?.employmentType === option?.value ? "border-blue-700 bg-blue-50" : ""
                                                 }`}
-                                            onClick={() => handleInputChange("employmentType", option.value)}
+                                            onClick={() => handleInputChange("employmentType", option?.value)}
                                         >
                                             <div className="grid gap-1">
-                                                <Label className="text-blue-800">{option.label}</Label>
-                                                <TypographyMuted className="text-xs">{option.description}</TypographyMuted>
+                                                <Label className="text-blue-800">{option?.label}</Label>
+                                                <TypographyMuted className="text-xs">{option?.description}</TypographyMuted>
                                             </div>
                                             <div
-                                                className={`w-5 h-5 rounded-full border ${formData.employmentType === option.value
+                                                className={`w-5 h-5 rounded-full border ${formData?.employmentType === option?.value
                                                     ? "bg-blue-700 border-blue-700"
                                                     : "border-black"
                                                     }`}
@@ -223,16 +224,16 @@ export default function PersonalLoanApply() {
                         >
                             <StepCard title="Income Range" onBack={() => setStep(2)}>
                                 <div className="grid gap-4">
-                                    {incomeOptions.map((option, idx) => (
+                                    {incomeOptions?.map((option, idx) => (
                                         <div
                                             key={idx}
                                             className={`border rounded-md p-3 flex items-center justify-between gap-8 hover:bg-muted cursor-pointer ${formData.incomeRange === option.value ? "border-blue-700 bg-blue-50" : ""
                                                 }`}
-                                            onClick={() => handleInputChange("incomeRange", option.value)}
+                                            onClick={() => handleInputChange("incomeRange", option?.value)}
                                         >
-                                            <Label className="text-blue-800">{option.label}</Label>
+                                            <Label className="text-blue-800">{option?.label}</Label>
                                             <div
-                                                className={`w-5 h-5 rounded-full border ${formData.incomeRange === option.value
+                                                className={`w-5 h-5 rounded-full border ${formData?.incomeRange === option?.value
                                                     ? "bg-blue-700 border-blue-700"
                                                     : "border-black"
                                                     }`}
@@ -256,44 +257,44 @@ export default function PersonalLoanApply() {
                                 <div className="grid gap-8">
                                     <SelectDropDownMenu
                                         items={bankOptions}
-                                        value={formData.primaryBank}
+                                        value={formData?.primaryBank}
                                         onChange={(e) => handleInputChange("primaryBank", e.target.value)}
                                         placeholder="Select Your Bank"
                                     />
                                     <InputField
                                         label="Current Company"
                                         placeholder="Enter your current company"
-                                        value={formData.companyName}
+                                        value={formData?.companyName}
                                         onChange={(e) => handleInputChange("companyName", e.target.value)}
                                         error={errors.companyName}
                                     />
                                     <InputField
                                         label="Residence City"
                                         placeholder="Enter your residence city"
-                                        value={formData.residenceCity}
+                                        value={formData?.residenceCity}
                                         onChange={(e) => handleInputChange("residenceCity", e.target.value)}
-                                        error={errors.residenceCity}
+                                        error={errors?.residenceCity}
                                     />
                                     <InputField
                                         label="Gross Annual Income"
                                         placeholder="Enter your gross annual income"
-                                        value={formData.annualIncome}
+                                        value={formData?.annualIncome}
                                         onChange={(e) => handleInputChange("annualIncome", e.target.value)}
-                                        error={errors.annualIncome}
+                                        error={errors?.annualIncome}
                                     />
                                     <InputField
                                         label="Desired Loan Amount"
                                         placeholder="Enter your desired loan amount"
-                                        value={formData.loanAmount}
+                                        value={formData?.loanAmount}
                                         onChange={(e) => handleInputChange("loanAmount", e.target.value)}
-                                        error={errors.loanAmount}
+                                        error={errors?.loanAmount}
                                     />
                                     <InputField
                                         label="Total EMI You Pay Currently"
                                         placeholder="Enter your current EMI"
-                                        value={formData.currentEMI}
+                                        value={formData?.currentEMI}
                                         onChange={(e) => handleInputChange("currentEMI", e.target.value)}
-                                        error={errors.currentEMI}
+                                        error={errors?.currentEMI}
                                     />
                                 </div>
                                 <Button className="mt-4 w-full" onClick={handleSubmit}>

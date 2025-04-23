@@ -7,6 +7,8 @@ import PersonalLoanPage from "@/components/pages/personal-loan/PersonalLoanPage"
 import PersonalLoanApply from "@/components/pages/personal-loan/PersonalLoanApply";
 import BusinessLoanApply from "@/components/pages/bussiness-loan/BusinessLoanApply";
 import BusinessLoanPage from "@/components/pages/bussiness-loan/BusinessLoanPage";
+import HomeLoanPage from "@/components/pages/home-loan/HomeLoanPage";
+import LoanAgainstProperty from "@/components/pages/loan-against-property/LoanAgainstProperty";
 import ContactUs from "@/components/pages/contact-us/ContactUs";
 import AboutUs from "@/components/pages/AboutUs";
 import ScrollToTop from "@/custom/ScrollToTop";
@@ -70,9 +72,11 @@ export default function App() {
             <Route path="/personal-loan/apply" element={<PersonalLoanApply />} />
             <Route path="/business-loan" element={<BusinessLoanPage />} />
             <Route path="/business-loan/apply" element={<BusinessLoanApply />} />
+            <Route path="/loan-against-property" element={<LoanAgainstProperty />} />
+            <Route path="/home-loan" element={<HomeLoanPage />} />
             <Route path="/credit-cards" element={<CreaditCardPage />} />
             <Route path="/cibil-credit-report" element={<CheckProceed />} />
-            <Route path="*" element={<Navigate to="/sign-in" />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </>
         )}
       </Routes>

@@ -16,6 +16,14 @@ export function TypographyH2({ children, className }) {
     )
 }
 
+export function TypographyH2BlueColor({ children, className }) {
+    return (
+        <h2 className={cn("sm:text-2xl text-xl text-blue-950 tracking-tight mt-4 font-bold", className)}>
+            {children}
+        </h2>
+    )
+}
+
 export function TypographyH3({ children, className }) {
     return (
         <h3 className={cn("scroll-m-20 sm:text-2xl text-lg font-semibold tracking-tight", className)}>
@@ -32,9 +40,25 @@ export function TypographyH4({ children, className }) {
     )
 }
 
+export function TypographyH4BlueColor({ children, className }) {
+    return (
+        <h2 className={cn("sm:text-xl text-md text-blue-950 tracking-tight mt-8 font-bold", className)}>
+            {children}
+        </h2>
+    )
+}
+
 export function TypographyP({ children, className }) {
     return (
         <p className={cn("leading-7", className)}>
+            {children}
+        </p>
+    )
+}
+
+export function TypographyPBlueColor({ children, className }) {
+    return (
+        <p className={cn("leading-7 opacity-80 font-base my-4 text-sm", className)}>
             {children}
         </p>
     )
@@ -51,16 +75,40 @@ export function TypographyBlockquote({ children, className }) {
 export function TypographyList({ items, className }) {
     return (
         <ul className={cn("list-none grid gap-2", className)}>
-            {items.map((item, groupIndex) =>
-                item.features.map((feature, featureIndex) => (
+            {items?.map((item, groupIndex) =>
+                item?.features?.map((feature, featureIndex) => (
                     <li key={`${groupIndex}-${featureIndex}`} className="flex items-start gap-2 text-xs">
-                        {item.icon}
+                        {item?.icon}
                         <span>{feature}</span>
                     </li>
                 ))
             )}
         </ul>
     );
+}
+
+export function TypographyList2({ items, className }) {
+    return (
+        <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2 text-sm", className)}>
+            {items?.map((item, index) => (
+                <li key={index}>
+                    {item}
+                </li>
+            ))}
+        </ul>
+    )
+}
+
+export function BoldList({ items, className }) {
+    return (
+        <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-3 text-sm", className)}>
+            {items?.map((item, index) => (
+                <li key={index}>
+                    <span className="font-semibold">{item?.title}: </span>{item?.value}
+                </li>
+            ))}
+        </ul>
+    )
 }
 
 export function TypographyLead({ children, className }) {
@@ -102,6 +150,17 @@ export function HeadSkipper({ children, className }) {
                 {children}
             </h2>
             <div className="sm:w-22 w-10 h-px bg-blue-700"></div>
+        </div>
+    )
+}
+
+export function HighLighter({ rightText, leftText, className, highLighter }) {
+    return (
+        <div className="flex flex-col gap-2 mb-3">
+            <h3 className={cn("text-lg text-blue-900 font-bold tracking-normal", className)}>
+                {rightText} <span className="text-accent">{highLighter}</span> {leftText}
+            </h3>
+            <div className="w-14 h-0.5 bg-accent"></div>
         </div>
     )
 }

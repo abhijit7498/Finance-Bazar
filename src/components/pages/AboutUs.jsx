@@ -50,7 +50,7 @@ const milestones = [
     {
         year: 2020,
         events: [
-            { title: "Launches Paisabazaar Stack to enable end-to-end disbursal process", action: "See more from this year" }
+            { title: "Launches Financesbazar Stack to enable end-to-end disbursal process", action: "See more from this year" }
         ]
     },
     {
@@ -80,7 +80,7 @@ const milestones = [
     {
         year: 2014,
         events: [
-            { title: "Paisabazaar.com founded under the Policybazaar Group", action: "See more from this year" }
+            { title: "Financesbazar.com founded under the Policybazaar Group", action: "See more from this year" }
         ]
     }
 ];

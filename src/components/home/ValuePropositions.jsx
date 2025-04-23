@@ -69,7 +69,7 @@ export default function ValuePropositions() {
               About Us
             </TypographyH2>
             <TypographySmall>
-              How we are building a strong Paisabazaar Brand
+              How we are building a strong Financesbazar Brand
             </TypographySmall>
             <Button className="absolute -bottom-3 right-16 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
               KNOW MORE <MdNavigateNext />
@@ -85,7 +85,7 @@ export default function ValuePropositions() {
               Work With Us
             </TypographyH2>
             <TypographySmall>
-              Want to Join Team Paisabazaar?
+              Want to Join Team Financesbazar?
             </TypographySmall>
             <Button className="absolute -bottom-3 right-16 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
               JOIN US<MdNavigateNext />
