@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { MdNavigateNext } from "react-icons/md";
 import { FiPieChart, FiUserCheck, FiShield, FiUsers } from 'react-icons/fi';
-import { TypographyH2, TypographyH3, TypographyH4, TypographyMuted, TypographySmall } from '../../custom/Typography';
+import { TypographyH2, TypographyH3, Headline, TypographyH4, TypographyMuted, TypographySmall } from '../../custom/Typography';
 import { Link } from 'react-router-dom';
 
 // Value proposition data
@@ -34,9 +34,9 @@ export default function ValuePropositions() {
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
         <div className='flex flex-col gap-4'>
           <div className="w-22 h-0.5 bg-accent"></div>
-          <TypographyH3 className='text-blue-900 font-bold leading-10'>
+          <Headline className="capitalize">
             Compare, Choose and Apply for personal credit products on Financebazaar
-          </TypographyH3>
+          </Headline>
           <Link to='/about-us' className='w-fit'>
             <Button className="border bg-[#e1e9e9] shadow-none rounded-sm uppercase font-semibold hover:bg-blue-800 hover:text-white cursor-pointer text-xs text-secondary-foreground">
               Read More

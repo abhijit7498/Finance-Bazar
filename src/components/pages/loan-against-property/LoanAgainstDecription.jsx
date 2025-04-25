@@ -4,7 +4,7 @@ import {
     TypographyList2,
     TypographyPBlueColor,
     TypographySmall
-} from "../../../custom/Typography";
+} from "@/custom/Typography";
 import { Link } from "react-router-dom";
 
 const loanAgainstPropertyBenefits = [

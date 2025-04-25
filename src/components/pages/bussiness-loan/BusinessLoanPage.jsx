@@ -1,13 +1,6 @@
 import PageLayout from "@/components/layout/PageLayout";
-import { Button } from '@/components/ui/button';
-import { FiArrowRight } from 'react-icons/fi';
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-    TypographyMuted,
-    TypographySmall,
-    TypographyH2,
-    HighLighter,
     TypographyH2BlueColor,
     TypographyPBlueColor,
     TypographyH4BlueColor,
@@ -22,9 +15,33 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import OtpDialog from '@/custom/OtpDialog'
-import { generateOTP } from "@/lib/utils";
-import { EMICalculator } from "../../EMICalculator";
+import EMICalculatorDefault from "@/components/EMI/EMICalculatorDefault"
+import HeroLoginCard from "../HeroSectionPages";
+import { creditStatus } from "@/components/pages/personal-loan/PersonalLoanPage";
+import { ChartSpline, Handshake, Megaphone, ShieldAlert } from "lucide-react";
+
+const bussinessFeatures = [
+    {
+        title: "Best Loan Deals",
+        description: "Handpicked offers from 20+ lenders",
+        icon: <Handshake size={14} className="text-accent font-extrabold" />
+    },
+    {
+        title: "Unsecured Loan",
+        description: "Term loan & OD facilities available",
+        icon: <ShieldAlert size={14} className="text-accent font-extrabold" />
+    },
+    {
+        title: "Expert Advice",
+        description: "Guidance & Assistance",
+        icon: <Megaphone size={14} className="text-accent font-extrabold" />
+    },
+    {
+        title: "Top Up Facility",
+        description: "Top up loan to get additional funds",
+        icon: <ChartSpline size={14} className="text-accent font-extrabold" />
+    }
+];
 
 const BusinessFeaturesBenefits = [
     "Most banks and NBFCs offer both secured and unsecured business loans.",
@@ -144,98 +161,22 @@ const lenders = [
 ];
 
 export default function BusinessLoanPage() {
-    const [openDialog, setOpenDialog] = useState(false);
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-
-    const validateMobileNumber = (number) => {
-        const indianPhoneRegex = /^[6-9]\d{9}$/;
-        return indianPhoneRegex.test(number);
-    };
-
-    const handleApplied = () => {
-        if (!validateMobileNumber(mobileNumber)) {
-            setError('Please enter a valid 10-digit Indian mobile number.');
-            return;
-        } else {
-            setOpenDialog(true);
-            generateOTP();
-        }
-    };
-
-    const handleOtpVerified = () => {
-        setOpenDialog(false);
-        navigate('/business-loan/apply');
-    };
 
     return (
         <PageLayout>
-            <div className="overflow-hidden py-12"
-                style={{
-                    background: "linear-gradient(to bottom, #ffffff, #f5f9ff, #f0fdfa)",
-                }}>
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-12">
-                        <div className="sm:col-span-7">
-                            <TypographyH2 className="text-blue-950">
-                                Business Loan
-                            </TypographyH2>
-                            <h1 className="text-3xl md:text-4xl font-bold mb-4"></h1>
-                            <TypographyMuted className="sm:mb-8 mb-4  leading-7">
-                                Get a business loan of up to Rs 1 crore at an interest rate starting from 14.99% p.a. for the tenures of up to 4 years. Explore secured and unsecured options from 20+ partner lenders.
-                            </TypographyMuted>
-                        </div>
 
-                        <div className="bg-white sm:col-span-5 p-6 rounded-lg shadow-sm">
-                            <HighLighter
-                                rightText="Unlock Best"
-                                highLighter="Business Loan"
-                                leftText="Offers From 20+ Lenders"
-                            />
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 border-2 border-gray-300 focus-within:border-blue-500 p-3 rounded-md">
-                                    <TypographySmall className="font-semibold text-sm">+91</TypographySmall>
-                                    <input
-                                        type="tel"
-                                        placeholder="Mobile Number"
-                                        className="text-sm focus:outline-none font-semibold w-full"
-                                        value={mobileNumber}
-                                        maxLength={10}
-                                        onChange={(e) => {
-                                            setMobileNumber(e.target.value.replace(/\D/g, ''));
-                                            setError('');
-                                        }}
-                                        onKeyPress={(e) => {
-                                            if (!/[0-9]/.test(e.key)) {
-                                                e.preventDefault();
-                                            }
-                                        }}
-                                    />
-                                </div>
-                                {error && <div className="text-red-500 text-xs">{error}</div>}
-                                <TypographyMuted className="text-xs">
-                                    By submitting this form, you have read and agree to the <Link to="" className="text-blue-700">Credit Report Terms of Use</Link>, <Link to="terms" className="text-blue-700">Terms of Use</Link>& <Link to="/privacy-policy" className="text-blue-700">Privacy Policy</Link>.
-                                </TypographyMuted>
-                                <Button type="submit" className="w-full cursor-pointer" onClick={handleApplied}>
-                                    Apply Now <FiArrowRight className="ml-2" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* OTP Dialog */}
-            <OtpDialog
-                open={openDialog}
-                setOpen={setOpenDialog}
-                mobile={mobileNumber}
-                sessionStorage={{
-                    key: "OTP_Verify",
-                    value: { OTP_Verify: true, phoneNumber: mobileNumber },
+            <HeroLoginCard
+                headline="Business Loan"
+                description="Get a business loan of up to Rs 1 crore at an interest rate starting from 14.99% p.a. for the tenures of up to 4 years. Explore secured and unsecured options from 20+ partner lenders."
+                cards={bussinessFeatures}
+                navigateLink="/business-loan/apply"
+                loginSubHedline="Don't worry, this will not affect your credit score."
+                ratingInfo={creditStatus}
+                highlighterHedline={{
+                    rightText: "Check",
+                    highLighter: "Business Loan",
+                    leftText: "Offers Online",
                 }}
-                onVerified={handleOtpVerified}
             />
 
             <div className="max-w-6xl mx-auto px-6 my-8">
@@ -383,7 +324,7 @@ export default function BusinessLoanPage() {
                         </Table>
                     </>
 
-                    <EMICalculator
+                    <EMICalculatorDefault
                         headline="Business Loan EMI Calculator"
                         paragraph="Applicants can use the Business Loan EMI Calculator given below to calculate the EMIs and total interest cost payable throughout the loan tenure depending on the interest rate, loan amount, and loan tenure offered by the lender."
                         inputHeading="Business EMI Calculator"

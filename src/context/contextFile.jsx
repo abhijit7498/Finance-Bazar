@@ -5,6 +5,7 @@ const contextFile = createContext();
 
 export const ContextProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [EMITableData, setEMITableData] = useState([]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -15,7 +16,9 @@ export const ContextProvider = ({ children }) => {
         <contextFile.Provider value={{
             loggedIn,
             setLoggedIn,
-            handleLogout
+            handleLogout,
+            EMITableData,
+            setEMITableData
         }}>
             {children}
         </contextFile.Provider>

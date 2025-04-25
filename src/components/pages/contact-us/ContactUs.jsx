@@ -15,6 +15,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import CardStall from "../../CardStall";
+import { Link } from "react-router-dom";
 
 const contactOptions = [
     {
@@ -26,7 +27,7 @@ const contactOptions = [
     },
     {
         icon: <GiRotaryPhone size={36} className="text-accent" />,
-        label: "Toll Free",
+        label: "Call Now",
         value: "+91 7709222331",
         link: "tel:+917709222331",
         description: "Our customer service experts are here for you. Lines are open Mon-Sat from 9:30 am – 6:30 pm",
@@ -81,28 +82,28 @@ const grievanceLevels = [
         turnaroundTime: "7 WORKING DAYS",
         name: "Customer care associate",
         designation: "Customer care team",
-        address: "Plot No. 135P, Sector 44, Gurgaon-122001",
+        address: "Office no.02,15, Zeroboyz Chowk, above HDFC Bank, Nehru Nagar, Pimpri Colony, Pune, Pimpri-Chinchwad, Maharashtra 411018",
         phone: "1800-208-8877",
         email: "care@financesbazar.com",
     },
     {
-        level: "Level 1",
+        level: "Chief Executive Officer",
         turnaroundTime: "7 WORKING DAYS",
-        name: "Siddhi Kumari Mishra",
-        designation: "Senior Manager",
-        address: "Plot No. 135P, Sector 44, Gurgaon-122001",
-        phone: "0124-3509999",
-        email: "escalationdesk@financesbazar.com",
+        name: "Pornima Babhulgaonkar Umbarkar",
+        designation: "Managing Director",
+        address: "Office no.02,15, Zeroboyz Chowk, above HDFC Bank, Nehru Nagar, Pimpri Colony, Pune, Pimpri-Chinchwad, Maharashtra 411018",
+        phone: "+91 9511247578",
+        email: "ucservices.pornima@gmail.com",
     },
     {
-        level: "Level 2",
-        turnaroundTime: "7 WORKING DAYS",
-        name: "Jyotsna Popli",
-        designation: "Nodal Grievance Redressal Officer",
-        address: "Plot No. 135P, Sector 44, Gurgaon-122001",
-        phone: "0124-3509999",
-        email: "servicehead@financesbazar.com",
-    }
+        level: "Website concern",
+        turnaroundTime: "6 WORKING DAYS",
+        name: "Amol Suresh Mahor",
+        designation: "Software Engineer",
+        address: "Office no.02,15, Zeroboyz Chowk, above HDFC Bank, Nehru Nagar, Pimpri Colony, Pune, Pimpri-Chinchwad, Maharashtra 411018",
+        phone: "+91 9673170912",
+        email: "amol@ucindia.services",
+    },
 ];
 
 export default function ContactUs() {
@@ -130,7 +131,7 @@ export default function ContactUs() {
                 {/* Product Queries */}
                 <div className="grid gap-6">
                     <div className="w-14 h-0.5 bg-accent"></div>
-                    <TypographyH3 className="text-blue-900">
+                    <TypographyH3 className="font-extrabold capitalize tracking-normal text-blue-950">
                         Got any product related queries?
                     </TypographyH3>
                     <TypographyMuted>
@@ -138,15 +139,15 @@ export default function ContactUs() {
                     </TypographyMuted>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         {contactOptions2.map((contact) => (
-                            <a href={contact.mailTo} key={contact.id} className="grid gap-2 hover:text-blue-800 transition-colors">
+                            <Link to={contact.mailTo} key={contact.id} className="grid gap-2 hover:text-blue-800 transition-colors">
                                 {contact.icon}
-                                <TypographyH4 className="text-blue-800 font-bold">
+                                <TypographyH4 className="text-blue-900 tracking-wide">
                                     {contact.email}
                                 </TypographyH4>
                                 <TypographyMuted>
                                     {contact.description}
                                 </TypographyMuted>
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -154,7 +155,7 @@ export default function ContactUs() {
                 {/* Grievance Table */}
                 <div className="grid gap-6">
                     <div className="w-14 h-0.5 bg-accent"></div>
-                    <TypographyH3 className="text-blue-900">
+                    <TypographyH3 className="font-extrabold capitalize tracking-normal text-blue-950">
                         Grievance Redressal Escalation Matrix
                     </TypographyH3>
                     <TypographyMuted>

@@ -89,7 +89,7 @@ export function TypographyList({ items, className }) {
 
 export function TypographyList2({ items, className }) {
     return (
-        <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2 text-sm", className)}>
+        <ul className={cn("my-6 sm:ml-8 ml-6 list-disc [&>li]:mt-2 text-sm", className)}>
             {items?.map((item, index) => (
                 <li key={index}>
                     {item}
@@ -113,7 +113,7 @@ export function BoldList({ items, className }) {
 
 export function TypographyLead({ children, className }) {
     return (
-        <p className={cn("text-lg text-muted-foreground", className)}>
+        <p className={cn("text-md text-accent font-medium tracking-normal", className)}>
             {children}
         </p>
     )
@@ -167,9 +167,8 @@ export function HighLighter({ rightText, leftText, className, highLighter }) {
 
 export function Headline({ children, className }) {
     return (
-        <h2 className={cn("text-blue-900 font-bold scroll-m-20 text-3xl tracking-tight", className)}>
+        <h3 className={cn("uppercase text-xl sm:text-3xl font-bold tracking-wide text-blue-950 t", className)}>
             {children}
-        </h2>
+        </h3>
     )
 }
-

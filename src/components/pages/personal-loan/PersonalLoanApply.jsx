@@ -133,8 +133,6 @@ export default function PersonalLoanApply() {
         }
     };
 
-    console.log("personalLoan", formData);
-
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-6 w-full sm:h-screen sm:overflow-y-hidden">
             {/* Left Section */}

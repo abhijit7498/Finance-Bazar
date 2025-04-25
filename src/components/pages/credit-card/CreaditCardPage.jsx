@@ -1,15 +1,49 @@
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FiArrowRight, FiCheck, FiStar } from 'react-icons/fi';
+import { FiCheck, FiStar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { TypographyMuted } from '../../../custom/Typography';
+import { TypographyMuted, } from '@/custom/Typography';
+import HeroLoginCard from '../HeroSectionPages';
 
-export const metadata = {
-    title: 'Credit Cards - Compare & Apply Online | financesbazar Clone',
-    description: 'Compare credit cards from top banks and financial institutions. Apply online and get instant approval with exclusive offers.',
-};
+export const cardBenefits = [
+    {
+        title: "Top Offers",
+        description: "Pre-approved offers from 10+ issuers",
+    },
+    {
+        title: "Wide Choices",
+        description: "Compare from 60+ credit cards",
+    },
+    {
+        title: "Quick Approval",
+        description: "Instant approval on pre-qualified cards",
+    },
+    {
+        title: "OneCard Benefits",
+        description: "Enjoy lifetime free OneCard with exciting rewards and smart spend insights",
+    }
+];
+
+export const creditStats = [
+    {
+        title: "4.2/5",
+        subtitle: "Ratings",
+        icon: "stars",
+    },
+    {
+        title: "45M+",
+        subtitle: "Satisfied Customers",
+    },
+    {
+        title: "10+",
+        subtitle: "Card Issuers",
+    },
+    {
+        title: "60+",
+        subtitle: "Cards to choose from",
+    },
+];
 
 // Best credit cards data
 const bestCreditCards = [
@@ -49,79 +83,22 @@ const bestCreditCards = [
 ];
 
 export default function CreaditCardPage() {
+
     return (
         <PageLayout>
-            <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] py-10 md:py-14">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h1 className="text-3xl md:text-4xl font-bold mb-4">Credit Card</h1>
-                        <TypographyMuted className="mb-8">
-                            Credit cards come with wide-ranging features and benefits designed to suit the lifestyle preferences of various income groups.
-                            Compare 60+ options on financesbazar, apply online, and get instant approval.
-                        </TypographyMuted>
-
-                        <div className="flex flex-wrap justify-center gap-4 mb-8">
-                            <div className="bg-white rounded-md px-4 py-3 flex items-center">
-                                <span className="text-primary font-semibold mr-2">Top Offers</span>
-                                <TypographyMuted>Pre-approved offers from 10+ issuers</TypographyMuted>
-                            </div>
-                            <div className="bg-white rounded-md px-4 py-3 flex items-center">
-                                <span className="text-primary font-semibold mr-2">Wide Choices</span>
-                                <TypographyMuted>Compare from 60+ credit cards</TypographyMuted>
-                            </div>
-                            <div className="bg-white rounded-md px-4 py-3 flex items-center">
-                                <span className="text-primary font-semibold mr-2">Quick Approval</span>
-                                <TypographyMuted>Instant approval on pre-qualified cards</TypographyMuted>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-6 rounded-lg shadow-sm max-w-md mx-auto">
-                            <h3 className="text-lg font-bold mb-4">Find Best Credit Card Offers</h3>
-                            <div className="space-y-4">
-                                <Input
-                                    type="tel"
-                                    placeholder="Mobile Number"
-                                    className="h-12 text-sm"
-                                />
-                                <TypographyMuted className="text-xs">Don't worry, this will not affect your credit score.</TypographyMuted>
-                                <Button className="w-full cursor-pointer">
-                                    Check Offers <FiArrowRight className="ml-2" />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Trust indicators */}
-            <div className="py-6 bg-white border-b border-gray-200">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="flex flex-wrap justify-center gap-8">
-                        <div className="flex items-center">
-                            <div className="text-lg font-bold">4.2/5</div>
-                            <div className="ml-2 text-yellow-400">
-                                <FiStar className="inline-block h-4 w-4 fill-current" />
-                                <FiStar className="inline-block h-4 w-4 fill-current" />
-                                <FiStar className="inline-block h-4 w-4 fill-current" />
-                                <FiStar className="inline-block h-4 w-4 fill-current" />
-                                <FiStar className="inline-block h-4 w-4 stroke-current" />
-                            </div>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">45M+</div>
-                            <TypographyMuted>Satisfied Customers</TypographyMuted>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">10+</div>
-                            <TypographyMuted>Card Issuers</TypographyMuted>
-                        </div>
-                        <div className="flex gap-2 items-center">
-                            <div className="text-lg font-bold">60+</div>
-                            <TypographyMuted>Cards to choose from</TypographyMuted>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HeroLoginCard
+                headline="Credit Card"
+                description="Credit cards come with wide-ranging features and benefits designed to suit the lifestyle preferences of various income groups. Compare 60+ options on financesbazar, apply online, and get instant approval."
+                cards={cardBenefits}
+                navigateLink="/credit-cards/apply"
+                loginSubHedline="Don't worry, this will not affect your credit score."
+                ratingInfo={creditStats}
+                highlighterHedline={{
+                    rightText: "Find Best",
+                    highLighter: "Credit Card",
+                    leftText: "Offers",
+                }}
+            />
 
             {/* Best Credit Cards */}
             <div className="py-12">

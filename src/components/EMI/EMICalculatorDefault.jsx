@@ -7,15 +7,15 @@ import {
     TypographyH3,
 } from '@/custom/Typography';
 
-export const EMICalculator = ({
+export default function EMICalculatorDefault({
     headline,
     paragraph,
     inputHeading,
     outputHeading
-}) => {
-    const [amount, setAmount] = useState("");
-    const [interestRate, setInterestRate] = useState("");
-    const [tenure, setTenure] = useState("");
+}) {
+    const [amount, setAmount] = useState(100000);
+    const [interestRate, setInterestRate] = useState(7);
+    const [tenure, setTenure] = useState(3);
     const [emiDetails, setEmiDetails] = useState(null);
 
     const calculateEMI = () => {

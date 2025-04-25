@@ -1,6 +1,6 @@
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { TypographyH3, TypographyH4, TypographyMuted } from '@/custom/Typography';
+import { TypographyH3, Headline, TypographyH4, TypographyMuted } from '@/custom/Typography';
 
 const creditCards1 = [
   "3% Cashback on Online Spends",
@@ -17,11 +17,11 @@ const creditCards2 = [
 export default function FeaturedProducts() {
   return (
     <div className='max-w-6xl mx-auto px-6 sm:mt-12 overflow-hidden'>
-      <div className='max-w-sm mx-auto flex flex-col gap-4 items-center'>
-        <TypographyH3 className="text-center text-blue-900 font-bold tracking-normal">
+      <div className='text-center flex flex-col gap-4 items-center'>
+        <Headline className="capitalize">
           Tailor Made Products Exclusively<br />
           for Financesbazar Customers
-        </TypographyH3>
+        </Headline>
         <div className="w-22 h-0.5 bg-accent"></div>
       </div>
 
@@ -35,7 +35,7 @@ export default function FeaturedProducts() {
           />
         </div>
         <div className='flex flex-col gap-4 sm:gap-6'>
-          <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
+          <TypographyH3 className="text-md font-bold tracking-normal text-blue-950">
             Yes Bank Financesbazar PaisaSave Credit Card
           </TypographyH3>
           <div className='grid gap-2 sm:gap-6'>
@@ -54,7 +54,7 @@ export default function FeaturedProducts() {
       {/* Second Card Section */}
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 min-w-0'>
         <div className='flex flex-col gap-4 sm:gap-6 sm:order-1 order-2'>
-          <TypographyH3 className="text-lg font-bold tracking-normal text-blue-950">
+          <TypographyH3 className="text-md font-bold tracking-normal text-blue-950">
             RBL Bank Financesbazar DUET Credit Card
           </TypographyH3>
           <div className='flex flex-col gap-2 sm:gap-6'>

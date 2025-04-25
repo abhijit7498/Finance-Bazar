@@ -36,7 +36,7 @@ const creditProducts = [
     title: 'Business Loan',
     icon: <FiTrendingUp size={24} />,
     description: 'Expand your business with loans at low interest rates',
-    link: '/business-loans',
+    link: '/business-loan',
     ctaText: 'Check Eligibility',
   },
   {
@@ -52,7 +52,7 @@ const creditProducts = [
     title: 'Home Loan',
     icon: <FiHome size={24} />,
     description: 'Choose from lowest interest rates available for your dream home',
-    link: '/home-loans',
+    link: '/home-loan',
     ctaText: 'Check Eligibility',
   },
 ];

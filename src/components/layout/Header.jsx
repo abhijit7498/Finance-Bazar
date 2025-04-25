@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Link, useLocation } from 'react-router-dom';
 
-// Define main navigation items
 const mainNavItems = [
   {
     title: 'All Products',
@@ -26,7 +25,7 @@ const mainNavItems = [
         title: 'Loans',
         links: [
           { label: 'Personal Loan', href: '/personal-loan' },
-          { label: 'Micro Loan (Under 50K)', href: '/personal-loans' },
+          { label: 'Micro Loan (Under 50K)', href: '/personal-loan' },
           { label: 'Business Loan', href: '/business-loan' },
           { label: 'Home Loan', href: '/home-loan' },
           { label: 'Loan Against Property', href: '/loan-against-property' },
@@ -83,24 +82,17 @@ const mainNavItems = [
 ];
 
 export default function Header() {
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState('All Products'); // Default open for mobile
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  // Handle scroll event
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleDropdown = (title) => {
@@ -109,29 +101,24 @@ export default function Header() {
 
   return (
     <header
-      className={`w-full sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white border-b border-gray-200 shadow' : 'bg-transparent'
-        }`}
+      className={`w-full sticky top-0 z-40 transition-all duration-300
+      ${isScrolled ? 'bg-white/80 backdrop-blur border-b border-gray-200' : 'bg-white/30 backdrop-blur'}`}
       id="home"
     >
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          {/* Logo */}
-          <Link
-            to="/"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex-shrink-0"
-          >
-            <img src="/logo.png" alt="logo-photo" className="sm:w-48 w-34" />
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <img src="/logo.png" alt="logo" className="sm:w-40 w-34" />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8" id="home">
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex space-x-8">
             {mainNavItems.map((item) =>
               item.isSingle ? (
                 <Link
                   key={item.title}
-                  to={item.href || '#'}
-                  className="nav-link text-sm text-blue-950 font-semibold tracking-normal flex items-center h-16 cursor-pointer"
+                  to={item.href}
+                  className="text-sm text-blue-950 font-semibold flex items-center h-16"
                 >
                   {item.title}
                 </Link>
@@ -139,16 +126,16 @@ export default function Header() {
                 <DropdownMenu key={item.title}>
                   <DropdownMenuTrigger asChild>
                     <button
-                      className="nav-link flex items-center h-16 text-blue-950 font-semibold tracking-normal text-sm cursor-pointer"
                       onClick={() => toggleDropdown(item.title)}
+                      className="flex items-center h-16 text-blue-950 font-semibold text-sm"
                     >
-                      <span>{item.title}</span>
+                      {item.title}
                       <FiChevronDown className="ml-1 h-4 w-4" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="p-8 w-full">
                     <div className="grid grid-cols-3 gap-4">
-                      {item.items?.map((section) => (
+                      {item.items.map((section) => (
                         <div key={section.title}>
                           <h3 className="font-semibold text-medium text-blue-950 mb-2">
                             {section.title}
@@ -158,7 +145,7 @@ export default function Header() {
                               <li key={link.label}>
                                 <Link
                                   to={link.href}
-                                  className="text-xs font-medium tracking-normal hover:text-primary flex items-center"
+                                  className="text-xs font-medium hover:text-primary flex items-center"
                                 >
                                   {link.label}
                                   {link.badge && (
@@ -179,15 +166,14 @@ export default function Header() {
             )}
           </nav>
 
-          {/* Sign In Button & Mobile Menu Trigger */}
+          {/* Sign In & Mobile */}
           <div className="flex items-center">
-            {/* Sign In Button */}
-            {location?.pathname !== '/sign-in' && (
+            {location.pathname !== '/sign-in' && (
               <Link to="/sign-in">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hidden md:flex mr-4 border-primary cursor-pointer text-primary hover:bg-primary hover:text-white"
+                  className="hidden md:flex mr-4 border-primary text-primary hover:bg-primary hover:text-white"
                 >
                   <FiUser className="mr-2 h-4 w-4" />
                   Sign In
@@ -195,21 +181,20 @@ export default function Header() {
               </Link>
             )}
 
-            {/* Mobile Menu */}
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" className="md:hidden">
-                  <RiMenu3Line size={32} className='text-5xl' />
+                  <RiMenu3Line size={28} />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[350px]">
+              <SheetContent side="right" className="w-[280px] sm:w-[350px]">
                 <SheetHeader>
-                  <SheetTitle></SheetTitle>
-                  <SheetDescription></SheetDescription>
+                  <SheetTitle />
+                  <SheetDescription />
                 </SheetHeader>
                 <div className="flex flex-col h-full">
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex justify-between items-center mb-6">
                     <img src="/logo.png" alt="logo" className="w-38" />
                   </div>
 
@@ -218,15 +203,15 @@ export default function Header() {
                       item.isSingle ? (
                         <Link
                           key={item.title}
-                          to={item.href || '#'}
-                          className="text-sm font-medium text-primary-foreground"
+                          to={item.href}
+                          className="text-sm font-semibold"
                         >
                           {item.title}
                         </Link>
                       ) : (
                         <div key={item.title} className="space-y-2">
                           <button
-                            className="text-base font-medium text-financesbazar-dark flex items-center justify-between w-full"
+                            className="text-sm font-semibold flex items-center justify-between w-full"
                             onClick={() => toggleDropdown(item.title)}
                           >
                             <span>{item.title}</span>
@@ -237,9 +222,9 @@ export default function Header() {
                           </button>
                           {openDropdown === item.title && (
                             <div className="ml-4 space-y-4">
-                              {item.items?.map((section) => (
+                              {item.items.map((section) => (
                                 <div key={section.title} className="space-y-2">
-                                  <h3 className="font-semibold text-sm text-financesbazar-dark">
+                                  <h3 className="font-semibold text-sm text-blue-950">
                                     {section.title}
                                   </h3>
                                   <ul className="ml-2 space-y-2">
@@ -247,11 +232,11 @@ export default function Header() {
                                       <li key={link.label}>
                                         <Link
                                           to={link.href}
-                                          className="text-sm text-gray-600 hover:text-financesbazar-primary flex items-center"
+                                          className="text-[13px] text-muted-foreground flex items-center"
                                         >
                                           {link.label}
                                           {link.badge && (
-                                            <span className="ml-1 px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded">
+                                            <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-green-400 font-semibold text-white rounded">
                                               {link.badge}
                                             </span>
                                           )}
@@ -268,10 +253,10 @@ export default function Header() {
                     )}
                   </div>
 
-                  {location?.pathname !== '/sign-in' && (
+                  {location.pathname !== '/sign-in' && (
                     <div className="mt-auto">
                       <Link to="/sign-in">
-                        <Button className="w-full bg-primary text-white hover:bg-opacity-90">
+                        <Button className="w-full mb-4 bg-primary text-white hover:bg-opacity-90">
                           <FiUser className="mr-2 h-4 w-4" />
                           Sign In
                         </Button>

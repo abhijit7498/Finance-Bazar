@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { TypographyH3, TypographyMuted } from "@/custom/Typography";
+import { TypographyLarge, TypographyH3, TypographyH4, TypographyMuted } from "@/custom/Typography";
 
 export default function CardStall({ link, icon, label, value, description }) {
     return (
@@ -7,19 +7,19 @@ export default function CardStall({ link, icon, label, value, description }) {
             to={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-md shadow-md border p-6 grid gap-4 hover:-translate-y-2 transition-all"
+            className="rounded-md shadow-md border p-6 grid gap-3 hover:-translate-y-2 transition-all"
         >
             {icon}
-            <div className="w-20 h-px bg-accent"></div>
+            <div className="w-16 h-px bg-accent"></div>
             <div>
-                <TypographyH3 className="text-md text-blue-900 font-bold">
+                <TypographyLarge className="uppercase text-sm font-bold tracking-wide text-blue-950">
                     {label}
-                </TypographyH3>
-                <TypographyH3 className="text-md text-blue-900 font-bold">
+                </TypographyLarge>
+                <TypographyH4 className="font-semibold mt-2 text-blue-950">
                     {value}
-                </TypographyH3>
+                </TypographyH4>
             </div>
-            <TypographyMuted className="text-sm font-semibold tracking-normal leading-6">
+            <TypographyMuted className="text-sm font-base leading-6">
                 {description}
             </TypographyMuted>
         </Link>

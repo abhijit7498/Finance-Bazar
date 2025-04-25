@@ -21,14 +21,14 @@ import {
     TypographyH4,
     TypographyList
 } from '@/custom/Typography'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { FiUser } from 'react-icons/fi'
 import { FaWhatsapp } from "react-icons/fa"
 import { MdSecurity } from "react-icons/md";
 import { IoCheckmark } from "react-icons/io5";
 import { motion } from 'framer-motion'
 import OtpCollection from '@/custom/OtpCollection'
-import { AddSessionStorage, generateOTP } from '@/lib/utils'
+import { AddLoacalStorage, generateOTP } from '@/lib/utils'
 import OtpDialog from '@/custom/OtpDialog'
 
 const MobileHeader = ({ showRightPanel2, onLogout }) => {
@@ -400,7 +400,7 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
         e.preventDefault();
         if (validate()) {
             console.log("Submitted Data:", proccedDetails);
-            AddSessionStorage("pannel2", {
+            AddLoacalStorage("token", {
                 pannel2: true,
                 proccedDetails: { proccedDetails }
             });
@@ -506,14 +506,6 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
     );
 };
 
-const Dashboard = () => {
-    return (
-        <h3 className='text-green-800 text-center font-semibold'>
-            Your cibil score
-        </h3>
-    )
-}
-
 const data = [
     {
         id: 1,
@@ -575,7 +567,7 @@ export default function CheckProceed() {
     const handleLogout = () => {
         sessionStorage.removeItem("OTP_Verify");
         sessionStorage.removeItem("pannel1");
-        sessionStorage.removeItem("pannel2");
+        localStorage.removeItem("token");
         setVeryfiedOTP(true);
         setShowRightPanel1(false);
         setShowRightPanel2(false);
@@ -586,7 +578,7 @@ export default function CheckProceed() {
     useEffect(() => {
         const verifiedOTP = sessionStorage.getItem("OTP_Verify");
         const panel1 = sessionStorage.getItem("pannel1");
-        const panel2 = sessionStorage.getItem("pannel2");
+        const panel2 = localStorage.getItem("token");
 
         setVeryfiedOTP(!verifiedOTP);
         setShowRightPanel1(!!verifiedOTP);
@@ -599,7 +591,7 @@ export default function CheckProceed() {
         const interval = setInterval(() => {
             const verifiedOTP = sessionStorage.getItem("OTP_Verify");
             const panel1 = sessionStorage.getItem("pannel1");
-            const panel2 = sessionStorage.getItem("pannel2");
+            const panel2 = localStorage.getItem("token");
 
             setVeryfiedOTP(!verifiedOTP);
             setShowRightPanel1(!!verifiedOTP);
@@ -651,7 +643,7 @@ export default function CheckProceed() {
             )}
 
             {/* Dashboard Panel */}
-            {dashboard && <Dashboard />}
+            {dashboard && <Navigate to="/myaccount" />}
         </div>
     );
 }

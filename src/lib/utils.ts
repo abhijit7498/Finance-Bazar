@@ -65,3 +65,37 @@ export function AddSessionStorage(key, value) {
   const stringified = typeof value === "string" ? value : JSON.stringify(value);
   sessionStorage.setItem(key, stringified);
 }
+
+export function AddLoacalStorage(key, value) {
+  const stringified = typeof value === "string" ? value : JSON.stringify(value);
+  localStorage.setItem(key, stringified);
+}
+
+
+export function calculateEMI(P: number, R: number, N: number): number {
+  const r = R / (12 * 100);
+  const n = N * 12;
+  const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  return Math.round(emi);
+}
+
+export function generateEmiTable(P: number, R: number, N: number, emi: number) {
+  const result = [];
+  let balance = P;
+  const monthlyRate = R / (12 * 100);
+
+  for (let i = 1; i <= N * 12; i++) {
+    const interest = +(balance * monthlyRate).toFixed(2);
+    const principal = +(emi - interest).toFixed(2);
+    balance = +(balance - principal).toFixed(2);
+    result.push({
+      month: i,
+      emi,
+      principal,
+      interest,
+      balance: balance > 0 ? balance : 0,
+    });
+  }
+
+  return result;
+}
