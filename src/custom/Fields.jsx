@@ -18,7 +18,7 @@ export const InputField = ({
 
     return (
         <div className="w-full grid gap-3">
-            <label className="block text-xs font-base opacity-80">{label}</label>
+            <label className="block text-sm font-base opacity-80">{label}</label>
             <div className="flex items-center gap-2 border-b pb-2">
                 {IconLeft && <IconLeft size={16} className="text-muted-foreground" />}
 
@@ -41,7 +41,7 @@ export const InputField = ({
                     </select>
                 ) : (
                     <input
-                        className="flex-1 outline-none bg-transparent placeholder:text-xs text-sm text-blue-950 font-semibold"
+                        className="flex-1 capitalize outline-none bg-transparent placeholder:text-xs text-sm text-blue-950 font-semibold"
                         type={type}
                         name={name}
                         value={value}
