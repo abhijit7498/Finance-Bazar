@@ -29,7 +29,7 @@ import { IoCheckmark } from "react-icons/io5";
 import { motion } from 'framer-motion'
 import OtpCollection from '@/custom/OtpCollection'
 import { AddLoacalStorage } from '@/lib/utils'
-import { AddSessionStorage } from '../../../lib/utils'
+import { AddSessionStorage } from '@/lib/utils'
 
 const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
@@ -136,12 +136,11 @@ const LeftGradiantPannel = () => {
 
 const RightPannel1 = ({ formData, setFormData }) => {
     const [errors, setErrors] = useState({});
-    const [openDialog, setOpenDialog] = useState(false);
     const [isPhoneDisabled, setIsPhoneDisabled] = useState(false);
 
     // Load OTP verification state from sessionStorage on mount
     useEffect(() => {
-        const storedData = sessionStorage.getItem("otp_verified");
+        const storedData = localStorage.getItem("otp_verified");
         if (storedData) {
             try {
                 const parsed = JSON.parse(storedData);
@@ -150,7 +149,7 @@ const RightPannel1 = ({ formData, setFormData }) => {
                     setIsPhoneDisabled(true);
                 }
             } catch (e) {
-                console.error("Failed to parse OTP sessionStorage:", e);
+                console.error("Failed to parse OTP localStorage:", e);
             }
         }
     }, [setFormData]);
@@ -391,7 +390,7 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
         e.preventDefault();
         if (validate()) {
             console.log("Submitted Data:", proccedDetails);
-            AddLoacalStorage("token", {
+            AddLoacalStorage("checkScore", {
                 pannel2: true,
                 proccedDetails: { proccedDetails }
             });
@@ -558,18 +557,18 @@ export default function CheckProceed() {
     const handleLogout = () => {
         localStorage.removeItem("otp_verified");
         sessionStorage.removeItem("pannel1");
-        localStorage.removeItem("token");
+        localStorage.removeItem("checkScore");
         setVeryfiedOTP(true);
         setShowRightPanel1(false);
         setShowRightPanel2(false);
         setDashboard(false);
     };
 
-    // Sync from sessionStorage on load
+    // Sync from Storage on load
     useEffect(() => {
         const verifiedOTP = localStorage.getItem("otp_verified");
         const panel1 = sessionStorage.getItem("pannel1");
-        const panel2 = localStorage.getItem("token");
+        const panel2 = localStorage.getItem("checkScore");
 
         setVeryfiedOTP(!verifiedOTP);
         setShowRightPanel1(!!verifiedOTP);
@@ -577,12 +576,12 @@ export default function CheckProceed() {
         setDashboard(!!panel2);
     }, []);
 
-    // Manual polling for changes in sessionStorage
+    // Manual polling for changes in Storage
     useEffect(() => {
         const interval = setInterval(() => {
             const verifiedOTP = localStorage.getItem("otp_verified");
             const panel1 = sessionStorage.getItem("pannel1");
-            const panel2 = localStorage.getItem("token");
+            const panel2 = localStorage.getItem("checkScore");
 
             setVeryfiedOTP(!verifiedOTP);
             setShowRightPanel1(!!verifiedOTP);
@@ -609,6 +608,7 @@ export default function CheckProceed() {
                     lendersHighlight="for your needs from 30+ Lenders"
                     features={featureList}
                     termsUrl="/terms"
+                    
                 />
             )}
 

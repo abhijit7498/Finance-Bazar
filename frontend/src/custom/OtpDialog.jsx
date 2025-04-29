@@ -10,12 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { MessageSquareText, PhoneCall } from "lucide-react";
 import { BsWhatsapp } from "react-icons/bs";
-import axios from "axios";
-import { AddLoacalStorage } from "@/lib/utils";
+import { SendResendOTPTomobile, VerifyOTPToMobile } from "@/machine/OTP";
 
 export default function OtpDialog({ open, setOpen, mobile, onVerified, storage }) {
     const [otp, setOtp] = useState("");
-    const [otpError, setOtpError] = useState("");
+    const [error, setError] = useState("");
     const [timer, setTimer] = useState(60);
     const [otpResent, setOtpResent] = useState(false);
 
@@ -42,49 +41,20 @@ export default function OtpDialog({ open, setOpen, mobile, onVerified, storage }
     // Verify OTP
     const handleVerifyOtp = async () => {
         if (otp.length !== 6) {
-            setOtpError("Please enter a valid 6-digit OTP.");
+            setError("Please enter a valid 6-digit OTP.");
             return;
         }
 
-        try {
-            const response = await axios.post("http://localhost:5000/verify-otp", {
-                mobile,
-                otp,
-            });
-
-            if (response.data.success) {
-                setOpen(false);
-                onVerified();
-                AddLoacalStorage(storage?.key, storage?.value);
-            } else {
-                setOtpError(response.data.message || "Invalid OTP");
-            }
-        } catch (error) {
-            console.error("Error verifying OTP:", error);
-            setOtpError(error?.response?.data?.message || "Error verifying OTP");
-        }
+        await VerifyOTPToMobile({ mobile, otp, setOpen, onVerified, setError, storage });
     };
 
     // Resend OTP
     const handleResendOtp = async (method = "sms") => {
         setOtp("");
-        setOtpError("");
+        setError("");
         setOtpResent(true);
 
-        try {
-            const response = await axios.post("http://localhost:5000/send-otp", {
-                mobile,
-                method,
-            });
-            if (response.data.success) {
-                console.log("OTP resent successfully via", method);
-            } else {
-                setOtpError(response.data.message || "Error sending OTP");
-            }
-        } catch (error) {
-            console.error("Error resending OTP:", error);
-            setOtpError("Error sending OTP. Please try again later.");
-        }
+        await SendResendOTPTomobile({ mobile, method, setError });
     };
 
     return (
@@ -103,12 +73,12 @@ export default function OtpDialog({ open, setOpen, mobile, onVerified, storage }
                         placeholder={"●".repeat(6 - otp.length)}
                         value={otp}
                         onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                        className={`border-b pb-3 text-center ${otpError ? "border-red-600" : "border-primary"
+                        className={`border-b pb-3 text-center ${error ? "border-red-600" : "border-primary"
                             } placeholder:text-gray-300 text-2xl tracking-widest focus:outline-none placeholder:text-3xl placeholder:tracking-widest`}
                         maxLength={6}
                     />
-                    {otpError && (
-                        <p className="text-red-800 text-xs text-center">{otpError}</p>
+                    {error && (
+                        <p className="text-red-800 text-xs text-center">{error}</p>
                     )}
                 </div>
 

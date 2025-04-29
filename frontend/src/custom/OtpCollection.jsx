@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from "react-router-dom";
 import OtpDialog from "./OtpDialog";
-import axios from "axios";
+import { SendOtpToMobile } from "@/machine/OTP";
 
 export default function OtpCollection({
     heading,
@@ -13,6 +13,7 @@ export default function OtpCollection({
     highlightColor = "text-blue-900",
     features = [],
     termsUrl,
+    
 }) {
     const [mobile, setMobile] = useState("");
     const [error, setError] = useState("");
@@ -29,25 +30,12 @@ export default function OtpCollection({
         setError('');
         setOpenDialog(true);
 
-        try {
-            const response = await axios.post("http://localhost:5000/send-otp", {
-                mobile: "+91" + mobile,
-            });
-
-            if (response.data.success) {
-                console.log("OTP sent successfully");
-            } else {
-                setError(response.data.message || "Error sending OTP");
-            }
-        } catch (error) {
-            console.error("Error sending OTP:", error.response || error.message);
-            setError("Error sending OTP. Please try again later.");
-        }
+        await SendOtpToMobile({ mobile: "+91" + mobile, setError });
     };
 
     const handleOtpVerified = () => {
         setOpenDialog(false);
-        navigate('apply');
+       
     };
 
     return (

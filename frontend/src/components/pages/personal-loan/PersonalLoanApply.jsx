@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TypographyH3, TypographySmall, TypographyMuted } from "@/custom/Typography";
 import { IoCheckmark } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import OtpCollection from "@/custom/OtpCollection";
 import { StepCard, InputField, SelectDropDownMenu } from "@/custom/Fields";
 
 const featureList = [
@@ -84,7 +83,6 @@ export const bankOptions = [
 ];
 
 export default function PersonalLoanApply() {
-    const [mobileRegister, setMobileRegister] = useState(false);
     const [formData, setFormData] = useState({
         employmentType: "",
         incomeRange: "",
@@ -99,18 +97,11 @@ export default function PersonalLoanApply() {
     const [step, setStep] = useState(1);
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        const verifiedOTP = sessionStorage.getItem("OTP_Verify");
-        if (verifiedOTP) {
-            setMobileRegister(true);
-            setStep(2);
-        }
-    }, []);
 
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
         setErrors((prev) => ({ ...prev, [field]: "" }));
-        if (step <= 3) {
+        if (step <= 2) {
             setStep((prev) => prev + 1);
         }
     };
@@ -161,26 +152,10 @@ export default function PersonalLoanApply() {
             {/* Right Section */}
             <div className="max-w-xl mx-auto w-full relative overflow-hidden">
                 <AnimatePresence mode="wait">
-                    {step === 1 && !mobileRegister && (
+
+                    {step === 1 && (
                         <motion.div
                             key="step1"
-                            initial={{ x: "100%", opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: "-100%", opacity: 0 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <OtpCollection
-                                heading="Unlock Best Personal Loan Offers suitable"
-                                lendersHighlight="for your needs from 30+ Lenders"
-                                features={featureList}
-                                termsUrl="/terms"
-                            />
-                        </motion.div>
-                    )}
-
-                    {step === 2 && (
-                        <motion.div
-                            key="step2"
                             initial={{ x: "100%", opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: "-100%", opacity: 0 }}
@@ -212,15 +187,15 @@ export default function PersonalLoanApply() {
                         </motion.div>
                     )}
 
-                    {step === 3 && (
+                    {step === 2 && (
                         <motion.div
-                            key="step3"
+                            key="step2"
                             initial={{ x: "100%", opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: "-100%", opacity: 0 }}
                             transition={{ duration: 0.4 }}
                         >
-                            <StepCard title="Income Range" onBack={() => setStep(2)}>
+                            <StepCard title="Income Range" onBack={() => setStep(1)}>
                                 <div className="grid gap-4">
                                     {incomeOptions?.map((option, idx) => (
                                         <div
@@ -243,15 +218,15 @@ export default function PersonalLoanApply() {
                         </motion.div>
                     )}
 
-                    {step === 4 && (
+                    {step === 3 && (
                         <motion.div
-                            key="step4"
+                            key="step3"
                             initial={{ x: "100%", opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: "-100%", opacity: 0 }}
                             transition={{ duration: 0.4 }}
                         >
-                            <StepCard title="Additional Details" onBack={() => setStep(3)}>
+                            <StepCard title="Additional Details" onBack={() => setStep(2)}>
                                 <div className="grid gap-8">
                                     <SelectDropDownMenu
                                         items={bankOptions}

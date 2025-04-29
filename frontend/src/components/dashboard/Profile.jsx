@@ -176,7 +176,7 @@ export default function Profile() {
     ];
 
     return (
-        <>
+        <div className='mx-4 sm:mx-0'>
             <TypographyH3 className="text-blue-950 text-xl font-bold tracking-normal mb-4">
                 Welcome! Amol
             </TypographyH3>
@@ -282,6 +282,6 @@ export default function Profile() {
                     </Button>
                 </div>
             )}
-        </>
+        </div>
     );
 }

@@ -4,7 +4,7 @@ import { FiArrowRight, FiStar } from 'react-icons/fi';
 import { TypographyMuted, HighLighter, TypographySmall, TypographyH2, TypographyH3 } from '@/custom/Typography';
 import { useNavigate } from 'react-router-dom';
 import OtpDialog from '@/custom/OtpDialog';
-import axios from "axios";
+import { SendOtpToMobile } from '@/machine/OTP';
 
 export default function HeroLoginCard({
     headline,
@@ -30,20 +30,7 @@ export default function HeroLoginCard({
         setError('');
         setOpenDialog(true);
 
-        try {
-            const response = await axios.post("http://localhost:5000/send-otp", {
-                mobile: "+91" + mobileNumber,
-            });
-
-            if (response.data.success) {
-                console.log("OTP sent successfully");
-            } else {
-                setError(response.data.message || "Error sending OTP");
-            }
-        } catch (error) {
-            console.error("Error sending OTP:", error.response || error.message);
-            setError("Error sending OTP. Please try again later.");
-        }
+        await SendOtpToMobile({ mobile: "+91" + mobileNumber, setError });
     };
 
     const handleOtpVerified = () => {

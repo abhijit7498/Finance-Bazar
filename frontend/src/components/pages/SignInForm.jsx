@@ -3,41 +3,20 @@ import { useNavigate } from "react-router-dom";
 import PageLayout from "@/components/layout/PageLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-} from "@/components/ui/select";
 import { TypographyH3 } from "@/custom/Typography";
 import { FaGoogle } from "react-icons/fa";
 import OtpDialog from "@/custom/OtpDialog";
 import { useContextFile } from "@/context/contextFile";
-import axios from "axios";
+import { SendOtpToMobile, initiateGoogleLogin } from "@/machine/OTP";
 
-// Country codes
-const countryCodes = [
-    { code: "+1", country: "USA" },
-    { code: "+44", country: "UK" },
-    { code: "+91", country: "India" },
-    { code: "+63", country: "Philippines" },
-    { code: "+81", country: "Japan" },
-    { code: "+61", country: "Australia" },
-    { code: "+49", country: "Germany" },
-    { code: "+86", country: "China" },
-    { code: "+971", country: "UAE" },
-    { code: "+92", country: "Pakistan" },
-];
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 export default function SignInForm() {
     const { setLoggedIn } = useContextFile();
     const [mobile, setMobile] = useState("");
-    const [selectedCode, setSelectedCode] = useState("+91");
     const [openDialog, setOpenDialog] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Handle sending OTP
     const handleLogin = async () => {
@@ -47,25 +26,25 @@ export default function SignInForm() {
         }
 
         setError("");
-        setIsSubmitting(true);
         setOpenDialog(true);
 
-        try {
-            const response = await axios.post("http://localhost:5000/send-otp", {
-                mobile: selectedCode + mobile,
-            });
+        await SendOtpToMobile({ mobile: "+91" + mobile, setError });
+    };
 
-            if (response.data.success) {
-                console.log("OTP sent successfully");
-            } else {
-                setError(response.data.message || "Error sending OTP");
-            }
-        } catch (error) {
-            console.error("Error sending OTP:", error.response || error.message);
-            setError("Error sending OTP. Please try again later.");
-        } finally {
-            setIsSubmitting(false);
-        }
+    const handleGoogleLogin = () => {
+        initiateGoogleLogin({
+            clientId: clientId,
+            onSuccess: (profile) => {
+                console.log("Google Profile:", profile);
+                localStorage.setItem("token", JSON.stringify(profile));
+                setLoggedIn(true);
+                navigate("/myaccount/dashboard");
+            },
+            onError: (errMsg) => {
+                console.error("Google Login Error:", errMsg);
+                setError(errMsg);
+            },
+        });
     };
 
     return (
@@ -83,7 +62,7 @@ export default function SignInForm() {
                             Login to your account
                         </TypographyH3>
 
-                        <button className="w-full border border-gray-300 rounded-md py-2 cursor-pointer flex items-center justify-center gap-2 text-sm hover:bg-gray-50">
+                        <button onClick={handleGoogleLogin} className="w-full border border-gray-300 rounded-md py-2 cursor-pointer flex items-center justify-center gap-2 text-sm hover:bg-gray-50">
                             <FaGoogle />
                             Continue with Google
                         </button>
@@ -96,21 +75,9 @@ export default function SignInForm() {
                             <hr className="flex-1 border-gray-300" />
                         </div>
 
-                        {/* Mobile input with select */}
+                        {/* Mobile input with hardcoded +91 */}
                         <div className="flex items-center gap-2 border border-gray-300 rounded-md overflow-hidden focus-within:ring focus-within:ring-primary transition mt-6">
-                            <Select value={selectedCode} onValueChange={setSelectedCode}>
-                                <SelectTrigger className="w-24 border-none font-semibold text-blue-950 rounded-none h-full">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {countryCodes.map(({ code }) => (
-                                        <SelectItem key={code} value={code} className="text-xs font-semibold">
-                                            {code}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-
+                            <div className="pl-3 pr-2 font-semibold text-blue-950 text-sm">+91</div>
                             <input
                                 type="tel"
                                 placeholder="Enter mobile number"
@@ -121,7 +88,7 @@ export default function SignInForm() {
                                     const value = e.target.value.replace(/\D/g, "");
                                     setMobile(value);
                                     if (value.length === 10) {
-                                        setError(""); // remove error while typing
+                                        setError("");
                                     }
                                 }}
                             />
@@ -134,20 +101,19 @@ export default function SignInForm() {
                             onClick={handleLogin}
                             type="submit"
                             className="w-full mt-6 cursor-pointer"
-                            disabled={isSubmitting}
                         >
-                            {isSubmitting ? "Sending OTP..." : "Send with OTP"}
+                            Send with OTP
                         </Button>
 
                         {/* OTP Dialog */}
                         <OtpDialog
                             open={openDialog}
                             setOpen={setOpenDialog}
-                            mobile={selectedCode + mobile}
+                            mobile={"+91" + mobile}
                             onVerified={() => {
                                 localStorage.setItem(
                                     "token",
-                                    JSON.stringify({ mobile, countryCode: selectedCode })
+                                    JSON.stringify({ mobile, countryCode: "+91" })
                                 );
                                 setLoggedIn(true);
                                 navigate("/myaccount/dashboard");
