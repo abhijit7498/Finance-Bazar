@@ -101,7 +101,7 @@ export default function Header() {
 
   return (
     <header
-      className={`w-full sticky top-0 z-40 transition-all duration-300
+      className={`w-full sticky top-0 z-30 transition-all duration-300
       ${isScrolled ? 'bg-white/80 backdrop-blur border-b border-gray-200' : 'bg-white/30 backdrop-blur'}`}
       id="home"
     >

@@ -1,41 +1,53 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TypographyH3, TypographyMuted, TypographySmall } from "./Typography";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Link } from "react-router-dom";
-import { generateOTP } from "@/lib/utils";
+import { Link, useNavigate } from "react-router-dom";
 import OtpDialog from "./OtpDialog";
+import axios from "axios";
 
 export default function OtpCollection({
     heading,
     lendersHighlight,
     highlightColor = "text-blue-900",
     features = [],
-    onSubmit,
     termsUrl,
 }) {
     const [mobile, setMobile] = useState("");
     const [error, setError] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleCheckOffers = async (e) => {
         e.preventDefault();
-        const regex = /^[6-9]\d{9}$/;
-
-        if (!regex.test(mobile)) {
-            setError("Error: Please enter valid 10-digit Indian mobile number");
+        if (mobile.length !== 10) {
+            setError("Please enter a valid 10-digit mobile number.");
             return;
         }
 
-        setError("");
-        generateOTP();
+        setError('');
         setOpenDialog(true);
-        onSubmit?.({ mobile });
+
+        try {
+            const response = await axios.post("http://localhost:5000/send-otp", {
+                mobile: "+91" + mobile,
+            });
+
+            if (response.data.success) {
+                console.log("OTP sent successfully");
+            } else {
+                setError(response.data.message || "Error sending OTP");
+            }
+        } catch (error) {
+            console.error("Error sending OTP:", error.response || error.message);
+            setError("Error sending OTP. Please try again later.");
+        }
     };
 
     const handleOtpVerified = () => {
-        setMobile("");
+        setOpenDialog(false);
+        navigate('apply');
     };
 
     return (
@@ -58,19 +70,27 @@ export default function OtpCollection({
             </ul>
 
             {/* Form */}
-            <form className="mt-8" onSubmit={handleSubmit}>
+            <form className="mt-8" onSubmit={handleCheckOffers}>
                 <div>
                     <Label className="opacity-85">Mobile Number</Label>
                     <div className="flex items-center mt-3 justify-between px-2 gap-2 border-b-2 pb-2 w-full text-base font-semibold">
                         <div className="flex items-center gap-2">
                             <TypographySmall>+91</TypographySmall>
                             <input
-                                type="text"
-                                placeholder="xxxxxxxxxx"
+                                type="tel"
+                                placeholder="Mobile Number"
+                                className="text-sm focus:outline-none font-semibold w-full"
                                 value={mobile}
-                                onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
                                 maxLength={10}
-                                className="focus:outline-none font-semibold opacity-85"
+                                onChange={(e) => {
+                                    setMobile(e.target.value.replace(/\D/g, ''));
+                                    setError('');
+                                }}
+                                onKeyPress={(e) => {
+                                    if (!/[0-9]/.test(e.key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                         </div>
                         <span className="text-muted-foreground font-semibold text-[10px]">
@@ -105,14 +125,11 @@ export default function OtpCollection({
             <OtpDialog
                 open={openDialog}
                 setOpen={setOpenDialog}
-                mobile={mobile}
+                mobile={"+91" + mobile}
                 onVerified={handleOtpVerified}
-                sessionStorage={{
-                    key: "OTP_Verify",
-                    value: {
-                        OTP_Verify: true,
-                        phoneNumber: mobile,
-                    },
+                storage={{
+                    key: "otp_verified",
+                    value: true
                 }}
             />
         </div>

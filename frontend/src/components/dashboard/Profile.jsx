@@ -13,7 +13,8 @@ import {
 import { TypographyH3, TypographyH4 } from '@/custom/Typography';
 import { InputField } from '@/custom/Fields';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useState, useEffect } from 'react';
 import { employmentOptions } from '../pages/personal-loan/PersonalLoanApply';
 
 export default function Profile() {
@@ -31,6 +32,13 @@ export default function Profile() {
     });
 
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    // Show Skeleton for 2.5 seconds
+    useEffect(() => {
+        const timer = setTimeout(() => setLoading(false), 2500);
+        return () => clearTimeout(timer);
+    }, []);
 
     const maskPanNumber = (pan) => {
         return pan.length === 10
@@ -78,24 +86,16 @@ export default function Profile() {
         let error = '';
         switch (name) {
             case 'email':
-                error = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)
-                    ? ''
-                    : 'Enter a valid email.';
+                error = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) ? '' : 'Enter a valid email.';
                 break;
             case 'mobile':
-                error = /^\d{10}$/.test(value)
-                    ? ''
-                    : 'Mobile number must be 10 digits.';
+                error = /^\d{10}$/.test(value) ? '' : 'Mobile number must be 10 digits.';
                 break;
             case 'pinCode':
-                error = /^\d{6}$/.test(value)
-                    ? ''
-                    : 'Pin code must be 6 digits.';
+                error = /^\d{6}$/.test(value) ? '' : 'Pin code must be 6 digits.';
                 break;
             case 'panNumber':
-                error = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(value)
-                    ? ''
-                    : 'Invalid PAN (ABCDE1234F).';
+                error = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(value) ? '' : 'Invalid PAN (ABCDE1234F).';
                 break;
             default:
                 if (!value.trim()) error = 'This field is required.';
@@ -166,54 +166,13 @@ export default function Profile() {
     };
 
     const fields = [
-        {
-            label: 'Name',
-            name: 'name',
-            iconLeft: User,
-            iconRight: LockKeyhole,
-            placeholder: 'Enter your full name',
-        },
-        {
-            label: 'Date of Birth',
-            name: 'dob',
-            iconLeft: Calendar,
-            iconRight: LockKeyhole,
-            placeholder: 'DD-MM-YYYY',
-        },
-        {
-            label: 'Email',
-            name: 'email',
-            iconLeft: Mail,
-            placeholder: 'Enter your email address',
-        },
-        {
-            label: 'Mobile Number',
-            name: 'mobile',
-            iconLeft: Phone,
-            iconRight: LockKeyhole,
-            placeholder: 'Enter your mobile number',
-        },
-        {
-            label: 'Address',
-            name: 'address',
-            iconLeft: Map,
-            iconRight: LockKeyhole,
-            placeholder: 'Enter your current address',
-        },
-        {
-            label: 'Pin Code',
-            name: 'pinCode',
-            iconLeft: MapPin,
-            iconRight: LockKeyhole,
-            placeholder: 'Enter your 6-digit pin code',
-        },
-        {
-            label: 'PAN Number',
-            name: 'panNumber',
-            iconLeft: LockKeyhole,
-            iconRight: LockKeyhole,
-            placeholder: 'ABCDE1234F',
-        },
+        { label: 'Name', name: 'name', iconLeft: User, iconRight: LockKeyhole, placeholder: 'Enter your full name' },
+        { label: 'Date of Birth', name: 'dob', iconLeft: Calendar, iconRight: LockKeyhole, placeholder: 'DD-MM-YYYY' },
+        { label: 'Email', name: 'email', iconLeft: Mail, placeholder: 'Enter your email address' },
+        { label: 'Mobile Number', name: 'mobile', iconLeft: Phone, iconRight: LockKeyhole, placeholder: 'Enter your mobile number' },
+        { label: 'Address', name: 'address', iconLeft: Map, iconRight: LockKeyhole, placeholder: 'Enter your current address' },
+        { label: 'Pin Code', name: 'pinCode', iconLeft: MapPin, iconRight: LockKeyhole, placeholder: 'Enter your 6-digit pin code' },
+        { label: 'PAN Number', name: 'panNumber', iconLeft: LockKeyhole, iconRight: LockKeyhole, placeholder: 'ABCDE1234F' },
     ];
 
     return (
@@ -229,29 +188,33 @@ export default function Profile() {
                 </TypographyH4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
-                    {fields.map(({ label, name, iconLeft, iconRight, placeholder }) => (
-                        <InputField
-                            key={name}
-                            label={label}
-                            name={name}
-                            value={formData[name]}
-                            onChange={handleChange}
-                            error={errors[name]}
-                            type="text"
-                            iconLeft={iconLeft}
-                            iconRight={iconRight}
-                            placeholder={placeholder}
-                            maxLength={
-                                name === 'mobile'
-                                    ? 10
-                                    : name === 'pinCode'
-                                        ? 6
-                                        : name === 'dob'
-                                            ? 10
-                                            : undefined
-                            }
-                        />
-                    ))}
+                    {loading
+                        ? Array.from({ length: 6 }).map((_, idx) => (
+                            <Skeleton key={idx} className="h-16 w-full rounded-md" />
+                        ))
+                        : fields.map(({ label, name, iconLeft, iconRight, placeholder }) => (
+                            <InputField
+                                key={name}
+                                label={label}
+                                name={name}
+                                value={formData[name]}
+                                onChange={handleChange}
+                                error={errors[name]}
+                                type="text"
+                                iconLeft={iconLeft}
+                                iconRight={iconRight}
+                                placeholder={placeholder}
+                                maxLength={
+                                    name === 'mobile'
+                                        ? 10
+                                        : name === 'pinCode'
+                                            ? 6
+                                            : name === 'dob'
+                                                ? 10
+                                                : undefined
+                                }
+                            />
+                        ))}
                 </div>
             </div>
 
@@ -262,51 +225,63 @@ export default function Profile() {
                 </TypographyH4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
-                    <InputField
-                        label="Employment Type"
-                        name="employmentType"
-                        value={formData.employmentType}
-                        onChange={(e) =>
-                            setFormData((prev) => ({
-                                ...prev,
-                                employmentType: e.target.value,
-                            }))
-                        }
-                        type="select"
-                        options={employmentOptions}
-                        iconLeft={BriefcaseBusiness}
-                        placeholder="Select Employment Type"
-                    />
+                    {loading ? (
+                        <>
+                            <Skeleton className="h-16 w-full rounded-md" />
+                            <Skeleton className="h-16 w-full rounded-md" />
+                            <Skeleton className="h-16 w-full rounded-md" />
+                        </>
+                    ) : (
+                        <>
+                            <InputField
+                                label="Employment Type"
+                                name="employmentType"
+                                value={formData.employmentType}
+                                onChange={(e) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        employmentType: e.target.value,
+                                    }))
+                                }
+                                type="select"
+                                options={employmentOptions}
+                                iconLeft={BriefcaseBusiness}
+                                placeholder="Select Employment Type"
+                            />
 
-                    <InputField
-                        label="Employer Name"
-                        name="employerName"
-                        value={formData.employerName}
-                        onChange={handleChange}
-                        type="text"
-                        iconLeft={Landmark}
-                        placeholder="Your Company Name"
-                        error={errors.employerName}
-                    />
+                            <InputField
+                                label="Employer Name"
+                                name="employerName"
+                                value={formData.employerName}
+                                onChange={handleChange}
+                                type="text"
+                                iconLeft={Landmark}
+                                placeholder="Your Company Name"
+                                error={errors.employerName}
+                            />
 
-                    <InputField
-                        label="Monthly Income"
-                        name="monthlyIncome"
-                        value={formData.monthlyIncome}
-                        onChange={handleChange}
-                        type="text"
-                        iconLeft={BanknoteArrowUp}
-                        placeholder="Your Monthly Income"
-                        error={errors.monthlyIncome}
-                    />
+                            <InputField
+                                label="Monthly Income"
+                                name="monthlyIncome"
+                                value={formData.monthlyIncome}
+                                onChange={handleChange}
+                                type="text"
+                                iconLeft={BanknoteArrowUp}
+                                placeholder="Your Monthly Income"
+                                error={errors.monthlyIncome}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
 
-            <div className="text-right mb-20 mt-8">
-                <Button onClick={handleSave} className="px-10">
-                    Save Profile
-                </Button>
-            </div>
+            {!loading && (
+                <div className="text-right mb-20 mt-8">
+                    <Button onClick={handleSave} className="px-10">
+                        Save Profile
+                    </Button>
+                </div>
+            )}
         </>
     );
 }

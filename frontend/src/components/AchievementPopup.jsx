@@ -55,13 +55,13 @@ export default function AchievementPopup({ onClose }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="fixed inset-0 pointer-events-none"
+                        className="fixed inset-0 z-50 pointer-events-none"
                     >
                         <Confetti width={windowSize.width} height={windowSize.height} />
                     </motion.div>
 
                     {/* Backdrop */}
-                    <div className="fixed inset-0 z-50 bg-black/40" />
+                    <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm" />
 
                     {/* Popup Container */}
                     <div className="fixed top-1/2 left-1/2 z-50 w-[80%] sm:w-[300px] max-w-4xl -translate-x-1/2 -translate-y-1/2 flex justify-center items-center flex-col">

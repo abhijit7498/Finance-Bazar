@@ -28,8 +28,8 @@ import { MdSecurity } from "react-icons/md";
 import { IoCheckmark } from "react-icons/io5";
 import { motion } from 'framer-motion'
 import OtpCollection from '@/custom/OtpCollection'
-import { AddLoacalStorage, generateOTP } from '@/lib/utils'
-import OtpDialog from '@/custom/OtpDialog'
+import { AddLoacalStorage } from '@/lib/utils'
+import { AddSessionStorage } from '../../../lib/utils'
 
 const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
@@ -141,11 +141,11 @@ const RightPannel1 = ({ formData, setFormData }) => {
 
     // Load OTP verification state from sessionStorage on mount
     useEffect(() => {
-        const storedData = sessionStorage.getItem("OTP_Verify");
+        const storedData = sessionStorage.getItem("otp_verified");
         if (storedData) {
             try {
                 const parsed = JSON.parse(storedData);
-                if (parsed.OTP_Verify && parsed.phoneNumber) {
+                if (parsed.otp_verified && parsed.phoneNumber) {
                     setFormData((prev) => ({ ...prev, phone: parsed.phoneNumber }));
                     setIsPhoneDisabled(true);
                 }
@@ -183,13 +183,18 @@ const RightPannel1 = ({ formData, setFormData }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            setOpenDialog(true);
-            generateOTP();
+            AddSessionStorage("pannel1", {
+                key: "pannel1",
+                value: {
+                    pannel1: true,
+                    formData: formData,
+                },
+            });
         }
     };
 
     return (
-        <div className='max-w-md mx-auto flex sm:justify-center gap-3 flex-col px-4 sm:py-8'>
+        <div className='max-w-md sm:mx-auto flex sm:justify-center gap-3 flex-col px-4 sm:py-8'>
             {/* Top Sign In Button */}
             <div className='sm:flex hidden justify-end'>
                 <Link to='/sign-in'>
@@ -312,20 +317,6 @@ const RightPannel1 = ({ formData, setFormData }) => {
                     </form>
                 </CardContent>
             </Card>
-
-            {/* OTP Dialog */}
-            <OtpDialog
-                open={openDialog}
-                setOpen={setOpenDialog}
-                mobile={formData.phone}
-                sessionStorage={{
-                    key: "pannel1",
-                    value: {
-                        pannel1: true,
-                        formData: formData,
-                    },
-                }}
-            />
         </div>
     );
 };
@@ -565,7 +556,7 @@ export default function CheckProceed() {
 
     // Logout handler
     const handleLogout = () => {
-        sessionStorage.removeItem("OTP_Verify");
+        localStorage.removeItem("otp_verified");
         sessionStorage.removeItem("pannel1");
         localStorage.removeItem("token");
         setVeryfiedOTP(true);
@@ -576,7 +567,7 @@ export default function CheckProceed() {
 
     // Sync from sessionStorage on load
     useEffect(() => {
-        const verifiedOTP = sessionStorage.getItem("OTP_Verify");
+        const verifiedOTP = localStorage.getItem("otp_verified");
         const panel1 = sessionStorage.getItem("pannel1");
         const panel2 = localStorage.getItem("token");
 
@@ -589,7 +580,7 @@ export default function CheckProceed() {
     // Manual polling for changes in sessionStorage
     useEffect(() => {
         const interval = setInterval(() => {
-            const verifiedOTP = sessionStorage.getItem("OTP_Verify");
+            const verifiedOTP = localStorage.getItem("otp_verified");
             const panel1 = sessionStorage.getItem("pannel1");
             const panel2 = localStorage.getItem("token");
 
@@ -602,9 +593,6 @@ export default function CheckProceed() {
         return () => clearInterval(interval);
     }, []);
 
-    const handleOtpSubmit = (data) => {
-        console.log("User submitted:", data);
-    };
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full h-screen sm:overflow-y-hidden'>
@@ -617,10 +605,9 @@ export default function CheckProceed() {
             {/* OTP Collection Panel */}
             {veryfiedOTP && !showRightPanel1 && (
                 <OtpCollection
-                    heading="Unlock Best Personal Loan Offers suitable"
+                    heading="Unlock Best Offers suitable"
                     lendersHighlight="for your needs from 30+ Lenders"
                     features={featureList}
-                    onSubmit={handleOtpSubmit}
                     termsUrl="/terms"
                 />
             )}
