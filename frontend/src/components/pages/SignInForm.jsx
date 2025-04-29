@@ -11,10 +11,10 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 import { TypographyH3 } from "@/custom/Typography";
-import { generateOTP } from "@/lib/utils";
 import { FaGoogle } from "react-icons/fa";
 import OtpDialog from "@/custom/OtpDialog";
 import { useContextFile } from "@/context/contextFile";
+import axios from "axios";
 
 // Country codes
 const countryCodes = [
@@ -37,16 +37,35 @@ export default function SignInForm() {
     const [openDialog, setOpenDialog] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleLogin = () => {
+    // Handle sending OTP
+    const handleLogin = async () => {
         if (mobile.length !== 10) {
             setError("Please enter a valid 10-digit mobile number.");
             return;
         }
 
         setError("");
+        setIsSubmitting(true);
         setOpenDialog(true);
-        generateOTP();
+
+        try {
+            const response = await axios.post("http://localhost:5000/send-otp", {
+                mobile: selectedCode + mobile,
+            });
+
+            if (response.data.success) {
+                console.log("OTP sent successfully");
+            } else {
+                setError(response.data.message || "Error sending OTP");
+            }
+        } catch (error) {
+            console.error("Error sending OTP:", error.response || error.message);
+            setError("Error sending OTP. Please try again later.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -85,7 +104,7 @@ export default function SignInForm() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     {countryCodes.map(({ code }) => (
-                                        <SelectItem key={code} value={code} className="text-xs font-semibold ">
+                                        <SelectItem key={code} value={code} className="text-xs font-semibold">
                                             {code}
                                         </SelectItem>
                                     ))}
@@ -115,15 +134,16 @@ export default function SignInForm() {
                             onClick={handleLogin}
                             type="submit"
                             className="w-full mt-6 cursor-pointer"
+                            disabled={isSubmitting}
                         >
-                            Send with OTP
+                            {isSubmitting ? "Sending OTP..." : "Send with OTP"}
                         </Button>
 
                         {/* OTP Dialog */}
                         <OtpDialog
                             open={openDialog}
                             setOpen={setOpenDialog}
-                            mobile={mobile}
+                            mobile={selectedCode + mobile}
                             onVerified={() => {
                                 localStorage.setItem(
                                     "token",

@@ -71,7 +71,6 @@ export function AddLoacalStorage(key, value) {
   localStorage.setItem(key, stringified);
 }
 
-
 export function calculateEMI(P: number, R: number, N: number): number {
   const r = R / (12 * 100);
   const n = N * 12;
