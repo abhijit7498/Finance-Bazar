@@ -21,7 +21,7 @@ import {
     TypographyH4,
     TypographyList
 } from '@/custom/Typography'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { FiUser } from 'react-icons/fi'
 import { FaWhatsapp } from "react-icons/fa"
 import { MdSecurity } from "react-icons/md";
@@ -323,6 +323,8 @@ const RightPannel1 = ({ formData, setFormData }) => {
 const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
     const [errors, setErrors] = useState({});
 
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -390,10 +392,11 @@ const RightPannel2 = ({ proccedDetails, setProccedDetails, onLogout }) => {
         e.preventDefault();
         if (validate()) {
             console.log("Submitted Data:", proccedDetails);
-            AddLoacalStorage("checkScore", {
+            AddLoacalStorage("token", {
                 pannel2: true,
                 proccedDetails: { proccedDetails }
             });
+            navigate('/myaccount/dashboard')
         }
     };
 
@@ -557,7 +560,7 @@ export default function CheckProceed() {
     const handleLogout = () => {
         localStorage.removeItem("otp_verified");
         sessionStorage.removeItem("pannel1");
-        localStorage.removeItem("checkScore");
+        localStorage.removeItem("token");
         setVeryfiedOTP(true);
         setShowRightPanel1(false);
         setShowRightPanel2(false);
@@ -568,7 +571,7 @@ export default function CheckProceed() {
     useEffect(() => {
         const verifiedOTP = localStorage.getItem("otp_verified");
         const panel1 = sessionStorage.getItem("pannel1");
-        const panel2 = localStorage.getItem("checkScore");
+        const panel2 = localStorage.getItem("token");
 
         setVeryfiedOTP(!verifiedOTP);
         setShowRightPanel1(!!verifiedOTP);
@@ -581,7 +584,7 @@ export default function CheckProceed() {
         const interval = setInterval(() => {
             const verifiedOTP = localStorage.getItem("otp_verified");
             const panel1 = sessionStorage.getItem("pannel1");
-            const panel2 = localStorage.getItem("checkScore");
+            const panel2 = localStorage.getItem("token");
 
             setVeryfiedOTP(!verifiedOTP);
             setShowRightPanel1(!!verifiedOTP);
@@ -608,7 +611,7 @@ export default function CheckProceed() {
                     lendersHighlight="for your needs from 30+ Lenders"
                     features={featureList}
                     termsUrl="/terms"
-                    
+
                 />
             )}
 

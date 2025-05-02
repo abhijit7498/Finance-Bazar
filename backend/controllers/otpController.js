@@ -1,31 +1,13 @@
-// server.js
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
 const twilio = require('twilio');
+const { generateOtp, otpStore } = require('../utils/otpUtils');
 
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Middlewares
-app.use(cors());
-app.use(bodyParser.json());
-
-// Twilio Config
+// Initialize Twilio client with your Twilio SID and Auth Token
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;  
+const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATAPPS_NUMBER; 
 
-// In-memory OTP storage (You should use a database like Redis for production)
-const otpStore = {};
-
-// Helper: Generate 6-digit OTP
-function generateOtp() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// Send OTP Endpoint
-app.post('/send-otp', async (req, res) => {
+// Send OTP Function
+exports.sendOtp = async (req, res) => {
     try {
         const { mobile, method = "sms" } = req.body;
 
@@ -33,29 +15,52 @@ app.post('/send-otp', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Mobile number is required.' });
         }
 
-        // Mobile format check
+        // Validate mobile number format
         if (!/^\+?[1-9]\d{7,14}$/.test(mobile)) {
             return res.status(400).json({ success: false, message: 'Invalid mobile number format.' });
         }
 
+        // Generate OTP
         const otp = generateOtp();
         otpStore[mobile] = otp;
 
-        const messageBody = `Hello! Your OTP for Finances Bazar is ${otp}.`;
+        const messageBody = `${otp} is your verification code. For your security, do not share this code.`;
 
+        // Send OTP via WhatsApp
         if (method === "whatsapp") {
-            await twilioClient.messages.create({
+            if (!TWILIO_WHATSAPP_NUMBER) {
+                return res.status(500).json({ success: false, message: 'Twilio WhatsApp number is not configured properly.' });
+            }
+
+            // Send WhatsApp message
+            const response = await twilioClient.messages.create({
                 body: messageBody,
-                from: `whatsapp:${TWILIO_PHONE_NUMBER}`,
-                to: `whatsapp:${mobile}`,
+                from: `whatsapp:${TWILIO_WHATSAPP_NUMBER}`,  
+                to: `whatsapp:${mobile}`, 
             });
-        } else if (method === "call") {
-            await twilioClient.calls.create({
-                twiml: `<Response><Say>Your verification code is ${otp}</Say></Response>`,
-                from: TWILIO_PHONE_NUMBER,
-                to: mobile,
+
+            console.log("WhatsApp OTP sent:", response.sid);
+        }
+        // Send OTP via Call (Voice)
+        else if (method === "call") {
+            if (!TWILIO_PHONE_NUMBER) {
+                return res.status(500).json({ success: false, message: 'Twilio phone number is not configured properly.' });
+            }
+
+            // Create TwiML response to send via voice call
+            const twimlResponse = `<Response><Say>Your verification code is ${otp}. Please do not share it with anyone for security purposes.</Say></Response>`;
+
+            // Make the call and provide the TwiML response
+            const call = await twilioClient.calls.create({
+                twiml: twimlResponse,
+                from: TWILIO_PHONE_NUMBER, 
+                to: mobile, 
             });
-        } else {
+
+            console.log("Voice OTP call sent:", call.sid);
+        }
+        // Send OTP via SMS
+        else {
             await twilioClient.messages.create({
                 body: messageBody,
                 from: TWILIO_PHONE_NUMBER,
@@ -70,10 +75,10 @@ app.post('/send-otp', async (req, res) => {
         console.error('Error sending OTP:', error.message);
         res.status(500).json({ success: false, message: 'Failed to send OTP. Please try again.' });
     }
-});
+};
 
-// Verify OTP Endpoint
-app.post('/verify-otp', (req, res) => {
+// Verify OTP Function
+exports.verifyOtp = (req, res) => {
     try {
         const { mobile, otp } = req.body;
 
@@ -91,7 +96,6 @@ app.post('/verify-otp', (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid OTP.' });
         }
 
-        // OTP is correct - Optionally delete it after verification
         delete otpStore[mobile];
 
         return res.json({ success: true, message: 'OTP verified successfully.' });
@@ -100,14 +104,4 @@ app.post('/verify-otp', (req, res) => {
         console.error('Error verifying OTP:', error.message);
         res.status(500).json({ success: false, message: 'Failed to verify OTP.' });
     }
-});
-
-// Root endpoint
-app.get('/', (req, res) => {
-    res.send('OTP Backend is running.');
-});
-
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+};

@@ -9,6 +9,8 @@ export const ContextProvider = ({ children }) => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("otp_verified");
+        sessionStorage.removeItem("pannel1");
         setLoggedIn(false);
     };
 
