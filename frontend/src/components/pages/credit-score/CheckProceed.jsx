@@ -30,6 +30,7 @@ import { motion } from 'framer-motion'
 import OtpCollection from '@/custom/OtpCollection'
 import { AddLoacalStorage } from '@/lib/utils'
 import { AddSessionStorage } from '@/lib/utils'
+import { userData } from '../../../machine/userData'
 
 const MobileHeader = ({ showRightPanel2, onLogout }) => {
     return (
@@ -179,16 +180,17 @@ const RightPannel1 = ({ formData, setFormData }) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            AddSessionStorage("pannel1", {
-                key: "pannel1",
-                value: {
-                    pannel1: true,
-                    formData: formData,
-                },
-            });
+            // AddSessionStorage("pannel1", {
+            //     key: "pannel1",
+            //     value: {
+            //         pannel1: true,
+            //         formData: formData,
+            //     },
+            // });
+            await userData(formData)
         }
     };
 
