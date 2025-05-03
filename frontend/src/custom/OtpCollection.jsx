@@ -3,7 +3,7 @@ import { TypographyH3, TypographyMuted, TypographySmall } from "./Typography";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import OtpDialog from "./OtpDialog";
 import { SendOtpToMobile } from "@/machine/OTP";
 
@@ -13,12 +13,11 @@ export default function OtpCollection({
     highlightColor = "text-blue-900",
     features = [],
     termsUrl,
-    
+    onOtpSuccess
 }) {
     const [mobile, setMobile] = useState("");
     const [error, setError] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
-    const navigate = useNavigate();
 
     const handleCheckOffers = async (e) => {
         e.preventDefault();
@@ -35,7 +34,10 @@ export default function OtpCollection({
 
     const handleOtpVerified = () => {
         setOpenDialog(false);
-       
+
+        if (typeof onOtpSuccess === 'function') {
+            onOtpSuccess();
+        }
     };
 
     return (

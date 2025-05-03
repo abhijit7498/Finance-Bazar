@@ -1,36 +1,45 @@
-import { TypographyH2BlueColor, TypographyH4, TypographyH4BlueColor, TypographyMuted, TypographyP, TypographyPBlueColor, TypographySmall } from "../../../custom/Typography";
+import {
+    TypographyH2BlueColor,
+    TypographyMuted,
+    TypographyP,
+    TypographyPBlueColor,
+    TypographySmall
+} from "@/custom/Typography";
 import { IoIosStarOutline } from "react-icons/io";
 import { MdOutlineLocalPhone } from 'react-icons/md';
 import { FaWhatsapp } from 'react-icons/fa';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BiMessageDetail } from "react-icons/bi";
 import { Switch } from "@/components/ui/switch"
+import { useContextFile } from '@/context/contextFile';
 
-
-const notificationsPannel = [
-    {
-        name: "SMS",
-        icon: <BiMessageDetail size={20} />,
-        notificationActive: true
-    },
-    {
-        name: "WhatApps",
-        icon: <FaWhatsapp size={20} />,
-        notificationActive: true
-    },
-    {
-        name: "Call",
-        icon: <MdOutlineLocalPhone size={20} />,
-        notificationActive: true
-    },
-    {
-        name: "Email",
-        icon: <AiOutlineMail size={20} />,
-        notificationActive: true
-    },
-]
 
 export default function Preferences() {
+    const { user, setUser } = useContextFile();
+
+    const notificationsPannel = [
+        {
+            name: "SMS",
+            icon: <BiMessageDetail size={20} />,
+            notificationActive: user?.SMSNotification
+        },
+        {
+            name: "WhatApps",
+            icon: <FaWhatsapp size={20} />,
+            notificationActive: user?.whatAppNotification
+        },
+        {
+            name: "Call",
+            icon: <MdOutlineLocalPhone size={20} />,
+            notificationActive: user?.CallNotification
+        },
+        {
+            name: "Email",
+            icon: <AiOutlineMail size={20} />,
+            notificationActive: user?.EmailNotification
+        },
+    ]
+
     return (
         <div className="bg-white p-6 sm:rounded-md shadow-sm">
             <TypographyH2BlueColor className="mt-0 mb-2 tracking-wide">
@@ -46,14 +55,14 @@ export default function Preferences() {
                 </TypographyMuted>
                 <div className="flex justify-between items-center mt-2">
                     <TypographyP className="tracking-wider text-sm text-blue-950 font-medium">
-                        +91-9673170912
+                        +91-{user?.phone}
                     </TypographyP>
                     <IoIosStarOutline size={22} className="text-green-600" />
                 </div>
             </div>
 
             <TypographyMuted className="mt-4">
-                Your email address is <span className="font-semibold text-black/80">amolmahor500@gmail.com</span>
+                Your email address is <span className="font-semibold text-black/80">{user?.email}</span>
             </TypographyMuted>
             <TypographyPBlueColor>
                 Manage notifications for important updates on Credit Report, Loans and Cards offers, payment reminders and more

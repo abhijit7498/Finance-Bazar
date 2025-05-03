@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { RiUserLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { useContextFile } from "@/context/contextFile";
 import { RiMenu2Fill } from "react-icons/ri";
 
-export default function Navbar({ setSidebarOpen }) {
-    const { handleLogout } = useContextFile();
+export default function Navbar({ setSidebarOpen, user, handleLogout }) {
 
     return (
         <div className='w-full bg-white h-16 fixed top-0 left-0 z-50 shadow'>
@@ -27,9 +25,9 @@ export default function Navbar({ setSidebarOpen }) {
 
                 {/* Right - Profile */}
                 <Link to="/myaccount/profile">
-                    <Button size="sm" variant="secondary" className="text-blue-950 px-6 flex gap-1">
-                        <RiUserLine />
-                        Amol
+                    <Button size="sm" variant="secondary" className="text-blue-950 px-6 flex gap-1 capitalize">
+                        <RiUserLine/>
+                        {user?.name?.split(' ')[0] || ''}
                     </Button>
                 </Link>
             </div>

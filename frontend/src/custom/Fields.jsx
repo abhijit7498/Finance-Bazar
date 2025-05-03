@@ -12,7 +12,8 @@ export const InputField = ({
     error = '',
     iconLeft: IconLeft,
     iconRight: IconRight,
-    options = []
+    options = [],
+    disabled = false,
 }) => {
     const isSelect = type === 'select';
 
@@ -27,8 +28,8 @@ export const InputField = ({
                         name={name}
                         value={value}
                         onChange={onChange}
-                        className={`flex-1 outline-none cursor-pointer bg-transparent text-sm ${value ? 'text-blue-950 font-semibold' : 'text-muted-foreground'
-                            }`}
+                        className={`flex-1 outline-none cursor-pointer bg-transparent text-sm ${disabled ? ' text-gray-700 font-medium' : 'text-blue-950 font-semibold'}`}
+                        disabled={disabled}
                     >
                         <option value="" disabled hidden>
                             {label}
@@ -41,12 +42,18 @@ export const InputField = ({
                     </select>
                 ) : (
                     <input
-                        className="flex-1 capitalize outline-none bg-transparent placeholder:text-xs text-sm text-blue-950 font-semibold"
+                        className={`flex-1 outline-none bg-transparent placeholder:text-xs text-sm ${disabled
+                                ? 'text-gray-700 font-medium'
+                                : type === 'email'
+                                    ? 'text-blue-950 font-normal lowercase'
+                                    : 'text-blue-950 font-semibold capitalize'
+                            }`}
                         type={type}
                         name={name}
-                        value={value}
+                        value={type === 'email' ? value.toLowerCase() : value}
                         onChange={onChange}
                         placeholder={placeholder}
+                        disabled={disabled}
                     />
                 )}
 
@@ -58,7 +65,7 @@ export const InputField = ({
 };
 
 export const StepCard = ({ title, children, onBack }) => (
-    <Card className="shadow-none border-none">
+    <Card className="shadow-none border-none sm:mt-3">
         <CardHeader>
             {onBack && (
                 <div
@@ -68,7 +75,7 @@ export const StepCard = ({ title, children, onBack }) => (
                     <IoIosArrowBack />
                 </div>
             )}
-            <CardTitle className="text-lg text-blue-800 sm:mt-8">{title}</CardTitle>
+            <CardTitle className="text-lg text-blue-800 sm:mt-2">{title}</CardTitle>
         </CardHeader>
         <CardContent className="overflow-y-auto max-h-[80vh] pb-12">{children}</CardContent>
     </Card>

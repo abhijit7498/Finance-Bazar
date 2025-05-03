@@ -98,3 +98,23 @@ export function generateEmiTable(P: number, R: number, N: number, emi: number) {
 
   return result;
 }
+
+export function formatDateDDMMYYYY(dateStr) {
+  const date = new Date(dateStr);
+  const day = date.getDate();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = monthNames[date.getMonth()];
+  const year = String(date.getFullYear()).slice(-2);
+
+  return `${day} ${month}' ${year}`;
+}
+
+export function formatDateMMYY(dateStr) {
+  const date = new Date(dateStr);
+  const day = date.getDate();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = monthNames[date.getMonth()];
+  const year = String(date.getFullYear()).slice(-2);
+
+  return `${month}' ${year}`;
+}

@@ -1,10 +1,14 @@
+// Load environment variables from .env file
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose'); // ⬅️ Add this
+const mongoose = require('mongoose'); 
+
+// Import routes
 const otpRoutes = require('./routes/otpRoutes');
-const formRoutes = require('./routes/formRoutes'); // ⬅️ Add this
+const formRoutes = require('./routes/formRoutes'); 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,19 +21,27 @@ app.use(bodyParser.json());
 app.use('/api', otpRoutes);
 app.use('/api', formRoutes);
 
+// Root route
 app.get('/', (req, res) => {
     res.send('Backend is running.');
 });
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log("MongoDB Connected");
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+const mongoURI = process.env.MONGO_URI;
+
+if (!mongoURI) {
+  console.error("MONGO_URI is not defined in the .env file");
+  process.exit(1);
+}
+
+mongoose.connect(mongoURI)
+  .then(() => {
+    console.log("MongoDB Connected");
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1); // Optional: Stop server if DB fails
   });
-})
-.catch(err => console.error("MongoDB connection error:", err));

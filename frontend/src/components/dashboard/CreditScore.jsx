@@ -9,9 +9,11 @@ import {
 } from "@/custom/Typography";
 import { LiaDownloadSolid } from "react-icons/lia";
 import { TbReportMoney } from "react-icons/tb";
-import { GrScorecard } from "react-icons/gr";
+import { GrScorecard, GrFormNextLink } from "react-icons/gr";
 import { Button } from '@/components/ui/button'
-import { GrFormNextLink } from "react-icons/gr";
+import { useContextFile } from '@/context/contextFile';
+import { getUserData } from '@/machine/userData';
+import { formatDateDDMMYYYY, formatDateMMYY } from '@/lib/utils'
 
 const offers = [
     {
@@ -45,7 +47,17 @@ const offers = [
 ];
 
 const CreditScoreCard = () => {
+    const { user, setUser } = useContextFile();
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getUserData(setUser);
+        };
+        fetchData();
+    }, []);
+
+
     const score = 780;
     let status = "";
     if (score >= 750) status = "Good";
@@ -105,20 +117,20 @@ const CreditScoreCard = () => {
             <div className="p-4 md:p-6 bg-white sm:shadow-lg sm:rounded-xl w-full max-w-4xl mx-auto">
                 <div className="sm:flex hidden flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-6">
                     <TypographyPBlueColor>
-                        Hey <span className="font-bold tracking-normal"> Amol! </span> Here's your Credit Score for Apr' 25
+                        Hey <span className="font-bold tracking-normal capitalize">{user?.name?.split(' ')[0] || ''}! </span> Here's your Credit Score for {formatDateMMYY(user?.date)}
                     </TypographyPBlueColor>
                     <TypographyPBlueColor>
-                        Next report on: <span className="font-bold tracking-normal"> 16 May' 25 </span>
+                        Next report on: <span className="font-bold tracking-normal">{formatDateDDMMYYYY(user?.date)}</span>
                     </TypographyPBlueColor>
                 </div>
 
                 <div className="sm:hidden flex justify-between items-center">
                     <div className="flex flex-col gap-0">
                         <TypographyPBlueColor className='text-xs'>
-                            <span className="mt-0 font-medium text-base tracking-normal">
-                                Hey Amol!
+                            <span className="mt-0 font-medium text-base capitalize tracking-normal">
+                                Hey {user?.name?.split(' ')[0] || ''}!
                             </span><br />
-                            Here's your Credit Score for Apr' 25
+                            Here's your Credit Score for {formatDateMMYY(user?.date)}
                         </TypographyPBlueColor>
                     </div>
                     <div>
@@ -126,7 +138,7 @@ const CreditScoreCard = () => {
                             Next report on:
                             <br />
                             <span className="mt-0 font-medium text-sm tracking-normal">
-                                16 May' 25
+                                {formatDateDDMMYYYY(user?.date)}
                             </span>
                         </TypographyPBlueColor>
                     </div>

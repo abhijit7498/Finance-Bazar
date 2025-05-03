@@ -15,30 +15,41 @@ import { InputField } from '@/custom/Fields';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState, useEffect } from 'react';
-import { employmentOptions } from '../pages/personal-loan/PersonalLoanApply';
+import { employmentOptions } from '@/components/pages/personal-loan/PersonalLoanApply';
+import { useContextFile } from '@/context/contextFile';
+import { getUserData } from '@/machine/userData';
 
 export default function Profile() {
-    const [formData, setFormData] = useState({
-        name: '',
-        dob: '',
-        email: '',
-        mobile: '',
-        address: '',
-        pinCode: '',
-        panNumber: '',
-        employmentType: '',
-        employerName: '',
-        monthlyIncome: '',
-    });
-
+    const { user, setUser } = useContextFile();
+    const [formData, setFormData] = useState(null);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isSaved, setIsSaved] = useState(false);
 
-    // Show Skeleton for 2.5 seconds
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 2500);
-        return () => clearTimeout(timer);
+        const fetchData = async () => {
+            await getUserData(setUser);
+        };
+        fetchData();
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                name: user.name || '',
+                dob: user.dob || '',
+                email: user.email || '',
+                mobile: user.phone || '',
+                address: user.address || '',
+                pinCode: user.pinCode || '',
+                panNumber: user.pan || '',
+                employmentType: user.employmentType || '',
+                employerName: user.employerName || '',
+                monthlyIncome: user.monthlyIncome || '',
+            });
+            setLoading(false);
+        }
+    }, [user]);
 
     const maskPanNumber = (pan) => {
         return pan.length === 10
@@ -56,6 +67,8 @@ export default function Profile() {
     };
 
     const handleChange = (e) => {
+        if (isSaved) return;
+
         const { name, value } = e.target;
         let formattedValue = value;
 
@@ -151,79 +164,80 @@ export default function Profile() {
     };
 
     const handleSave = () => {
-        try {
-            if (validateAll()) {
-                const maskedPan = maskPanNumber(formData.panNumber);
-                const finalData = { ...formData, panNumber: maskedPan };
-                console.log('Saved Profile Data:', finalData);
-                alert('Profile saved successfully!');
-            } else {
-                console.warn('Validation failed. Not saving.');
-            }
-        } catch (err) {
-            console.error('Error during saving:', err);
-        }
+        if (!validateAll()) return;
+
+        const maskedPan = maskPanNumber(formData.panNumber);
+        const finalData = { ...formData, panNumber: maskedPan };
+        console.log('Saved Profile Data:', finalData);
+        alert('Profile saved successfully!');
+        setFormData(finalData);
+        setIsSaved(true);
     };
 
     const fields = [
-        { label: 'Name', name: 'name', iconLeft: User, iconRight: LockKeyhole, placeholder: 'Enter your full name' },
-        { label: 'Date of Birth', name: 'dob', iconLeft: Calendar, iconRight: LockKeyhole, placeholder: 'DD-MM-YYYY' },
+        { label: 'Name', name: 'name', iconLeft: User, placeholder: 'Enter your full name' },
+        { label: 'Date of Birth', name: 'dob', iconLeft: Calendar, placeholder: 'DD-MM-YYYY' },
         { label: 'Email', name: 'email', iconLeft: Mail, placeholder: 'Enter your email address' },
-        { label: 'Mobile Number', name: 'mobile', iconLeft: Phone, iconRight: LockKeyhole, placeholder: 'Enter your mobile number' },
-        { label: 'Address', name: 'address', iconLeft: Map, iconRight: LockKeyhole, placeholder: 'Enter your current address' },
-        { label: 'Pin Code', name: 'pinCode', iconLeft: MapPin, iconRight: LockKeyhole, placeholder: 'Enter your 6-digit pin code' },
-        { label: 'PAN Number', name: 'panNumber', iconLeft: LockKeyhole, iconRight: LockKeyhole, placeholder: 'ABCDE1234F' },
+        { label: 'Mobile Number', name: 'mobile', iconLeft: Phone, placeholder: 'Enter your mobile number' },
+        { label: 'Address', name: 'address', iconLeft: Map, placeholder: 'Enter your current address' },
+        { label: 'Pin Code', name: 'pinCode', iconLeft: MapPin, placeholder: 'Enter your 6-digit pin code' },
+        { label: 'PAN Number', name: 'panNumber', iconLeft: LockKeyhole, placeholder: 'ABCDE1234F' },
     ];
 
+    // Check if required fields are missing or empty
+    const isDataMissing = !formData || Object.values(formData).some((value) => !value);
+
     return (
-        <div className='mx-4 sm:mx-0'>
-            <TypographyH3 className="text-blue-950 text-xl font-bold tracking-normal mb-4">
-                Welcome! Amol
+        <div className="mx-4 sm:mx-0">
+            <TypographyH3 className="text-blue-950 text-xl font-bold capitalize tracking-normal mb-4">
+                Welcome {formData?.name?.split(' ')[0] || 'User'}
             </TypographyH3>
 
-            {/* Personal Details */}
-            <div className="bg-white shadow-md rounded-lg p-4">
-                <TypographyH4 className="text-blue-950 tracking-normal">
-                    Personal Details
-                </TypographyH4>
+            {isDataMissing && !loading && (
+                <div className="bg-yellow-100 p-4 rounded-md mb-4">
+                    <TypographyH4 className="text-yellow-800">Your profile is incomplete. Please update your information.</TypographyH4>
+                </div>
+            )}
 
+            <div className="bg-white shadow-md rounded-lg p-4">
+                <TypographyH4 className="text-blue-950 tracking-normal">Personal Details</TypographyH4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
                     {loading
                         ? Array.from({ length: 6 }).map((_, idx) => (
                             <Skeleton key={idx} className="h-16 w-full rounded-md" />
                         ))
-                        : fields.map(({ label, name, iconLeft, iconRight, placeholder }) => (
-                            <InputField
-                                key={name}
-                                label={label}
-                                name={name}
-                                value={formData[name]}
-                                onChange={handleChange}
-                                error={errors[name]}
-                                type="text"
-                                iconLeft={iconLeft}
-                                iconRight={iconRight}
-                                placeholder={placeholder}
-                                maxLength={
-                                    name === 'mobile'
-                                        ? 10
-                                        : name === 'pinCode'
-                                            ? 6
-                                            : name === 'dob'
-                                                ? 10
-                                                : undefined
-                                }
-                            />
-                        ))}
+                        : fields.map(({ label, name, iconLeft, placeholder }) => {
+                            const isDisabled = isSaved || !!formData[name];
+                            return (
+                                <InputField
+                                    key={name}
+                                    label={label}
+                                    name={name}
+                                    value={formData[name]}
+                                    onChange={handleChange}
+                                    error={errors[name]}
+                                    type="text"
+                                    iconLeft={iconLeft}
+                                    iconRight={isDisabled ? LockKeyhole : null}
+                                    placeholder={placeholder}
+                                    maxLength={
+                                        name === 'mobile'
+                                            ? 10
+                                            : name === 'pinCode'
+                                                ? 6
+                                                : name === 'dob'
+                                                    ? 10
+                                                    : undefined
+                                    }
+                                    disabled={isDisabled}
+                                />
+                            );
+                        })}
                 </div>
             </div>
 
-            {/* Employment Details */}
             <div className="bg-white shadow-md rounded-lg p-4 mt-8">
-                <TypographyH4 className="text-blue-950 tracking-normal">
-                    Employment Details
-                </TypographyH4>
-
+                <TypographyH4 className="text-blue-950 tracking-normal">Employment Details</TypographyH4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
                     {loading ? (
                         <>
@@ -237,16 +251,13 @@ export default function Profile() {
                                 label="Employment Type"
                                 name="employmentType"
                                 value={formData.employmentType}
-                                onChange={(e) =>
-                                    setFormData((prev) => ({
-                                        ...prev,
-                                        employmentType: e.target.value,
-                                    }))
-                                }
+                                onChange={handleChange}
                                 type="select"
                                 options={employmentOptions}
                                 iconLeft={BriefcaseBusiness}
                                 placeholder="Select Employment Type"
+                                disabled={isSaved || !!formData.employmentType}
+                                iconRight={isSaved || !!formData.employmentType ? LockKeyhole : null}
                             />
 
                             <InputField
@@ -258,6 +269,8 @@ export default function Profile() {
                                 iconLeft={Landmark}
                                 placeholder="Your Company Name"
                                 error={errors.employerName}
+                                disabled={isSaved || !!formData.employerName}
+                                iconRight={isSaved || !!formData.employerName ? LockKeyhole : null}
                             />
 
                             <InputField
@@ -269,13 +282,15 @@ export default function Profile() {
                                 iconLeft={BanknoteArrowUp}
                                 placeholder="Your Monthly Income"
                                 error={errors.monthlyIncome}
+                                disabled={isSaved || !!formData.monthlyIncome}
+                                iconRight={isSaved || !!formData.monthlyIncome ? LockKeyhole : null}
                             />
                         </>
                     )}
                 </div>
             </div>
 
-            {!loading && (
+            {!loading && !isSaved && (
                 <div className="text-right mb-20 mt-8">
                     <Button onClick={handleSave} className="px-10">
                         Save Profile
