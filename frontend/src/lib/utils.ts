@@ -66,10 +66,9 @@ export function AddSessionStorage(key, value) {
   sessionStorage.setItem(key, stringified);
 }
 
-export function AddLoacalStorage(key, value) {
-  const stringified = typeof value === "string" ? value : JSON.stringify(value);
-  localStorage.setItem(key, stringified);
-}
+export const AddLoacalStorage = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+};
 
 export function calculateEMI(P: number, R: number, N: number): number {
   const r = R / (12 * 100);

@@ -29,13 +29,13 @@ export default function AppDownload() {
             Scan or click to Download App on your mobile
           </TypographyH4>
           <div className='flex items-center gap-6'>
-            <div className='w-[120px] cursor-pointer'>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR code" />
+            <div className='w-[100px] cursor-pointer'>
+              <img src="/assets/scanner.jpg" alt="QR code" />
             </div>
             <TypographyMuted className="font-semibold text-xs">
               OR
             </TypographyMuted>
-            <div className='w-[170px] cursor-pointer'>
+            <div className='w-[150px] cursor-pointer'>
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzw7azF-c90zMgulLF9i0dWzuTHh_9Ru_XIw&s" alt="play-tore" />
             </div>
           </div>

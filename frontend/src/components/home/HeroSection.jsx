@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { FiArrowRight } from 'react-icons/fi';
 import { TypographyH4 } from '@/custom/Typography';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ const slides = [
             <div className="w-2 sm:w-8 h-px bg-accent" /> No Impact on Credit Score
           </TypographyH4>
           <Link to="/cibil-credit-report">
-            <Button size="sm" className="sm:mt-6 sm:px-6 cursor-pointer">
+         <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
               Get Free Credit Report
             </Button>
           </Link>
@@ -41,7 +40,7 @@ const slides = [
       <div className="flex sm:justify-between sm:gap-8 sm:items-center w-full">
         {/* Image */}
         <div className="flex justify-center order-1 sm:order-1">
-          <img src="/assets/search-banner.png" alt="Credit Card" className="w-48 sm:w-[450px]" />
+          <img src="/assets/cc-banner-img.svg" alt="Credit Card" className="w-38 sm:w-[380px]" />
         </div>
 
         {/* Text */}
@@ -55,9 +54,11 @@ const slides = [
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
             <div className="w-2 sm:w-8 h-px bg-accent" /> Choose from 400+ Credit Cards
           </TypographyH4>
-          <Button size="sm" className="mt-3 sm:px-6 cursor-pointer">
-            Search Credit Card
-          </Button>
+          <Link to="/cibil-credit-report">
+         <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
+              Search Credit Card
+            </Button>
+          </Link>
         </div>
       </div>
     ),
@@ -68,26 +69,25 @@ const slides = [
       <div className="flex justify-around gap-4 sm:mt-8 sm:gap-8 w-full">
         {/* Image */}
         <div className="flex justify-end order-1 sm:order-1">
-          <img src="/assets/personal-loan.png" alt="Personal loan" className="sm:w-48 w-28 relative sm:-top-10" />
+          <img src="/assets/pl-banner-img.svg" alt="Personal loan" className="sm:w-[340px] w-32 relative sm:-top-10" />
         </div>
 
         {/* Text */}
         <div className="space-y-2 sm:space-y-6 order-2 sm:order-2 px-4 sm:px-0 max-w-md">
           <h1 className="text-sm sm:text-3xl font-bold">
-            Explore Tailored Loan <span className="text-accent">Solutions for Your Dreams</span>
+            Your Dreams Deserve More - Unlock <span className="text-accent">Personal Loan</span> upto ₹60+ Lac!
           </h1>
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
-            <div className="w-2 sm:w-8 h-px bg-accent" /> Understand Your Loan Type & Purpose
+            <div className="w-2 sm:w-8 h-px bg-accent" /> Rates as low as 10.99%*
           </TypographyH4>
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
-            <div className="w-2 sm:w-8 h-px bg-accent" /> Apply & Compare Loan Offers
+            <div className="w-2 sm:w-8 h-px bg-accent" /> Fast disbursal with effortless eperience
           </TypographyH4>
-          <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
-            <div className="w-2 sm:w-8 h-px bg-accent" /> Check Eligibility & Prepare Documents
-          </TypographyH4>
-          <Button size="sm" className="mt-3 sm:px-6 cursor-pointer">
-            Get Any Loan
-          </Button>
+          <Link to='/personal-loan'>
+          <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
+              Check Now
+            </Button>
+          </Link>
         </div>
       </div>
     ),
@@ -106,14 +106,14 @@ export default function HeroSection() {
 
   return (
     <section
-      className="overflow-hidden"
+      className="overflow-hidden border-b-2"
       style={{
         background: "linear-gradient(to bottom, #ffffff, #f5f9ff, #f0fdfa)", // Top white, bottom gradient
       }}
     >
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-3 sm:p-6">
         {/* Slide Container */}
-        <div className="relative min-h-[160px] sm:min-h-[400px] flex items-center justify-center">
+        <div className="relative min-h-[140px] sm:min-h-[350px] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={slides[currentSlide].id}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TypographyH3 } from '@/custom/Typography';
 import { Button } from '@/components/ui/button';
 
@@ -13,126 +13,28 @@ const partnerCategories = [
   { id: 'credit-improvement', name: 'Credit Improvement' },
 ];
 
-const categoryData = {
-  all: [
-    'HDFC Bank',
-    'ICICI Bank',
-    'Axis Bank',
-    'SBI (State Bank of India)',
-    'Kotak Mahindra Bank',
-    'IDFC First Bank',
-    'Yes Bank',
-    'IndusInd Bank',
-    'Standard Chartered',
-    'Bank of Baroda',
-    'Canara Bank',
-    'Punjab National Bank',
-    'Union Bank of India',
-    'Federal Bank',
-    'AU Small Finance Bank',
-    'RBL Bank',
-    'Tata Capital',
-    'Bajaj Finserv',
-    'Aditya Birla Finance',
-    'Fullerton India',
-    'Clix Capital',
-    'L&T Finance',
-    'HDB Financial Services',
-    'Mahindra Finance',
-    'Indian Bank',
-    'Central Bank of India',
-    'UCO Bank',
-    'Bank of India',
-    'South Indian Bank',
-    'Karur Vysya Bank',
-    'Dhanlaxmi Bank',
-    'City Union Bank',
-    'Jammu & Kashmir Bank',
-    'Bandhan Bank',
-    'IDBI Bank',
-    'Suryoday Small Finance Bank',
-    'Equitas Small Finance Bank',
-    'Utkarsh Small Finance Bank',
-    'ESAF Small Finance Bank',
-    'Fincare Small Finance Bank',
-    'North East Small Finance Bank',
-    'Shivalik Small Finance Bank',
-    'Unity Small Finance Bank',
-    'DCB Bank',
-    'HSBC Bank',
-    'Citi Bank',
-    'Deutsche Bank',
-    'DBS Bank',
-    'Barclays Bank',
-    'BNP Paribas',
-    'Credit Suisse',
-    'JP Morgan Chase Bank',
-    'Bank of America',
-    'RBS (Royal Bank of Scotland)',
-    'MUFG Bank',
-    'Mizuho Bank',
-    'Sumitomo Mitsui Banking Corporation',
-    'Societe Generale',
-    'Standard Bank',
-    'FirstRand Bank',
-    'Shinhan Bank',
-    'Kookmin Bank',
-    'Industrial Bank of Korea',
-    'China Construction Bank',
-    'Bank of China',
-    'Agricultural Bank of China',
-  ],
-
-  'credit-card': [
-    'HDFC Credit',
-    'ICICI Credit',
-    'SBI Card',
-    'Axis Credit',
-    'Kotak Credit',
-    'RBL Credit',
-    'IndusInd Credit',
-    'Standard Chartered Card',
-    'HSBC Credit',
-    'Yes Bank Card',
-    'AU Bank Card',
-  ],
-
-  'home-loan': [
-    'LIC Housing Finance',
-    'HDFC Home Loans',
-    'ICICI Home Loans',
-    'Axis Home Loans',
-    'PNB Housing',
-    'Canara Home Loan',
-    'Bank of Baroda Home Loan',
-    'Tata Capital Home Loan',
-    'Aditya Birla Home Finance',
-    'IndiaBulls Home Loans',
-    'Sundaram Home Finance',
-    'Union Bank Home Loan',
-  ],
-
-  'credit-bureau': [
-    'CIBIL (TransUnion)',
-    'Experian',
-    'Equifax',
-    'CRIF High Mark'
-  ],
-
-  'credit-improvement': [
-    'CreditMantri',
-    'CreditFix',
-    'GrowCredit',
-    'OneScore',
-    'MyScoreBoost',
-    'ClearScore',
-    'Wishfin Credit Help',
-    'CreditVidya',
-  ]
-};
+// Simulated dynamic image files (Assuming you have 41 images named 1.png, 2.png, ..., 41.png)
+const imageFiles = [
+  '1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png',
+  '11.png', '12.svg', '13.png', '14.png', '15.png', '16.png', '17.svg', '18.png', '19.png', '20.png',
+  '21.png', '22.png', '23.png', '24.png', '25.png', '26.png', '27.png', '28.png', '29.png', '30.png',
+  '31.png', '32.png', '33.png', '34.png', '35.png', '36.png', '37.png', '38.png', '39.png', '40.png', '41.png',
+];
 
 export default function Partners() {
   const [activeTab, setActiveTab] = useState('all');
+  const [imageData, setImageData] = useState([]);
+
+  // Simulate dynamic image loading from the folder
+  useEffect(() => {
+    const images = imageFiles.map((filename, index) => ({
+      id: index + 1,
+      image: `/banks/${filename}`, // Path to the image inside the public folder
+      name: `Partner ${index + 1}`, // Custom name or title for each image
+    }));
+
+    setImageData(images); // Set the image data in the state
+  }, []); // Empty array ensures this runs only once after component mounts
 
   return (
     <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden py-12">
@@ -151,7 +53,7 @@ export default function Partners() {
             <button
               key={option.id}
               onClick={() => setActiveTab(option.id)}
-              className={`whitespace-nowrap ${activeTab === option?.id ? "bg-blue-800 text-white border-none" : "text-blue-800"} text-sm font-semibold border border-blue-800 cursor-pointer px-4 py-1 rounded-sm`}
+              className={`whitespace-nowrap ${activeTab === option?.id ? 'bg-blue-800 text-white border-none' : 'text-blue-800'} text-sm font-semibold border border-blue-800 cursor-pointer px-4 py-1 rounded-sm`}
             >
               {option.name}
             </button>
@@ -159,13 +61,17 @@ export default function Partners() {
         </div>
 
         {/* Tab Content */}
-        <div className=" mt-8 grid grid-cols-3 text-center sm:grid-cols-7 gap-4 items-center">
-          {categoryData[activeTab]?.map((partner, index) => (
+        <div className="mt-8 grid grid-cols-3 text-center sm:grid-cols-7 sm:gap-6 gap-3 items-center">
+          {imageData?.map((partner, index) => (
             <div
               key={index}
-              className="text-xs font-semibold opacity-85 flex justify-center flex-wrap items-center h-20 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center px-2 py-2 whitespace-normal break-words"
+              className="text-xs font-semibold opacity-85 flex justify-center flex-wrap items-center h-16 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center p-2 whitespace-normal break-words"
             >
-              {partner}
+              <img
+                src={partner.image}
+                alt={partner.name}
+                className="w-full h-full object-contain rounded-md mb-2"
+              />
             </div>
           ))}
         </div>
