@@ -33,17 +33,16 @@ export default function SignInForm() {
 
     const handleGoogleLogin = () => {
         initiateGoogleLogin({
-            clientId: clientId,
+            clientId,
             onSuccess: (profile) => {
                 console.log("Google Profile:", profile);
-                localStorage.setItem("token", JSON.stringify(profile));
                 setLoggedIn(true);
-                navigate("/myaccount/dashboard");
             },
             onError: (errMsg) => {
                 console.error("Google Login Error:", errMsg);
                 setError(errMsg);
             },
+            navigate,
         });
     };
 
@@ -111,12 +110,7 @@ export default function SignInForm() {
                             setOpen={setOpenDialog}
                             mobile={"+91" + mobile}
                             onVerified={() => {
-                                localStorage.setItem(
-                                    "token",
-                                    JSON.stringify({ mobile, countryCode: "+91" })
-                                );
                                 setLoggedIn(true);
-                                navigate("/myaccount/dashboard");
                             }}
                         />
 

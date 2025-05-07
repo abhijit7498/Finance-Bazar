@@ -5,7 +5,7 @@ const URL = import.meta.env.VITE_API_BASE_URL;
 // Submit form data and store user ID in localStorage
 export const userData = async (formData) => {
     try {
-        const res = await axios.post(`${URL}/form`, formData);
+        const res = await axios.post(`${URL}/add-user`, formData);
 
         console.log("Form submitted successfully!", res.data);
 
@@ -32,7 +32,7 @@ export const getUserData = async (setUser) => {
             return;
         }
 
-        const res = await axios.get(`${URL}/form`, {
+        const res = await axios.get(`${URL}/get-user`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -51,7 +51,7 @@ export const updateUserData = async (updatedFields) => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.put(`${URL}/form`, updatedFields, {
+        const res = await axios.put(`${URL}/update-user`, updatedFields, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

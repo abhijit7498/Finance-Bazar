@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 // Import routes
 const otpRoutes = require('./routes/otpRoutes');
 const formRoutes = require('./routes/formRoutes'); 
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api', otpRoutes);
 app.use('/api', formRoutes);
+app.use('/api', authRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -43,5 +45,5 @@ mongoose.connect(mongoURI)
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err.message);
-    process.exit(1); // Optional: Stop server if DB fails
+    process.exit(1);
   });

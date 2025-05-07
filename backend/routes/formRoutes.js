@@ -1,14 +1,16 @@
 const express = require("express");
 const router = express.Router();
+
 const formController = require("../controllers/formController");
+const auth = require("../middlewares/authMiddleware");
 
-// POST: submit form
-router.post("/form", formController.submitForm);
+// POST: Add user form data
+router.post("/add-user", formController.submitForm);
 
-// GET: fetch user by ID from token (x-user-id)
-router.get("/form", formController.getUserForm);
+// GET: Get user data (requires valid JWT in Authorization header)
+router.get("/get-user", auth, formController.getUserForm);
 
-// PUT: update user form data by ID from token (x-user-id)
-router.put("/form", formController.updateUserForm);
+// PUT: Update user data (requires valid JWT in Authorization header)
+router.put("/update-user", auth, formController.updateUserForm);
 
 module.exports = router;
