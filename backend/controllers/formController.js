@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 // POST /api/form - Submit form and create user if not existing
 exports.submitForm = async (req, res) => {
@@ -17,7 +18,7 @@ exports.submitForm = async (req, res) => {
     const data = new User(req.body);
     const savedData = await data.save();
 
-    const token = jwt.sign({ id: savedData._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: savedData._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
     res.status(201).json({
       message: "Form data saved successfully.",

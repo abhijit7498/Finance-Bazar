@@ -60,8 +60,9 @@ const paymentMethods = [
   { name: 'Visa', logo: 'visa' },
   { name: 'Mastercard', logo: 'mastercard' },
   { name: 'RuPay', logo: 'rupay' },
-  { name: 'American Express', logo: 'amex' },
-  { name: 'Diners Club', logo: 'diners' },
+  { name: 'American Express', logo: 'maestro' },
+  { name: 'Diners Club', logo: 'dinner-club' },
+  { name: 'american-express', logo: 'american-express' },
 ];
 
 const socialLinks = [
@@ -100,7 +101,7 @@ export default function Footer() {
       {/* Bottom Footer */}
       <div className="border-t border-gray-800">
         <div className="max-w-6xl mx-auto py-6 px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex flex-col md:flex-row justify-between sm:gap-10 items-center space-y-4 md:space-y-0">
             {/* Copyright & Disclaimer */}
             <div className="text-xs text-gray-400 text-center md:text-left">
               © 2025 financesbazar.com. All rights reserved.
@@ -110,14 +111,14 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Payment Methods */}
-            <div className="flex items-center space-x-2 flex-wrap space-y-2">
-              {paymentMethods.map((method) => (
-                <div
-                  key={method.logo}
-                  className="py-1 px-2 cursor-pointer bg-white rounded flex items-center justify-center text-xs text-gray-700"
-                >
-                  {method.name}
+            <div className="flex sm:flex-warap-none flex-wrap gap-3 items-center justify-center md:justify-start">
+              {paymentMethods.map((method, index) => (
+                <div key={index} className="bg-white h-8 w-16 rounded p-1 flex items-center justify-center">
+                  <img
+                    src={`/footer/${method.logo}.png`}
+                    className="h-full object-contain"
+                    alt={method.name}
+                  />
                 </div>
               ))}
             </div>

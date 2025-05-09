@@ -1,10 +1,15 @@
 const twilio = require('twilio');
 const { generateOtp, otpStore } = require('../utils/otpUtils');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 // Initialize Twilio client with your Twilio SID and Auth Token
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;  
 const TWILIO_WHATSAPP_NUMBER = process.env.TWILIO_WHATAPPS_NUMBER; 
+
+const JWT_SECRET = process.env.JWT_SECRET; 
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN; 
 
 // Send OTP Function
 exports.sendOtp = async (req, res) => {
@@ -78,7 +83,7 @@ exports.sendOtp = async (req, res) => {
 };
 
 // Verify OTP Function
-exports.verifyOtp = (req, res) => {
+exports.verifyOtp = async (req, res) => {
     try {
         const { mobile, otp } = req.body;
 
@@ -87,7 +92,6 @@ exports.verifyOtp = (req, res) => {
         }
 
         const storedOtp = otpStore[mobile];
-
         if (!storedOtp) {
             return res.status(400).json({ success: false, message: 'No OTP sent to this number.' });
         }
@@ -96,10 +100,23 @@ exports.verifyOtp = (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid OTP.' });
         }
 
+        // OTP is valid, now remove it
         delete otpStore[mobile];
 
-        return res.json({ success: true, message: 'OTP verified successfully.' });
+        // Check if user exists
+        let user = await User.findOne({ mobile });
 
+        // If not, create new user
+        if (!user) {
+            user = await User.create({ mobile });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign({ id: user._id, mobile: user.mobile }, JWT_SECRET, {
+            expiresIn: JWT_EXPIRES_IN,
+        });
+
+        return res.json({ success: true, message: 'OTP verified successfully.', token });
     } catch (error) {
         console.error('Error verifying OTP:', error.message);
         res.status(500).json({ success: false, message: 'Failed to verify OTP.' });

@@ -6,7 +6,7 @@ import {
     TypographyH4,
     TypographyList
 } from '@/custom/Typography'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FiUser } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
@@ -43,10 +43,11 @@ const data = [
 ]
 
 export const MobileHeader = ({ showRightPanel2, onLogout }) => {
+    const Navigate = useNavigate()
     return (
         <div className='sm:hidden flex flex-col w-full'>
             <div className='h-14 px-6 bg-white flex justify-between items-center w-full border-b shadow'>
-                <img src="/logo.png" alt="" className='w-32' />
+                <img src="/logo.png" alt="" onClick={() => Navigate('/')} className='w-32' />
                 {
                     !showRightPanel2 ? <Link to='/sign-in'>
                         <Button

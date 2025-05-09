@@ -2,28 +2,25 @@
 const mongoose = require("mongoose");
 
 const formDataSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
+  name: String,
   gender: String,
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true,
   },
   phone: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true,
   },
   whatAppNotification: Boolean,
   dob: String,
   pinCode: String,
   pan: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
+    sparse: true,
   },
   date: {
     type: Date,
