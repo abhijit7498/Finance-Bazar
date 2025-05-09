@@ -112,6 +112,7 @@ export default function SignInForm() {
                             onVerified={() => {
                                 setLoggedIn(true);
                             }}
+                            navigate={() => navigate('/myaccount/dashboard')}
                         />
 
                         <p className="text-center text-xs leading-7 text-gray-500 mt-4">

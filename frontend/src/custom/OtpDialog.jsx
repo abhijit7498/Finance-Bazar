@@ -12,7 +12,7 @@ import { MessageSquareText, PhoneCall } from "lucide-react";
 import { BsWhatsapp } from "react-icons/bs";
 import { SendResendOTPTomobile, VerifyOTPToMobile } from "@/machine/OTP";
 
-export default function OtpDialog({ open, setOpen, mobile, onVerified, storage }) {
+export default function OtpDialog({ open, setOpen, mobile, onVerified, storage, navigate }) {
     const [otp, setOtp] = useState("");
     const [error, setError] = useState("");
     const [timer, setTimer] = useState(60);
@@ -45,7 +45,7 @@ export default function OtpDialog({ open, setOpen, mobile, onVerified, storage }
             return;
         }
 
-        await VerifyOTPToMobile({ mobile, otp, setOpen, onVerified, setError, storage });
+        await VerifyOTPToMobile({ mobile, otp, setOpen, onVerified, setError, storage, navigate });
     };
 
     // Resend OTP

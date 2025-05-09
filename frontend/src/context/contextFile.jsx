@@ -1,7 +1,8 @@
 // src/context/contextFile.js
 import { createContext, useContext, useState } from "react";
 
-const contextFile = createContext();
+// Capitalized context name
+const ContextFile = createContext();
 
 export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ export const ContextProvider = ({ children }) => {
     };
 
     return (
-        <contextFile.Provider value={{
+        <ContextFile.Provider value={{
             user,
             setUser,
             loggedIn,
@@ -25,8 +26,9 @@ export const ContextProvider = ({ children }) => {
             setEMITableData
         }}>
             {children}
-        </contextFile.Provider>
+        </ContextFile.Provider>
     );
 };
 
-export const useContextFile = () => useContext(contextFile);
+// Also update here
+export const useContextFile = () => useContext(ContextFile);

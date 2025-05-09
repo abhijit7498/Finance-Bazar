@@ -38,15 +38,12 @@ export const VerifyOTPToMobile = async ({ mobile, otp, setOpen, onVerified, setE
         const response = await axios.post(`${URL}/verify-otp`, { mobile, otp });
 
         if (response.data.success) {
-            const { token, redirect, userId } = response.data;
+            const token = response.data.token;
             localStorage.setItem("token", token);
-            localStorage.setItem("userId", userId);
 
             setOpen(false);
             if (onVerified) onVerified();
-            await axios.post(`${URL}/form`, mobile);
-
-            if (navigate && redirect) navigate(redirect);
+            if (navigate) navigate();
         } else {
             setError(response.data.message || "Invalid OTP");
         }
