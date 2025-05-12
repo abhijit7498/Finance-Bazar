@@ -1,76 +1,103 @@
-import { FiTwitter, FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { TypographySmall } from '../../custom/Typography';
+import {
+  FiTwitter,
+  FiFacebook,
+  FiInstagram,
+  FiLinkedin,
+  FiYoutube,
+} from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { TypographySmall } from "../../custom/Typography";
 
 // Footer data structure
 const footerLinks = [
   {
-    title: 'Most Searched Links',
+    title: "Most Searched Links",
     links: [
-      { label: 'CIBIL', href: '/cibil-credit-report' },
-      { label: 'Credit Cards', href: '/credit-cards' },
-      { label: 'Personal Loan', href: '/personal-loan' },
-      { label: 'Business Loan', href: '/business-loan' },
-      { label: 'Home Loan', href: '/home-loan' },
+      { label: "CIBIL", href: "/cibil-credit-report" },
+      { label: "Credit Cards", href: "/credit-cards" },
+      { label: "Personal Loan", href: "/personal-loan" },
+      { label: "Business Loan", href: "/business-loan" },
+      { label: "Home Loan", href: "/home-loan" },
     ],
   },
   {
-    title: 'CIBIL',
+    title: "CIBIL",
     links: [
-      { label: 'Credit Score', href: '/cibil-credit-report' },
-      { label: 'Check CIBIL Score by PAN Number', href: '/cibil/how-to-check-cibil-score-by-pan-card' },
-      { label: 'CIBIL Score for Personal Loan', href: '/credit-score/cibil-score-for-personal-loan' },
-      { label: 'SBI CIBIL Score', href: '/cibil-report/cibil-score-sbi-loans' },
-      { label: 'How to Improve CIBIL Score', href: '/credit-report/ways-to-improve-your-cibil-score' },
+      { label: "Credit Score", href: "/cibil-credit-report" },
+      {
+        label: "Check CIBIL Score by PAN Number",
+        href: "/cibil/how-to-check-cibil-score-by-pan-card",
+      },
+      {
+        label: "CIBIL Score for Personal Loan",
+        href: "/credit-score/cibil-score-for-personal-loan",
+      },
+      { label: "SBI CIBIL Score", href: "/cibil-report/cibil-score-sbi-loans" },
+      {
+        label: "How to Improve CIBIL Score",
+        href: "/credit-report/ways-to-improve-your-cibil-score",
+      },
     ],
   },
   {
-    title: 'Credit Cards',
+    title: "Credit Cards",
     links: [
-      { label: 'Credit Card', href: '/credit-cards' },
-      { label: 'SBI Credit Card', href: '/sbi-bank/credit-card' },
-      { label: 'HDFC Credit Card', href: '/hdfc-bank/credit-card' },
-      { label: 'Axis Bank Credit Card', href: '/axis-bank/credit-card' },
-      { label: 'Best Credit Cards', href: '/credit-card/25-best-credit-cards-india' },
+      { label: "Credit Card", href: "/credit-cards" },
+      { label: "SBI Credit Card", href: "/sbi-bank/credit-card" },
+      { label: "HDFC Credit Card", href: "/hdfc-bank/credit-card" },
+      { label: "Axis Bank Credit Card", href: "/axis-bank/credit-card" },
+      {
+        label: "Best Credit Cards",
+        href: "/credit-card/25-best-credit-cards-india",
+      },
     ],
   },
   {
-    title: 'Personal Loan',
+    title: "Personal Loan",
     links: [
-      { label: 'Personal Loan Interest Rates', href: '/personal-loan/interest-rates' },
-      { label: 'SBI Personal Loan', href: '/sbi-bank/personal-loan' },
-      { label: 'HDFC Personal Loan', href: '/hdfc-bank/personal-loan' },
-      { label: 'Axis Bank Personal Loan', href: '/axis-bank/personal-loan' },
-      { label: 'Personal Loan Eligibility', href: '/personal-loan/eligibility-calculator' },
+      {
+        label: "Personal Loan Interest Rates",
+        href: "/personal-loan/interest-rates",
+      },
+      { label: "SBI Personal Loan", href: "/sbi-bank/personal-loan" },
+      { label: "HDFC Personal Loan", href: "/hdfc-bank/personal-loan" },
+      { label: "Axis Bank Personal Loan", href: "/axis-bank/personal-loan" },
+      {
+        label: "Personal Loan Eligibility",
+        href: "/personal-loan/eligibility-calculator",
+      },
     ],
   },
   {
-    title: 'Business Loan',
+    title: "Business Loan",
     links: [
-      { label: 'Business Loan Interest Rates', href: '/business-loan/interest-rates' },
-      { label: 'SBI Business Loan', href: '/sbi-bank/business-loan' },
-      { label: 'MSME Loan', href: '/business-loan/msme-loan' },
-      { label: 'HDFC Business Loan', href: '/hdfc-bank/business-loan' },
-      { label: 'SBI Mudra Loan', href: '/sbi-bank/mudra-loan' },
+      {
+        label: "Business Loan Interest Rates",
+        href: "/business-loan/interest-rates",
+      },
+      { label: "SBI Business Loan", href: "/sbi-bank/business-loan" },
+      { label: "MSME Loan", href: "/business-loan/msme-loan" },
+      { label: "HDFC Business Loan", href: "/hdfc-bank/business-loan" },
+      { label: "SBI Mudra Loan", href: "/sbi-bank/mudra-loan" },
     ],
   },
 ];
 
 const paymentMethods = [
-  { name: 'Visa', logo: 'visa' },
-  { name: 'Mastercard', logo: 'mastercard' },
-  { name: 'RuPay', logo: 'rupay' },
-  { name: 'American Express', logo: 'maestro' },
-  { name: 'Diners Club', logo: 'dinner-club' },
-  { name: 'american-express', logo: 'american-express' },
+  { name: "Visa", logo: "visa" },
+  { name: "Mastercard", logo: "mastercard" },
+  { name: "RuPay", logo: "rupay" },
+  { name: "American Express", logo: "maestro" },
+  { name: "Diners Club", logo: "dinner-club" },
+  { name: "american-express", logo: "american-express" },
 ];
 
 const socialLinks = [
-  { name: 'Facebook', icon: FiFacebook, href: 'https://www.facebook.com' },
-  { name: 'Twitter', icon: FiTwitter, href: 'https://www.twitter.com' },
-  { name: 'Instagram', icon: FiInstagram, href: 'https://www.instagram.com' },
-  { name: 'LinkedIn', icon: FiLinkedin, href: 'https://www.linkedin.com' },
-  { name: 'YouTube', icon: FiYoutube, href: 'https://www.youtube.com' },
+  { name: "Facebook", icon: FiFacebook, href: "https://www.facebook.com" },
+  { name: "Twitter", icon: FiTwitter, href: "https://www.twitter.com" },
+  { name: "Instagram", icon: FiInstagram, href: "https://www.instagram.com" },
+  { name: "LinkedIn", icon: FiLinkedin, href: "https://www.linkedin.com" },
+  { name: "YouTube", icon: FiYoutube, href: "https://www.youtube.com" },
 ];
 
 export default function Footer() {
@@ -87,7 +114,10 @@ export default function Footer() {
               <ul className="sm:space-y-3 space-y-2">
                 {section?.links.map((link) => (
                   <li key={link.label}>
-                    <Link to={link.href} className="text-xs font-medium hover:text-primary text-gray-300">
+                    <Link
+                      to={link.href}
+                      className="text-xs font-medium hover:text-primary text-gray-300"
+                    >
                       {link?.label}
                     </Link>
                   </li>
@@ -104,16 +134,20 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between sm:gap-10 items-center space-y-4 md:space-y-0">
             {/* Copyright & Disclaimer */}
             <div className="text-xs text-gray-400 text-center md:text-left">
-              © 2025 financesbazar.com. All rights reserved.
+              © 2025 Umbakrar Tech(India) Pvt Ltd. All rights reserved.
               <p className="mt-1">
-                Disclaimer: All product information is summarized from publicly available sources.
-                Please refer to issuer website for full details.
+                Disclaimer: All product information is summarized from publicly
+                available sources. Please refer to issuer website for full
+                details.
               </p>
             </div>
 
             <div className="flex sm:flex-warap-none flex-wrap gap-3 items-center justify-center md:justify-start">
               {paymentMethods.map((method, index) => (
-                <div key={index} className="bg-white h-8 w-16 rounded p-1 flex items-center justify-center">
+                <div
+                  key={index}
+                  className="bg-white h-8 w-16 rounded p-1 flex items-center justify-center"
+                >
                   <img
                     src={`/footer/${method.logo}.png`}
                     className="h-full object-contain"

@@ -1,31 +1,17 @@
-// models/FormData.js
+// models/User.js
 const mongoose = require("mongoose");
 
-const formDataSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: String,
   gender: String,
-  email: {
-    type: String,
-    unique: true,
-    sparse: true,
-  },
-  phone: {
-    type: String,
-    unique: true,
-    sparse: true,
-  },
-  whatAppNotification: Boolean,
+  email: String,
+  phone: String,
+  whatAppNotification: String,
   dob: String,
   pinCode: String,
-  pan: {
-    type: String,
-    unique: true,
-    sparse: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
+  pan: String,
+  authProvider: { type: String },
+  date: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("User", formDataSchema);
+module.exports = mongoose.model("User", userSchema);

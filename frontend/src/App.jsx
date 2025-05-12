@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import Landing from "@/components/layout/Landing";
 import SignInForm from "@/components/pages/SignInForm";
@@ -25,7 +31,6 @@ import CreditScore from "@/components/dashboard/CreditScore";
 import FAQs from "@/components/dashboard/support/FAQs";
 import Preferences from "@/components/dashboard/support/Preferences";
 
-
 import { useContextFile } from "@/context/contextFile";
 import LoadingBars from "@/components/ui/loadingBar";
 import CreditScoreCheckNotify from "@/components/CreditScoreCheckNotify";
@@ -44,26 +49,29 @@ export default function App() {
   // Set CSS vars
   useEffect(() => {
     document.documentElement.style.setProperty("--primary", "#49AAFF");
-    document.documentElement.style.setProperty("--accent", "#c74558");
+    document.documentElement.style.setProperty("--accent", "#C95792");
   }, []);
 
   // Show loader on first load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const storedToken = localStorage.getItem("token");
+    const timer = setTimeout(
+      () => {
+        const storedToken = localStorage.getItem("token");
 
-      if (storedToken) {
-        setLoggedIn(true);
-        if (location.pathname === "/" || location.pathname === "/sign-in") {
-          navigate("/myaccount/dashboard", { replace: true });
+        if (storedToken) {
+          setLoggedIn(true);
+          if (location.pathname === "/" || location.pathname === "/sign-in") {
+            navigate("/myaccount/dashboard", { replace: true });
+          }
+        } else {
+          setLoggedIn(false);
         }
-      } else {
-        setLoggedIn(false);
-      }
 
-      setLoading(false);
-      sessionStorage.setItem("app_loaded_once", "true");
-    }, sessionStorage.getItem("app_loaded_once") ? 0 : 5000);
+        setLoading(false);
+        sessionStorage.setItem("app_loaded_once", "true");
+      },
+      sessionStorage.getItem("app_loaded_once") ? 0 : 500
+    );
 
     return () => clearTimeout(timer);
   }, [location.pathname, navigate, setLoggedIn]);
@@ -81,14 +89,14 @@ export default function App() {
     document.body.style.overflow = showAchievement ? "hidden" : "auto";
   }, [showAchievement]);
 
-  // Loader
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-black">
-        <LoadingBars />
-      </div>
-    );
-  }
+  // // Loader
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen bg-black">
+  //       <LoadingBars />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -118,16 +126,37 @@ export default function App() {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/personal-loan" element={<PersonalLoanPage />} />
-            <Route path="/personal-loan/apply" element={<PersonalLoanApply />} />
-            <Route path="/personal-loan-emi-calculator" element={<PersonalLoanEMICalulator />} />
+            <Route
+              path="/personal-loan/apply"
+              element={<PersonalLoanApply />}
+            />
+            <Route
+              path="/personal-loan-emi-calculator"
+              element={<PersonalLoanEMICalulator />}
+            />
             <Route path="/business-loan" element={<BusinessLoanPage />} />
-            <Route path="/business-loan/apply" element={<BusinessLoanApply />} />
-            <Route path="/loan-against-property" element={<LoanAgainstProperty />} />
-            <Route path="/loan-against-property-emi-calculator" element={<LoanAgainstEMICalculator />} />
+            <Route
+              path="/business-loan/apply"
+              element={<BusinessLoanApply />}
+            />
+            <Route
+              path="/loan-against-property"
+              element={<LoanAgainstProperty />}
+            />
+            <Route
+              path="/loan-against-property-emi-calculator"
+              element={<LoanAgainstEMICalculator />}
+            />
             <Route path="/home-loan" element={<HomeLoanPage />} />
-            <Route path="/home-loan-emi-calculator" element={<HomeLoanEMICalculator />} />
+            <Route
+              path="/home-loan-emi-calculator"
+              element={<HomeLoanEMICalculator />}
+            />
             <Route path="/credit-cards" element={<CreaditCardPage />} />
-            <Route path="/fd-fixed-deposit-calculator" element={<FDCalculator />} />
+            <Route
+              path="/fd-fixed-deposit-calculator"
+              element={<FDCalculator />}
+            />
             <Route path="/cibil-credit-report" element={<CheckProceed />} />
 
             {/* learn */}
