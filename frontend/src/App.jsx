@@ -22,7 +22,12 @@ import ContactUs from "@/components/pages/contact-us/ContactUs";
 import AboutUs from "@/components/pages/AboutUs";
 import ScrollToTop from "@/custom/ScrollToTop";
 import CreaditCardPage from "@/components/pages/credit-card/CreaditCardPage";
-import CheckProceed from "@/components/pages/credit-score/CheckProceed";
+import CarLoanPage from "@/components/pages/car-loan/CarLoanPage";
+import CheckProceed from "@/components/pages/credit-report/CheckProceed";
+import CibilScoreByPan from "@/components/pages/credit-report/CibilScoreByPan";
+import CibilScoreByPersonalLoan from "@/components/pages/credit-report/CibilScoreByPersonal";
+import CibilScoreBySbi from "@/components/pages/credit-report/CibilScoreBySbi";
+import ImproveCibilScore from "@/components/pages/credit-report/ImproveCibilScore";
 import FDCalculator from "@/components/pages/FD/FDCalculator";
 
 import Dashboard from "@/components/dashboard/Dashboard";
@@ -33,7 +38,6 @@ import Preferences from "@/components/dashboard/support/Preferences";
 
 import { useContextFile } from "@/context/contextFile";
 import LoadingBars from "@/components/ui/loadingBar";
-import CreditScoreCheckNotify from "@/components/CreditScoreCheckNotify";
 import AchievementPopup from "@/components/AchievementPopup";
 
 // learn pages
@@ -48,7 +52,7 @@ export default function App() {
 
   // Set CSS vars
   useEffect(() => {
-    document.documentElement.style.setProperty("--primary", "#49AAFF");
+    document.documentElement.style.setProperty("--primary", "#27548A");
     document.documentElement.style.setProperty("--accent", "#C95792");
   }, []);
 
@@ -109,7 +113,6 @@ export default function App() {
           }}
         />
       )}
-      {!showAchievement && <CreditScoreCheckNotify />}
       <Routes>
         {loggedIn ? (
           <Route path="/myaccount" element={<Dashboard />}>
@@ -148,6 +151,7 @@ export default function App() {
               element={<LoanAgainstEMICalculator />}
             />
             <Route path="/home-loan" element={<HomeLoanPage />} />
+            <Route path="/loan-against-car" element={<CarLoanPage />} />
             <Route
               path="/home-loan-emi-calculator"
               element={<HomeLoanEMICalculator />}
@@ -158,6 +162,10 @@ export default function App() {
               element={<FDCalculator />}
             />
             <Route path="/cibil-credit-report" element={<CheckProceed />} />
+            <Route path="/cibil-report/how-to-check-cibil-score-by-pan-card" element={<CibilScoreByPan />} />
+            <Route path="/cibil-report/cibil-score-for-personal-loan" element={<CibilScoreByPersonalLoan />} />
+            <Route path="/cibil-report/cibil-score-sbi-loans" element={<CibilScoreBySbi />} />
+            <Route path="/cibil-report/ways-to-improve-your-cibil-score" element={<ImproveCibilScore />} />
 
             {/* learn */}
             <Route path="/aadhar-card" element={<AadharCard />} />

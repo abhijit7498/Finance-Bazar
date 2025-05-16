@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import OtpCollection from '@/custom/OtpCollection';
-import { LeftGradiantPannel, MobileHeader } from './GradiantPannel';
+import { LeftGradiantPannel, MobileHeader } from './LeftGradiantPannel';
 import { Button } from "@/components/ui/button";
 import { InputField, StepCard } from '@/custom/Fields';
 import { FaWhatsapp } from "react-icons/fa";
+import { IoCheckmark } from "react-icons/io5";
 import { TypographyMuted } from '@/custom/Typography';
 import { Switch } from "@/components/ui/switch";
 import { Navigate } from 'react-router-dom';
@@ -16,6 +17,35 @@ const featureList = [
     "Instant sanction and disbursal",
     "Contact-less processes"
 ];
+
+const creditScoreFeatures = [
+    {
+        icon: <IoCheckmark size={18} className="text-green-600" />,
+        features: [
+            "Get personalised Loan & Card Offers",
+            "Detailed Credit Report Insights",
+            "Free monthly Updates"
+        ]
+    }
+];
+
+const data = [
+    {
+        id: 1,
+        title: "Track your Credit Health",
+        description: "Fill the form just once & monitor your credit score for free without any hassles."
+    },
+    {
+        id: 2,
+        title: "Get Deep Insights",
+        description: "See what makes your score change & ways to improve your credit health."
+    },
+    {
+        id: 3,
+        title: "Make Better Decisions",
+        description: "Personalised recommendations based on your credit history to help you save money and spend wisely."
+    },
+]
 
 export default function CheckProceed() {
     const [step, setStep] = useState(0);
@@ -123,8 +153,22 @@ export default function CheckProceed() {
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-6 w-full h-screen sm:overflow-y-hidden'>
-            <MobileHeader />
-            <LeftGradiantPannel />
+            <MobileHeader
+                mobileHeroheadline="Lifetime Free Credit Score"
+                mobileHeroheadlineList={creditScoreFeatures}
+                mobileHeroImeges="/assets/credit-score-hero.svg"
+            />
+            <LeftGradiantPannel
+                content={{
+                    heading: "Your Credit Health Matters…",
+                    description:
+                        "Your credit score is more than just a number. A better score can help unlock the things you want most — like a new credit card or the best loan rates in the market.",
+                    applyNavigateAbout: "Already downloaded a report?",
+                    navigateName: "Click Here",
+                    navigateLink: "/sign-in",
+                }}
+                data={data}
+            />
 
             {step === 0 && (
                 <OtpCollection

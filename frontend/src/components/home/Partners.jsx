@@ -13,31 +13,43 @@ const partnerCategories = [
   { id: 'credit-improvement', name: 'Credit Improvement' },
 ];
 
-// Simulated dynamic image files (Assuming you have 41 images named 1.png, 2.png, ..., 41.png)
-const imageFiles = [
-  '1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png', '9.png', '10.png',
-  '11.png', '12.svg', '13.png', '14.png', '15.png', '16.png', '17.svg', '18.png', '19.png', '20.png',
-  '21.png', '22.png', '23.png', '24.png', '25.png', '26.png', '27.png', '28.png', '29.png', '30.png',
-  '31.png', '32.png', '33.png', '34.png', '35.png', '36.png', '37.png', '38.png', '39.png', '40.png', '41.png',
-];
+// Corrected partner images data structure
+const partnerImages = {
+  all: [
+    "adityaBirala", "arka", "ashv", "auSmallFinance", "axis", "badoda", "bajajHosingFinance", "bandan",
+    "bankOfindia", "bom", "canara", "central", "cityUnion", "clx", "creditSaiSon", "csb", "dbs", "dcb",
+    "dhanlaxmi", "equitas", "federal", "ftCash", "hdfc", "hindujaHousing", "icici", "idbi", "idfc", "iifl",
+    "indiabulls", "indian", "indiaOversean", "indiTrade", "indusland", "jk", "jmfinance", "karnataka",
+    "karur", "kotak", "licHFL", "ltFinance", "mahindraFinance", "moneyWide", "motilalOsWal", "panjabSind",
+    "piramal", "pnb", "poonawala", "profectusCapital", "protium", "rbl", "sbi", "sf", "shinhanBank",
+    "shriramCity", "sidbi", "smcFinance", "southIndian", "suryodaya", "tab", "tataCapital", "tezzract",
+    "theNational", "uco", "unity", "utkarshSmall", "voxy", "yes"
+  ],
+  "credit-card": ["hdfc", "icici", "idbi", "central"],
+  "home-loan": ["panjabSind", "ftCash", "federal"],
+  "credit-bureau": [],
+  "credit-improvement": [],
+};
 
 export default function Partners() {
   const [activeTab, setActiveTab] = useState('all');
   const [imageData, setImageData] = useState([]);
 
-  // Simulate dynamic image loading from the folder
+  // Update imageData based on activeTab
   useEffect(() => {
-    const images = imageFiles.map((filename, index) => ({
+    const selectedImages = partnerImages[activeTab] || [];
+
+    const images = selectedImages.map((filename, index) => ({
       id: index + 1,
-      image: `/banks/${filename}`, // Path to the image inside the public folder
-      name: `Partner ${index + 1}`, // Custom name or title for each image
+      image: `/banks/${filename}.png`, // or .webp/.jpg depending on your format
+      name: filename.replace(/([A-Z])/g, ' $1').trim(), // Makes "adityaBirla" -> "aditya Birla"
     }));
 
-    setImageData(images); // Set the image data in the state
-  }, []); // Empty array ensures this runs only once after component mounts
+    setImageData(images);
+  }, [activeTab]); // Rerun when activeTab changes
 
   return (
-    <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden py-12">
+    <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden py-4">
       <div className="max-w-6xl mx-auto p-6">
         {/* Heading */}
         <div className="max-w-sm grid gap-4">
@@ -48,12 +60,12 @@ export default function Partners() {
         </div>
 
         {/* Button Tabs */}
-        <div className="flex items-center gap-4 mt-8 sm:mt-12 overflow-x-auto pb-2">
+        <div className="flex items-center gap-4 mt-8 sm:mt-12 overflow-x-auto scrollbar-hide pb-2">
           {partnerCategories.map((option) => (
             <button
               key={option.id}
               onClick={() => setActiveTab(option.id)}
-              className={`whitespace-nowrap ${activeTab === option?.id ? 'bg-blue-800 text-white border-none' : 'text-blue-800'} text-sm font-semibold border border-blue-800 cursor-pointer px-4 py-1 rounded-sm`}
+              className={`whitespace-nowrap ${activeTab === option.id ? 'bg-primary text-white border-none' : 'text-primary'} sm:text-sm text-xs font-semibold border border-primary cursor-pointer sm:px-4 px-2 py-1 rounded-sm`}
             >
               {option.name}
             </button>
@@ -61,19 +73,25 @@ export default function Partners() {
         </div>
 
         {/* Tab Content */}
-        <div className="mt-8 grid grid-cols-3 text-center sm:grid-cols-7 sm:gap-6 gap-3 items-center">
-          {imageData?.map((partner, index) => (
-            <div
-              key={index}
-              className="text-xs font-semibold opacity-85 flex justify-center flex-wrap items-center h-16 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center p-2 whitespace-normal break-words"
-            >
-              <img
-                src={partner.image}
-                alt={partner.name}
-                className="w-full h-full object-contain rounded-md mb-2"
-              />
+        <div className="mt-4 grid grid-cols-3 text-center sm:grid-cols-7 sm:gap-6 gap-3 items-center">
+          {imageData.length > 0 ? (
+            imageData.map((partner, index) => (
+              <div
+                key={index}
+                className="text-xs font-semibold opacity-85 flex justify-center flex-wrap items-center h-11 sm:h-14 hover:scale-110 transition-all cursor-pointer bg-white rounded-md shadow-xl text-center p-2 px-3 whitespace-normal break-words"
+              >
+                <img
+                  src={partner.image}
+                  alt={partner.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-gray-500 text-sm italic">
+              No partners found in this category.
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

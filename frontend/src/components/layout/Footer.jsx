@@ -6,7 +6,6 @@ import {
   FiYoutube,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { TypographySmall } from "../../custom/Typography";
 
 // Footer data structure
 const footerLinks = [
@@ -26,16 +25,16 @@ const footerLinks = [
       { label: "Credit Score", href: "/cibil-credit-report" },
       {
         label: "Check CIBIL Score by PAN Number",
-        href: "/cibil/how-to-check-cibil-score-by-pan-card",
+        href: "/cibil-report/how-to-check-cibil-score-by-pan-card",
       },
       {
         label: "CIBIL Score for Personal Loan",
-        href: "/credit-score/cibil-score-for-personal-loan",
+        href: "/cibil-report/cibil-score-for-personal-loan",
       },
       { label: "SBI CIBIL Score", href: "/cibil-report/cibil-score-sbi-loans" },
       {
         label: "How to Improve CIBIL Score",
-        href: "/credit-report/ways-to-improve-your-cibil-score",
+        href: "/cibil-report/ways-to-improve-your-cibil-score",
       },
     ],
   },
@@ -102,7 +101,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-[#213448] sm:py-12 text-white">
       {/* Main Footer */}
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
@@ -116,7 +115,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       to={link.href}
-                      className="text-xs font-medium hover:text-primary text-gray-300"
+                      className="text-xs font-medium hover:text-accent text-gray-300"
                     >
                       {link?.label}
                     </Link>
@@ -129,7 +128,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-gray-800">
+      <div className="border-t">
         <div className="max-w-6xl mx-auto py-6 px-6">
           <div className="flex flex-col md:flex-row justify-between sm:gap-10 items-center space-y-4 md:space-y-0">
             {/* Copyright & Disclaimer */}

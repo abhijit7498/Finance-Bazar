@@ -1,13 +1,3 @@
-import {
-  FiCreditCard,
-  FiHome,
-  FiActivity,
-  FiShield,
-  FiTrendingUp,
-  FiUserPlus,
-} from "react-icons/fi";
-import { FaCarSide } from "react-icons/fa";
-import { FaIndianRupeeSign } from "react-icons/fa6";
 import { LuMoveRight } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import {
@@ -15,13 +5,18 @@ import {
   TypographyMuted,
   TypographySmall,
 } from "@/custom/Typography";
+import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/autoplay';
 
 // Define product data
 const creditProducts = [
   {
     id: "credit-cards",
     title: "Credit Cards",
-    icon: <FiCreditCard size={24} />,
+    icon: "credit-card",
     description:
       "From 50+ Options, Choose a card matching your lifestyle & needs",
     link: "/credit-cards",
@@ -30,7 +25,7 @@ const creditProducts = [
   {
     id: "personal-loan",
     title: "Personal Loan",
-    icon: <FaIndianRupeeSign size={24} />,
+    icon: "personal-loan",
     description:
       "Select the best offer curated just for you from a wide choice of Banks & NBFC's",
     link: "/personal-loan",
@@ -39,7 +34,7 @@ const creditProducts = [
   {
     id: "micro-loans",
     title: "Micro Loans (Under 50K)",
-    icon: <FiActivity size={24} />,
+    icon: "micro-loan",
     description: "Instant small ticket loans to meet your immediate cash needs",
     link: "/personal-loans",
     ctaText: "Get Instant Loan",
@@ -47,7 +42,7 @@ const creditProducts = [
   {
     id: "business-loan",
     title: "Business Loan",
-    icon: <FiTrendingUp size={24} />,
+    icon: "business-loan",
     description: "Expand your business with loans at low interest rates",
     link: "/business-loan",
     ctaText: "Check Eligibility",
@@ -55,7 +50,7 @@ const creditProducts = [
   {
     id: "home-loan",
     title: "Home Loan",
-    icon: <FiHome size={24} />,
+    icon: "home-loan",
     description:
       "Choose from lowest interest rates available for your dream home",
     link: "/home-loan",
@@ -64,16 +59,16 @@ const creditProducts = [
   {
     id: "car-loan",
     title: "Car Loan",
-    icon: <FiTrendingUp size={24} />,
+    icon: "car-loan",
     description:
       "Expand your new and old cars with loans.\nQuick approval and minimal documentation required.",
-    link: "/car-loan",
-    ctaText: "Check Eligibility",
+    link: "/loan-against-car",
+    ctaText: "Know More",
   },
   {
-    id: "morgage-loan",
-    title: "Morgage Loan",
-    icon: <FiTrendingUp size={24} />,
+    id: "mortgage-loan",
+    title: "Mortgage Loan",
+    icon: "mortgage-loan",
     description:
       "Expand your business with loans at low interest rates.\nFlexible tenure options tailored for your needs.",
     link: "/business-loan",
@@ -82,11 +77,11 @@ const creditProducts = [
   {
     id: "commercial-loan",
     title: "Commercial Loan",
-    icon: <FiTrendingUp size={24} />,
+    icon: "commercial-loan",
     description:
       "Boost your commercial ventures with tailored financing.\nEnjoy competitive rates and seamless processing.",
     link: "/commercial-loan",
-    ctaText: "Check Eligibility",
+    ctaText: "Know More",
   },
 ];
 
@@ -94,7 +89,7 @@ const insuranceProducts = [
   {
     id: "term-insurance",
     title: "Term Life Insurance",
-    icon: <FiUserPlus size={24} />,
+    icon: "life-insurance",
     description: "Safeguard your loved ones from future uncertainties",
     link: "/",
     badge: "Up to 15% Off",
@@ -103,7 +98,7 @@ const insuranceProducts = [
   {
     id: "investment-plan",
     title: "Investment Plan",
-    icon: <FiTrendingUp size={24} />,
+    icon: "investment-plan",
     description:
       "Plans starting from 1,000 with Inbuilt Life Cover & Tax Benefits",
     link: "/",
@@ -113,7 +108,7 @@ const insuranceProducts = [
   {
     id: "health-insurance",
     title: "Health Insurance",
-    icon: <FiShield size={24} />,
+    icon: "health-insurance",
     description:
       "Protect yourself and your family against medical expenses with up to 25% discount",
     link: "/",
@@ -123,40 +118,12 @@ const insuranceProducts = [
   {
     id: "car-insurance",
     title: "car Insurance",
-    icon: <FaCarSide size={24} />,
+    icon: "car-insurance",
     description:
       "Protect yourself and your car from financial emergencies and save up to 80%",
     link: "/",
     badge: "New",
     subline: "View Price",
-  },
-];
-
-const insuranceProductsSmall = [
-  {
-    id: "term-insurance",
-    title: "Term Life Insurance",
-    link: "https://termlife.policybazaar.com",
-    badge: "Up to 15% Off",
-    Img: "/product/termInsurance.png",
-  },
-  {
-    id: "investment-plan",
-    title: "Investment Plan",
-    link: "https://investmentlife.policybazaar.com/prequote-newulipform",
-    badge: "Tax Free Returns",
-  },
-  {
-    id: "health-insurance",
-    title: "Health Insurance",
-    link: "https://health.policybazaar.com",
-    badge: "FREE Home Visit",
-  },
-  {
-    id: "car-insurance",
-    title: "car Insurance",
-    link: "https://health.policybazaar.com",
-    badge: "New",
   },
 ];
 
@@ -189,11 +156,20 @@ const financialProducts = [
 ];
 
 export default function ProductCategories() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 640);
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
+
   return (
     <section className="py-12">
       <div className="max-w-6xl mx-auto px-6 ">
-        <HeadSkipper className="w-fit">Credit Products</HeadSkipper>
-        <div className="sm:grid hidden grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8">
+        <HeadSkipper className="w-fit">Popular Products</HeadSkipper>
+        <div className="sm:grid hidden sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
           {creditProducts?.map((product) => (
             <ProductCardCredit key={product.id} {...product} />
           ))}
@@ -206,12 +182,12 @@ export default function ProductCategories() {
       </div>
       <div className="max-w-6xl mx-auto px-6 mt-8">
         <HeadSkipper className="w-fit">Insurance & Investment</HeadSkipper>
-        <div className="sm:grid hidden grid-cols-1 sm:grid-cols-4 gap-6 sm:gap-8 mt-8">
+        <div className="sm:grid hidden sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mt-8">
           {insuranceProducts?.map((product) => (
             <ProductCardInsurance key={product.id} {...product} />
           ))}
         </div>
-        <div className="flex sm:hidden items-center justify-center gap-3">
+        <div className="grid grid-cols-4 text-center sm:hidden items-center gap-3">
           {insuranceProducts?.map((product) => (
             <ProductCardInsuranceSmallDevice key={product.id} {...product} />
           ))}
@@ -221,11 +197,34 @@ export default function ProductCategories() {
         <HeadSkipper className="w-fit">
           Keeping you financially healthy and safe, always
         </HeadSkipper>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
-          {financialProducts?.map((product, index) => (
-            <ProductCardFinancial key={index} {...product} />
-          ))}
-        </div>
+
+        {/* Mobile Slider */}
+        {isMobile ? (
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={16}
+            slidesPerView={1.1} // full width
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            className="mt-4"
+          >
+            {financialProducts?.map((product, index) => (
+              <SwiperSlide key={index} className="w-full">
+                <ProductCardFinancial {...product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          // Desktop Grid
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 mt-4">
+            {financialProducts?.map((product, index) => (
+              <ProductCardFinancial key={index} {...product} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -241,8 +240,8 @@ function ProductCardCredit({ title, description, icon, link, ctaText }) {
         {title}
       </TypographySmall>
       <div className="flex justify-between mt-2 gap-4">
-        <span className="text-blue-900">{icon}</span>
-        <TypographyMuted className="font-medium text-xs flex-wrap">
+        <img src={`product/${icon}.png`} alt={icon} className="h-10 w-10" />
+        <TypographyMuted className="font-medium text-xs line-clamp-3">
           {description}
         </TypographyMuted>
       </div>
@@ -256,9 +255,9 @@ function ProductCardCredit({ title, description, icon, link, ctaText }) {
 
 function ProductCardCreditSmallDevice({ title, icon, link }) {
   return (
-    <Link to={link} className="flex flex-col items-center gap-2">
-      <span className="text-accent">{icon}</span>
-      <TypographySmall className="text-blue-950 font-semibold text-xs capitalize">
+    <Link to={link} className="flex flex-col justify-center items-center gap-2 border p-1 rounded-md h-19">
+      <img src={`product/${icon}.png`} alt={icon} className="h-7 w-7" />
+      <TypographySmall className="text-blue-950 font-semibold text-[9px] capitalize">
         {title}
       </TypographySmall>
     </Link>
@@ -282,7 +281,7 @@ function ProductCardInsurance({
         {title}
       </TypographySmall>
       <div className="flex justify-between mt-2 gap-4">
-        <span className="text-blue-900">{icon}</span>
+        <img src={`product/${icon}.png`} alt={icon} className="h-10 w-10" />
         <TypographyMuted className="font-medium text-xs flex-wrap">
           {description}
         </TypographyMuted>
@@ -300,12 +299,12 @@ function ProductCardInsurance({
 
 function ProductCardInsuranceSmallDevice({ title, icon, link, badge }) {
   return (
-    <Link to={link} className="flex flex-col gap-2 text-center items-center">
-      <span className="text-accent">{icon}</span>
-      <TypographySmall className="text-blue-950 font-semibold text-xs capitalize">
+    <Link to={link} className="flex flex-col relative justify-center items-center gap-2 border p-1 rounded-md h-19">
+      <img src={`product/${icon}.png`} alt={icon} className="h-7 w-7" />
+      <TypographySmall className="text-blue-950 font-semibold text-[9px] capitalize">
         {title}
       </TypographySmall>
-      <span className="text-white rounded-lg font-semibold px-2 py-1 text-[8px] bg-green-600">
+      <span className="text-white w-[92%] mx-auto rounded-xs -top-2 absolute text-[7px] bg-green-500">
         {badge}
       </span>
     </Link>
@@ -316,12 +315,12 @@ function ProductCardFinancial({ title, description, img, link, ref }) {
   return (
     <Link
       to={link}
-      className="border flex p-2 cursor-pointer hover:scale-105 transition-all hover:shadow-xl rounded-sm shadow"
+      className="border flex p-2 cursor-pointer hover:scale-105 transition-all hover:shadow-xl rounded-sm shadow w-full"
     >
       <img src={img} alt={title} className="w-20" />
       <div className="flex flex-col mt-2 gap-1">
-        <TypographySmall className="">{title}</TypographySmall>
-        <TypographyMuted className="text-xs">{description}</TypographyMuted>
+        <TypographySmall className="text-xs sm:text-sm">{title}</TypographySmall>
+        <TypographyMuted className="text-[10px] sm:text-xs">{description}</TypographyMuted>
         <span className="text-xs font-semibold text-blue-900 w-fit border-b border-blue-800 pb-1">
           {ref}
         </span>

@@ -5,6 +5,7 @@ import ValuePropositions from '@/components/home/ValuePropositions';
 import AppDownload from '@/components/home/AppDownload';
 import Partners from '@/components/home/Partners';
 import PageLayout from '@/components/layout/PageLayout';
+import CreditScoreCheckNotify from "@/components/CreditScoreCheckNotify";
 
 export default function Landing() {
     return (
@@ -15,6 +16,7 @@ export default function Landing() {
             <ValuePropositions />
             <AppDownload />
             <Partners />
+            <CreditScoreCheckNotify />
         </PageLayout>
     )
 }

@@ -1,20 +1,28 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { TypographySmall } from '@/custom/Typography';
+import { IoAddOutline, IoRemoveOutline } from "react-icons/io5";
+import { TypographyH4BlueColor } from '../custom/Typography';
+import { Link } from 'react-router-dom';
 
 export const OffersCards = ({ headline, offers }) => {
 
     const [showAllOffers, setShowAllOffers] = useState(false);
-    const visibleOffers = showAllOffers ? offers : offers.slice(0, 3);
+    const visibleOffers = showAllOffers ? offers : offers.slice(0, 4);
 
     return (
         <>
             <h2 className="sm:text-2xl text-lg font-bold text-blue-950 mb-3 px-3">{headline}</h2>
             <div className="grid grid-cols-1 gap-6">
                 {visibleOffers.map((offer) => (
-                    <div key={offer.id} className="border p-6 rounded-md">
+                    <div key={offer.id} className="border shadow p-6 rounded-md">
                         <div className='flex sm:flex-row flex-col justify-between sm:items-center mb-4'>
-                            <h3 className="font-bold opacity-75 text-lg">{offer?.name}</h3>
+                            <div className='flex items-center gap-2'>
+                                <div className='border p-1 rounded'>
+                                    <img src={offer?.img} alt={offer?.name} className='w-5 h-5' />
+                                </div>
+                                <TypographyH4BlueColor className="font-bold mt-0 text-lg">{offer?.name}</TypographyH4BlueColor>
+                            </div>
                             <div className="flex flex-wrap gap-2 mt-2">
                                 {offer.highlights.map((highlight, index) => (
                                     <span key={`${offer.id}-highlight-${index}`} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs">
@@ -48,9 +56,11 @@ export const OffersCards = ({ headline, offers }) => {
                                     {offer?.processing_fee}
                                 </TypographySmall>
                             </div>
-                            <Button className="text-xs">
-                                Apply Now
-                            </Button>
+                            <Link to="/personal-loan">
+                                <Button className="text-xs">
+                                    Check Eligibility
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 ))}
@@ -60,7 +70,17 @@ export const OffersCards = ({ headline, offers }) => {
                     onClick={() => setShowAllOffers(!showAllOffers)}
                     className="text-sm font-semibold"
                 >
-                    {showAllOffers ? "Show Less Offers" : "Show More Offers"}
+                    {showAllOffers ? (
+                        <>
+                            <IoRemoveOutline className="text-lg" />
+                            Show Less Offers
+                        </>
+                    ) : (
+                        <>
+                            <IoAddOutline className="text-lg" />
+                            Show More Offers
+                        </>
+                    )}
                 </Button>
             </div>
         </>

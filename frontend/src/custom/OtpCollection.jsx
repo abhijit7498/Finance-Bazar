@@ -10,7 +10,7 @@ import { SendOtpToMobile } from "@/machine/OTP";
 export default function OtpCollection({
     heading,
     lendersHighlight,
-    highlightColor = "text-blue-900",
+    highlightColor = "text-primary",
     features = [],
     termsUrl,
     onOtpSuccess
@@ -44,21 +44,24 @@ export default function OtpCollection({
         <div className="max-w-md mx-auto flex sm:mt-18 gap-3 flex-col px-4 pb-8 sm:py-8">
             {/* Heading and Features */}
             <div className="grid gap-3">
-                <TypographyH3 className="text-blue-700 sm:text-xl text-md tracking-normal">
+                <TypographyH3 className="text-accent sm:text-xl text-md tracking-normal">
                     {heading} <span className={`font-bold ${highlightColor}`}>{lendersHighlight}</span>
                 </TypographyH3>
                 <div className="w-14 h-0.5 bg-accent"></div>
             </div>
 
-            <ul className="font-semibold text-xs grid gap-3 opacity-65 mt-4">
-                {features.map((feature, index) => (
-                    <li key={index} className="flex gap-2">
-                        <IoCheckmarkCircleOutline className="text-accent" size={18} />
-                        {feature}
-                    </li>
-                ))}
-            </ul>
-
+            {
+                features && (
+                    <div className="space-y-2">
+                        {features?.map((feature, index) => (
+                            <TypographyMuted key={index} className="flex gap-2">
+                                <IoCheckmarkCircleOutline className="text-accent" size={18} />
+                                {feature}
+                            </TypographyMuted>
+                        ))}
+                    </div>
+                )
+            }
             {/* Form */}
             <form className="mt-8" onSubmit={handleCheckOffers}>
                 <div>

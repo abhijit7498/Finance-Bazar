@@ -1,32 +1,56 @@
 import { Button } from '@/components/ui/button';
 import { MdNavigateNext } from "react-icons/md";
-import { FiPieChart, FiUserCheck, FiShield, FiUsers } from 'react-icons/fi';
-import { TypographyH2, TypographyH3, Headline, TypographyH4, TypographyMuted, TypographySmall } from '../../custom/Typography';
+import { TypographyH2, Headline, TypographyH4, TypographyMuted } from '@/custom/Typography';
 import { Link } from 'react-router-dom';
 
-// Value proposition data
+// Value proposition card content
 const valueProps = [
   {
-    icon: <FiPieChart size={30} />,
+    icon: "wide-choice",
     title: 'Wide Choice',
-    description: 'We have partnerships with large banks, NBFCs and fintech lenders who offer a wide choice of products on our platform',
+    description: 'We partner with major banks, NBFCs and fintech lenders offering a wide range of products.',
   },
   {
-    icon: <FiUserCheck size={30} />,
+    icon: "easy-access",
     title: 'Easy Access to Credit',
-    description: 'Our algorithm-based technology provides access to multiple credit offers, ease of comparison and unbiased advice',
+    description: 'Smart algorithms offer multiple offers, comparisons & unbiased credit guidance.',
   },
   {
-    icon: <FiShield size={30} />,
+    icon: "safe-secure",
     title: 'Safe & Secure',
-    description: 'Your data is completely safe with us. We are ISO(27001: 2013) certified & have built industry-best controls to keep your information secure.',
+    description: 'ISO(27001: 2013) certified with industry-best data protection and control systems.',
   },
   {
-    icon: <FiUsers size={30} />,
+    icon: "customer-first",
     title: 'Customer First',
-    description: 'We have a dedicated and highly trained team of experts who work hard every day to help you take the best financial decisions',
+    description: 'Expert team dedicated to helping you make the best financial choices.',
   },
 ];
+
+// MiniCard component for reusability
+const MiniCard = ({ icon, title, description }) => (
+  <div className='grid gap-2 sm:gap-4'>
+    <img src={`/product/${icon}.png`} alt="icon" className='w-10 sm:w-12' />
+    <TypographyH4 className='text-primary font-bold'>{title}</TypographyH4>
+    <TypographyMuted className='leading-6.5'>{description}</TypographyMuted>
+  </div>
+);
+
+// GradientBox component for reusability
+const GradientBox = ({ image, title, subtitle, buttonText }) => (
+  <div className='bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-12 rounded-md relative'>
+    <div className='flex justify-center'>
+      <img src={image} alt={title} className='sm:w-72 w-56' />
+    </div>
+    <div className='grid gap-2 mt-6'>
+      <TypographyH2 className="font-semibold sm:text-2xl text-xl tracking-wide">{title}</TypographyH2>
+      <TypographyMuted>{subtitle}</TypographyMuted>
+      <Button className="absolute -bottom-3 right-16 bg-white hover:bg-white cursor-pointer rounded-none text-primary text-xs sm:text-sm font-semibold sm:p-6">
+        {buttonText} <MdNavigateNext />
+      </Button>
+    </div>
+  </div>
+);
 
 export default function ValuePropositions() {
   return (
@@ -43,55 +67,25 @@ export default function ValuePropositions() {
             </Button>
           </Link>
         </div>
+
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 p-4'>
-          {
-            valueProps?.map((value, index) => (
-              <div key={index} className='grid gap-2 sm:gap-4'>
-                <span className='text-accent'>{value?.icon}</span>
-                <TypographyH4 className='text-blue-900 font-bold'>
-                  {value?.title}
-                </TypographyH4>
-                <TypographyMuted className='leading-6.5'>
-                  {value?.description}
-                </TypographyMuted>
-              </div>
-            ))
-          }
+          {valueProps.map((val, i) => <MiniCard key={i} {...val} />)}
         </div>
       </div>
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 mt-12 max-w-4xl mx-auto'>
-        <div className="bg-gradient-to-br from-[#bfe9fd] to-[#3cc2ff] p-12 rounded-md relative">
-          <div className='flex justify-center'>
-            <img src="/assets/about-us.svg" alt="about-us" className='w-96' />
-          </div>
-          <div className='grid gap-3 sm:mt-6'>
-            <TypographyH2 className="font-semibold tracking-wide">
-              About Us
-            </TypographyH2>
-            <TypographySmall>
-              How we are building a strong Financesbazar Brand
-            </TypographySmall>
-            <Button className="absolute -bottom-3 right-16 hover:bg-white cursor-pointer bg-white rounded-none text-blue-800 font-semibold sm:p-6">
-              KNOW MORE <MdNavigateNext />
-            </Button>
-          </div>
-        </div>
-        <div className='bg-gradient-to-br from-[#9effdc] to-[#00ef87] p-12 rounded-md relative'>
-          <div className='flex justify-center'>
-            <img src="/assets/work-us.svg" alt="about-us" className='sm:w-96 w-56' />
-          </div>
-          <div className='grid gap-3 sm:mt-6'>
-            <TypographyH2 className="font-semibold tracking-wide">
-              Work With Us
-            </TypographyH2>
-            <TypographySmall>
-              Want to Join Team Financesbazar?
-            </TypographySmall>
-            <Button className="absolute -bottom-3 right-16 bg-white hover:bg-white cursor-pointer rounded-none text-blue-800 font-semibold sm:p-6">
-              JOIN US<MdNavigateNext />
-            </Button>
-          </div>
-        </div>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 sm:mt-10 max-w-4xl mx-auto'>
+        <GradientBox
+          image="/assets/about-us.svg"
+          title="About Us"
+          subtitle="How we are building a strong Financesbazar Brand"
+          buttonText="KNOW MORE"
+        />
+        <GradientBox
+          image="/assets/work-us.svg"
+          title="Work With Us"
+          subtitle="Want to Join Team Financesbazar?"
+          buttonText="JOIN US"
+        />
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ const slides = [
       <div className="flex sm:justify-between sm:gap-8 gap-4 items-center w-full relative">
         {/* Text Section */}
         <div className="space-y-2 sm:space-y-6 order-2 sm:order-1 sm:text-left px-4 sm:px-0 max-w-md">
-          <h1 className="text-sm sm:text-3xl font-bold">
+          <h1 className="text-sm text-primary sm:text-3xl font-bold">
             Get <span className="text-accent">Lifetime Free</span> Credit Card Score & Report
           </h1>
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
@@ -21,7 +21,7 @@ const slides = [
             <div className="w-2 sm:w-8 h-px bg-accent" /> No Impact on Credit Score
           </TypographyH4>
           <Link to="/cibil-credit-report">
-         <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
+            <Button className="h-6 rounded sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
               Get Free Credit Report
             </Button>
           </Link>
@@ -45,7 +45,7 @@ const slides = [
 
         {/* Text */}
         <div className="space-y-2 sm:space-y-6 order-2 sm:order-2 sm:text-left sm:px-0 max-w-md">
-          <h1 className="text-sm sm:text-3xl font-bold">
+          <h1 className="text-sm text-primary sm:text-3xl font-bold">
             Looking For The <span className="text-accent">Best Credit Cards?</span>
           </h1>
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
@@ -55,7 +55,7 @@ const slides = [
             <div className="w-2 sm:w-8 h-px bg-accent" /> Choose from 400+ Credit Cards
           </TypographyH4>
           <Link to="/cibil-credit-report">
-         <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
+            <Button className="h-6 sm:h-10 rounded sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
               Search Credit Card
             </Button>
           </Link>
@@ -74,7 +74,7 @@ const slides = [
 
         {/* Text */}
         <div className="space-y-2 sm:space-y-6 order-2 sm:order-2 px-4 sm:px-0 max-w-md">
-          <h1 className="text-sm sm:text-3xl font-bold">
+          <h1 className="text-sm text-primary sm:text-3xl font-bold">
             Your Dreams Deserve More - Unlock <span className="text-accent">Personal Loan</span> upto ₹60+ Lac!
           </h1>
           <TypographyH4 className="text-[11px] sm:text-base text-muted-foreground flex items-center gap-2 justify-start">
@@ -84,7 +84,7 @@ const slides = [
             <div className="w-2 sm:w-8 h-px bg-accent" /> Fast disbursal with effortless eperience
           </TypographyH4>
           <Link to='/personal-loan'>
-          <Button className="h-6 sm:h-10 sm:text-sm text-xs py-1 sm:py-2 sm:px-4">
+            <Button className="h-6 sm:h-10  roundedsm:text-sm text-xs py-1 sm:py-2 sm:px-4">
               Check Now
             </Button>
           </Link>
@@ -129,15 +129,17 @@ export default function HeroSection() {
         </div>
 
         {/* Dots (Indicators) */}
-        <div className="flex justify-center mt-6 space-x-3">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`sm:w-2 sm:h-2 w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${index === currentSlide ? "bg-primary scale-110" : "bg-gray-300"
-                }`}
-            />
-          ))}
+        <div className='flex justify-center items-center'>
+          <div className="flex justify-center mt-6 sm:space-x-3 space-x-2.5 border bg-muted sm:p-1 sm:px-2 px-1 py-0.5 rounded w-fit">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`sm:w-2 sm:h-2 w-1 h-1 rounded-full transition-all duration-300 cursor-pointer ${index === currentSlide ? "bg-primary scale-110" : "bg-gray-300"
+                  }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

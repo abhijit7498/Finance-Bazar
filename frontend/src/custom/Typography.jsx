@@ -1,4 +1,4 @@
-import { cn } from "../lib/utils"
+import { cn } from "@/lib/utils"
 
 export function TypographyH1({ children, className }) {
     return (
@@ -18,7 +18,7 @@ export function TypographyH2({ children, className }) {
 
 export function TypographyH2BlueColor({ children, className }) {
     return (
-        <h2 className={cn("sm:text-2xl text-xl text-blue-950 tracking-tight mt-4 font-bold", className)}>
+        <h2 className={cn("sm:text-2xl text-xl text-[#2A4759] tracking-tight mt-4 font-bold", className)}>
             {children}
         </h2>
     )
@@ -42,7 +42,7 @@ export function TypographyH4({ children, className }) {
 
 export function TypographyH4BlueColor({ children, className }) {
     return (
-        <h2 className={cn("sm:text-xl text-md text-blue-950 tracking-tight mt-8 font-bold", className)}>
+        <h2 className={cn("sm:text-xl text-md text-[#2A4759] tracking-tight mt-8 font-bold", className)}>
             {children}
         </h2>
     )
@@ -89,7 +89,7 @@ export function TypographyList({ items, className }) {
 
 export function TypographyList2({ items, className }) {
     return (
-        <ul className={cn("my-6 sm:ml-8 ml-6 list-disc [&>li]:mt-2 text-sm", className)}>
+        <ul className={cn("my-6 sm:ml-8 ml-6 list-disc text-[#06202B] [&>li]:mt-2 text-sm", className)}>
             {items?.map((item, index) => (
                 <li key={index}>
                     {item}
@@ -146,7 +146,7 @@ export function TypographyMuted({ children, className }) {
 export function HeadSkipper({ children, className }) {
     return (
         <div className="flex items-center gap-2 sm:gap-4 mb-6">
-            <h2 className={cn("text-blue-700 font-bold sm:tracking-wide sm:text-md text-xs uppercase", className)}>
+            <h2 className={cn("text-primary font-bold sm:tracking-wide sm:text-sm text-[10px] uppercase", className)}>
                 {children}
             </h2>
             <div className="sm:w-22 w-10 h-px bg-blue-700"></div>
@@ -167,7 +167,7 @@ export function HighLighter({ rightText, leftText, className, highLighter }) {
 
 export function Headline({ children, className }) {
     return (
-        <h3 className={cn("uppercase text-xl sm:text-3xl font-bold tracking-wide text-blue-950 t", className)}>
+        <h3 className={cn("uppercase text-xl sm:text-3xl font-bold tracking-normal text-primary", className)}>
             {children}
         </h3>
     )
