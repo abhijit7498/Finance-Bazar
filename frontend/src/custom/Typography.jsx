@@ -104,7 +104,7 @@ export function BoldList({ items, className }) {
         <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-3 text-sm", className)}>
             {items?.map((item, index) => (
                 <li key={index}>
-                    <span className="font-semibold">{item?.title}: </span>{item?.value}
+                    <span className="font-semibold">{item?.title}: </span><span className="text-gray-800">{item?.value}</span>
                 </li>
             ))}
         </ul>

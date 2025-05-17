@@ -3,7 +3,6 @@ import { HeroLoginCard2 } from '../HeroSectionPages';
 import {
     TypographyH2BlueColor,
     TypographyPBlueColor,
-    TypographyH4BlueColor,
     TypographyList2
 } from '@/custom/Typography';
 import { listItems } from './CibilScoreByPan';

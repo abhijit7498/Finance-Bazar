@@ -41,12 +41,12 @@ export default function Partners() {
 
     const images = selectedImages.map((filename, index) => ({
       id: index + 1,
-      image: `/banks/${filename}.png`, // or .webp/.jpg depending on your format
-      name: filename.replace(/([A-Z])/g, ' $1').trim(), // Makes "adityaBirla" -> "aditya Birla"
+      image: `/banks/logo/${filename}.png`,
+      name: filename.replace(/([A-Z])/g, ' $1').trim(),
     }));
 
     setImageData(images);
-  }, [activeTab]); // Rerun when activeTab changes
+  }, [activeTab]);
 
   return (
     <div className="bg-gradient-to-r from-[#f5f9ff] to-[#f0fdfa] overflow-hidden py-4">

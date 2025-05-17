@@ -247,12 +247,16 @@ export const HeroLoginCard2 = ({
                 <div className='md:col-span-7 space-y-6'>
                     {list && listHeadline && (
                         <>
-                            <HighLighter
-                                rightText={listHeadline?.rightText}
-                                highLighter={listHeadline?.highLighter}
-                                leftText={listHeadline?.leftText}
-                            />
-                            <div className='space-y-3'>
+                            {
+                                listHeadline && (
+                                    <HighLighter
+                                        rightText={listHeadline?.rightText}
+                                        highLighter={listHeadline?.highLighter}
+                                        leftText={listHeadline?.leftText}
+                                    />
+                                )
+                            }
+                            <div className='space-y-4'>
                                 {list?.map((item, index) => (
                                     <TypographySmall key={index} className="flex items-center text-muted-foreground gap-2">
                                         <BsCheckCircle className='text-accent' /> {item}
