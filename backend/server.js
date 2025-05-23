@@ -5,9 +5,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const otpRoutes = require("./routes/otpRoutes");
-const formRoutes = require("./routes/formRoutes");
+const UserRoutes = require("./routes/UserRoutes");
 const authRoutes = require("./routes/authRoutes");
-
+const loanRoutes=require("./routes/loanEnqRoutes")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -17,8 +17,9 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api", otpRoutes);
-app.use("/api", formRoutes);
+app.use("/api", UserRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/loans",loanRoutes);
 
 app.get("/", (_, res) => {
   res.send("Backend is running.");
