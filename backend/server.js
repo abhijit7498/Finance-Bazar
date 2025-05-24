@@ -8,6 +8,7 @@ const otpRoutes = require("./routes/otpRoutes");
 const UserRoutes = require("./routes/UserRoutes");
 const authRoutes = require("./routes/authRoutes");
 const loanRoutes=require("./routes/loanEnqRoutes")
+const SendoffersRoutes=require("./routes/SendoffersRoutes")
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -20,7 +21,7 @@ app.use("/api", otpRoutes);
 app.use("/api", UserRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/loans",loanRoutes);
-
+app.use("/api/message",SendoffersRoutes)
 app.get("/", (_, res) => {
   res.send("Backend is running.");
 });
