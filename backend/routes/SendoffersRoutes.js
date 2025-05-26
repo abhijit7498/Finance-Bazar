@@ -1,9 +1,9 @@
 const { Router } = require("express");
-const {sendofferMessage,bulkwatsappMessage} = require("../controllers/SendOffersController");
+const {sendofferMessage,bulkwhatsappMessage} = require("../controllers/SendOffersController");
 
 const router=Router();
 
-router.post('/watsapp/offers',sendofferMessage);
-router.post('/watsapp/bulk',bulkwatsappMessage)
+router.post('/whatsapp/offers',sendofferMessage);
+router.post('/whatsapp/bulk',bulkwhatsappMessage)
 
 module.exports=router;

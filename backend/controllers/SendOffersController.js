@@ -23,7 +23,7 @@ const sendofferMessage = async (req, res) => {
     }
 };
 
-const bulkwatsappMessage = async (req, res) => {
+const bulkwhatsappMessage = async (req, res) => {
     const { numbers, template_name, parameters } = req.body;
     try {
         const results = [];
@@ -53,4 +53,4 @@ const bulkwatsappMessage = async (req, res) => {
     }
 }
 
-module.exports = {sendofferMessage,bulkwatsappMessage}
+module.exports = {sendofferMessage,bulkwhatsappMessage}
